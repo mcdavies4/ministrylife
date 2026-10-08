@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ministry Life: from sitting room to camp ground</title>
+<meta name="description" content="Build a Nigerian mega-ministry from plastic chairs in Ikorodu to a camp ground on the expressway. Every choice has a price.">
+<meta property="og:title" content="Ministry Life">
+<meta property="og:description" content="From plastic chairs in Ikorodu to a camp ground on the expressway. How far can your ministry go?">
+<meta name="theme-color" content="#2B0B4F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#2B0B4F; --night:#14051F; --gold:#F2B705; --gold-hi:#FFD95A;
+  --red:#D7261E; --paper:#FBF3DF; --ink:#1A0B2E; --lilac:#B8A3D9;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%}
+body{font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--paper);background:var(--night);overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+input{user-select:text;-webkit-user-select:text}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold-hi);outline-offset:3px}
+
+/* crusade-poster backdrop */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(ellipse at 50% 28%,#5B1A9E 0%,var(--purple) 38%,var(--night) 82%)}
+.bg::before{content:"";position:absolute;left:50%;top:28%;width:240vmax;height:240vmax;transform:translate(-50%,-50%);
+  background:repeating-conic-gradient(from 0deg,rgba(242,183,5,.075) 0deg 5deg,transparent 5deg 15deg);animation:spin 160s linear infinite}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.bg::before{animation:none}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+#app{height:100%;max-width:460px;margin:0 auto;display:flex;flex-direction:column;padding:10px 16px 8px}
+
+/* meters */
+.meters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:6px 0 4px}
+.meter{display:flex;flex-direction:column;align-items:center;gap:5px;position:relative}
+.meter .top{display:flex;align-items:center;gap:6px;height:24px}
+.meter .ic{font-size:21px;line-height:1}
+.meter .dot{width:0;height:0;border-radius:50%;background:var(--gold-hi);transition:all .15s ease;box-shadow:0 0 8px var(--gold)}
+.meter .dot.sm{width:7px;height:7px}.meter .dot.lg{width:12px;height:12px}
+.meter .bar{width:100%;max-width:64px;height:10px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden;position:relative}
+.meter .fill{position:absolute;inset:0 auto 0 0;background:var(--gold);border-radius:6px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.meter.danger .fill{background:var(--red);animation:pulse .9s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+.meter .nm{font-size:11px;font-weight:600;color:var(--lilac)}
+
+/* status */
+.status{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:10px 2px 6px;border-bottom:1px solid rgba(242,183,5,.25)}
+.status .who{font-family:'Anton',Impact,sans-serif;font-size:19px;letter-spacing:.01em;color:var(--gold-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status .where{font-size:12px;color:var(--lilac)}
+.status .count{text-align:right;flex-shrink:0}
+.status .count b{font-family:'Anton',Impact,sans-serif;font-size:22px;font-weight:400;color:var(--paper);display:block;line-height:1}
+.status .count span{font-size:11px;color:var(--lilac)}
+
+/* card */
+.deck{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0;padding:12px 0}
+.card{width:100%;max-width:360px;height:100%;max-height:440px;background:var(--paper);color:var(--ink);border-radius:6px;position:relative;
+  display:flex;flex-direction:column;padding:22px 22px 20px;touch-action:none;cursor:grab;z-index:2;
+  box-shadow:0 2px 0 #E6D6AE,0 24px 48px rgba(0,0,0,.55);transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s}
+.card::before{content:"";position:absolute;inset:8px;border:2px solid var(--purple);border-radius:3px;pointer-events:none;opacity:.85}
+.card.ghost{position:absolute;z-index:1;transform:translateY(12px) scale(.94);opacity:.35;pointer-events:none;box-shadow:none}
+.card.enter{transform:translateY(30px) scale(.96);opacity:0}
+.card .week{align-self:flex-start;background:var(--red);color:#fff;font-family:'Anton',Impact,sans-serif;font-size:14px;letter-spacing:.04em;padding:4px 10px;border-radius:2px;transform:rotate(-2deg)}
+.card .who{display:flex;align-items:center;gap:14px;margin:18px 0 14px}
+.card .av{width:62px;height:62px;border-radius:50%;background:var(--purple);border:3px solid var(--gold);display:grid;place-items:center;font-size:32px;flex-shrink:0}
+.card .nm{font-family:'Anton',Impact,sans-serif;font-size:24px;line-height:1.05;color:var(--purple)}
+.card .rl{font-size:13px;color:#6B5A80;margin-top:3px}
+.card .tx{font-size:clamp(17px,4.6vw,20px);line-height:1.42;font-weight:600;flex:1;overflow:auto}
+.card .lean{position:absolute;left:8px;right:8px;top:8px;background:var(--purple);color:var(--gold-hi);font-family:'Anton',Impact,sans-serif;font-size:21px;line-height:1.15;
+  padding:16px 18px;border-radius:3px 3px 0 0;opacity:0;transition:opacity .12s;pointer-events:none;min-height:70px;display:flex;align-items:center}
+.card .lean.R{justify-content:flex-end;text-align:right}
+.card .lean.on{opacity:1}
+.card.dragging{transition:none;cursor:grabbing}
+
+/* choices */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 0 6px}
+.choices button{font-size:14px;font-weight:600;line-height:1.28;padding:12px 12px;border-radius:4px;border:2px solid var(--gold);background:rgba(20,5,31,.72);color:var(--paper);min-height:68px;text-align:left;transition:background .15s,transform .1s}
+.choices button.r{text-align:right}
+.choices button:active{transform:scale(.97)}
+.choices button:hover{background:rgba(242,183,5,.16)}
+.choices button .arr{display:block;font-size:12px;color:var(--gold);margin-bottom:3px;font-weight:800}
+.hint{text-align:center;font-size:11px;color:var(--lilac);opacity:.75;padding-bottom:2px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(120px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--gold);color:var(--ink);
+  font-weight:800;font-size:14px;padding:10px 16px;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:all .3s;max-width:88vw;text-align:center;z-index:30;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* full screens */
+.screen{position:fixed;inset:0;display:none;overflow-y:auto;z-index:20;padding:24px 20px;
+  padding-top:calc(24px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.screen.on{display:flex}
+.screen.dim{background:rgba(20,5,31,.94)}
+.screen .inner{margin:auto;width:100%;max-width:400px;text-align:center}
+.kicker{font-weight:800;font-size:14px;color:var(--gold);transform:rotate(-2deg);display:inline-block;margin-bottom:6px}
+.title{font-family:'Anton',Impact,sans-serif;font-size:clamp(58px,18vw,84px);line-height:.9;color:var(--paper);text-shadow:4px 4px 0 var(--red),8px 8px 0 rgba(0,0,0,.35);letter-spacing:.01em}
+.title .l2{display:block;color:var(--gold-hi)}
+.tagline{font-size:16px;line-height:1.45;color:var(--paper);margin:18px auto 22px;max-width:30ch}
+.field{text-align:left;margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--lilac);margin-bottom:6px}
+.field .row{display:flex;gap:8px}
+.field input{flex:1;width:100%;font:600 16px 'Archivo',sans-serif;padding:13px 14px;border-radius:4px;border:2px solid rgba(242,183,5,.5);background:rgba(20,5,31,.7);color:var(--paper)}
+.field input:focus{border-color:var(--gold-hi);outline:none}
+.dice{width:52px;font-size:22px;border-radius:4px;border:2px solid rgba(242,183,5,.5);background:rgba(20,5,31,.7)}
+.btn{display:block;width:100%;font-family:'Anton',Impact,sans-serif;font-size:22px;letter-spacing:.03em;padding:15px;border:none;border-radius:4px;background:var(--red);color:#fff;box-shadow:0 5px 0 #8E140E;margin-top:8px;transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #8E140E}
+.btn.gold{background:var(--gold);color:var(--ink);box-shadow:0 5px 0 #A07800}
+.btn.ghost{background:transparent;border:2px solid var(--gold);color:var(--gold-hi);box-shadow:none;font-size:18px;padding:12px}
+.how{font-size:14px;line-height:1.5;color:var(--lilac);margin-top:22px;text-align:left;background:rgba(20,5,31,.55);padding:14px 16px;border-left:3px solid var(--gold)}
+.how strong{color:var(--paper)}
+.fine{font-size:12px;color:var(--lilac);opacity:.75;margin-top:14px;line-height:1.45}
+
+.promo .big{font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,12vw,58px);line-height:.95;color:var(--gold-hi);text-shadow:3px 3px 0 var(--red);margin:10px 0 14px}
+.promo p{font-size:17px;line-height:1.5;margin-bottom:22px}
+
+.end h2{font-family:'Anton',Impact,sans-serif;font-size:clamp(38px,11vw,52px);line-height:.95;color:var(--paper);text-shadow:3px 3px 0 var(--red);margin:8px 0 12px}
+.end .desc{font-size:16px;line-height:1.5;margin-bottom:18px}
+.end img{width:100%;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.5);margin-bottom:16px;display:block}
+.end .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.end .two .btn{font-size:17px;padding:13px}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<main id="app" aria-live="polite">
+  <div class="meters" id="meters"></div>
+  <div class="status">
+    <div style="min-width:0">
+      <div class="who" id="sWho">Brother Emeka</div>
+      <div class="where" id="sWhere">House fellowship</div>
+    </div>
+    <div class="count"><b id="sMembers">8</b><span>members</span></div>
+  </div>
+  <div class="deck" id="deck">
+    <div class="card ghost" aria-hidden="true"></div>
+    <article class="card" id="card" tabindex="0" aria-label="Current decision">
+      <div class="lean" id="lean"></div>
+      <div class="week" id="cWeek">Sunday 1</div>
+      <div class="who"><div class="av" id="cAv">👩🏾</div><div><div class="nm" id="cName"></div><div class="rl" id="cRole"></div></div></div>
+      <p class="tx" id="cText"></p>
+    </article>
+  </div>
+  <div class="choices">
+    <button id="bL"><span class="arr">◀ Swipe left</span><span id="bLt"></span></button>
+    <button id="bR" class="r"><span class="arr">Swipe right ▶</span><span id="bRt"></span></button>
+  </div>
+  <div class="hint">Too little or too much of anything ends your ministry.</div>
+</main>
+
+<div class="toast" id="toast" role="status"></div>
+
+<!-- intro -->
+<section class="screen on" id="intro">
+  <div class="inner">
+    <div class="kicker">The Lord has called you!</div>
+    <h1 class="title">Ministry<span class="l2">Life</span></h1>
+    <p class="tagline">Start with twelve plastic chairs in your sitting room in Ikorodu. End with a camp ground on the expressway. Or in the blogs.</p>
+    <div class="field">
+      <label for="iName">Your name</label>
+      <div class="row"><input id="iName" maxlength="18" value="Emeka" autocomplete="off"></div>
+    </div>
+    <div class="field">
+      <label for="iMin">Name your ministry</label>
+      <div class="row"><input id="iMin" maxlength="48" autocomplete="off"><button class="dice" id="iDice" aria-label="Generate a ministry name">🎲</button></div>
+    </div>
+    <button class="btn" id="iStart">Start the ministry</button>
+    <button class="btn ghost" id="iCont" style="display:none">Continue where you stopped</button>
+    <div class="how"><strong>How to play.</strong> Swipe each card left or right, or tap a button. Every Sunday your choices move four things: <strong>Flock 🐑</strong>, <strong>Purse 💰</strong>, <strong>Anointing 🔥</strong> and <strong>Gist 📢</strong>. Let any one hit empty or full and it's over. Grow your members to climb from house fellowship to global ministry.</div>
+    <p class="fine" id="iBest"></p>
+    <p class="fine">Satire. Every pastor, church and event in this game is fictional. We laugh at the hustle, not the faith.</p>
+  </div>
+</section>
+
+<!-- promotion -->
+<section class="screen dim promo" id="promo">
+  <div class="inner">
+    <div class="kicker">Promotion!</div>
+    <div class="big" id="pTitle"></div>
+    <p id="pText"></p>
+    <button class="btn gold" id="pOk">Hallelujah</button>
+  </div>
+</section>
+
+<!-- ending -->
+<section class="screen dim end" id="end">
+  <div class="inner">
+    <div class="kicker" id="eKick">Ministry closed</div>
+    <h2 id="eTitle"></h2>
+    <p class="desc" id="eDesc"></p>
+    <img id="eImg" alt="Your Sunday bulletin share card">
+    <div class="two">
+      <button class="btn gold" id="eShare">Share card</button>
+      <button class="btn gold" id="eWa">WhatsApp</button>
+    </div>
+    <button class="btn" id="eAgain">Start a new ministry</button>
+  </div>
+</section>
+
+<script>
+/* ============ DATA ============ */
+const METERS = { c:['🐑','Flock'], o:['💰','Purse'], a:['🔥','Anointing'], g:['📢','Gist'] };
+const MK = ['c','o','a','g'];
+
+const STAGES = [
+  { min:0,     name:'House fellowship',   place:'your sitting room in Ikorodu',                       title:'Brother' },
+  { min:40,    name:'Classroom parish',   place:'a rented Primary 4 classroom every Sunday',          title:'Pastor' },
+  { min:250,   name:'Warehouse cathedral',place:'a converted warehouse in Ojota with a real generator', title:'Senior Pastor' },
+  { min:1500,  name:'Mega auditorium',    place:'a 5,000-seater in Lekki with LED screens',           title:'Bishop' },
+  { min:8000,  name:'Camp ground',        place:'300 hectares on the Lagos–Ibadan Expressway',         title:'Archbishop' },
+  { min:40000, name:'Global ministry',    place:'branches from Houston to Peckham',                    title:'Apostle-General' }
+];
+
+const P = {
+  wife:['👩🏾','Pastor (Mrs) Ada','Your wife'],
+  mama:['👵🏾','Mama Ijeoma','Chief intercessor'],
+  femi:['📱','Brother Femi','Media department'],
+  tunde:['🧮','Deacon Tunde','Church treasurer'],
+  nkechi:['🎤','Sister Nkechi','Choir mistress'],
+  kelvin:['🧢','Pastor Kelvin','Youth pastor'],
+  chief:['🎩','Chief Okoro','Politician and "pillar of the church"'],
+  landlord:['🏠','Baba Landlord','Landlord'],
+  blogger:['🗞️','TattleNaija','Gossip blog'],
+  rival:['🔥','Prophet Ogbonge','Ogbonge Fire Tabernacle'],
+  usher:['🧤','Usher Chinedu','Head usher'],
+  member:['🙋🏾‍♀️','Sister Blessing','Member'],
+  bro:['🙋🏾‍♂️','Brother Sunday','Member'],
+  widow:['👵🏽','Mama Bisi','Widow, faithful tither'],
+  gov:['🏛️','Government','Official letter'],
+  broker:['✈️','Mr. Bankole','"Aviation consultant"'],
+  star:['🎧','Lil Zeal','Afrobeats star'],
+  area:['💪🏾','Area Boys','The local "landlords"'],
+  press:['🎙️','Journalists','Press conference'],
+  media:['🎥','Foreign documentary crew','International broadcaster'],
+  elder:['🧓🏾','Board of Elders','Church leadership'],
+  bank:['🏦','Your old bank','HR department']
+};
+
+/* Choice: [label, effects, tag, extra]. Tags: P prosperity, H holiness, S showman, K kingmaker, D shepherd.
+   extra: { set:flag, jets:n, scandal:1, r:'reaction toast' } */
+const CARDS = [
+ // ---- Stage 0: house fellowship ----
+ {id:'drums',s:0,mx:1,p:'wife',t:"Darling, fifteen people in our sitting room is too much. The neighbours are complaining about the drums.",
+  L:['Reduce the drums','c-5 a+5','H'],R:['Drums are spiritual warfare!','c+10 g+5 o-5','S',{r:'The neighbour called the CDA chairman.'}]},
+ {id:'vision',s:0,p:'mama',t:"Pastor, I saw a vision last night. You will be bigger than all of them. Bigger than all the big men of God.",
+  L:['Keep it between us','a+10','D'],R:['Announce it on Sunday','c+10 g+10 a-5','S']},
+ {id:'socials',s:0,p:'femi',t:"Sir, let me open Instagram, TikTok and a WhatsApp broadcast for the ministry. Na there the people dey.",
+  L:['Social media is worldly','a+5 g-10','H'],R:['Open everything','g+15 c+5 a-5','S']},
+ {id:'bowls',s:0,mx:2,p:'tunde',t:"Pastor, we are collecting offering in Mummy's plastic bowls. It is not giving ministry.",
+  L:['The bowls are fine','a+5 o-5','D'],R:['Buy velvet offering bags','o+10 a-5','P']},
+ {id:'areaboys',s:0,mx:2,p:'area',t:"Oga Pastor, this na our area. Una dey make noise every Sunday. Our own must enter before next week.",
+  L:['Pray for their souls','a+10 c-10','H',{r:'They came back with six more boys.'}],R:['Settle them with ₦20k','o-10 c+5']},
+ {id:'fast',s:0,p:'mama',t:"Pastor, the Lord laid it on my heart: 21 days dry fasting for the whole church.",
+  L:['Seven days is enough','c+5 a-5','D'],R:['21 days, everybody!','a+15 c-10','H',{r:'Brother Sunday fainted on day four.'}]},
+ {id:'bankjob',s:0,mx:1,p:'bank',t:"Your old bank called. They want you back as Relationship Manager. Good salary, official car.",
+  L:['Take it, pastor on weekends','o+15 a-10 c-5'],R:['I cannot serve two masters','a+10 o-10','D']},
+ {id:'rent',s:0,mx:1,p:'landlord',t:"Pastor, this church inside my house — rent don increase 40%. And your members dey park for my gate.",
+  L:['Pay the increase','o-15 c+5'],R:['Move to a school classroom','c-10 o+5 a+5']},
+ {id:'youthvibe',s:0,p:'kelvin',t:"The youths want a worship night. Lights off, phone torches up, Afrobeats-style praise.",
+  L:['Hymns only','a+5 c-10','H'],R:['Let them vibe','c+10 g+5 a-5','S']},
+ {id:'daddy',s:0,mx:1,p:'wife',t:"Members are calling Pastor Kelvin 'Daddy'. Meanwhile they still call you 'Brother'.",
+  L:["Titles don't matter",'a+5','D'],R:['From today, call me Daddy','c+5 g+5 a-5','S']},
+ {id:'village',s:0,p:'member',t:"Pastor, my village people are after me. Since 2015 nothing I touch works.",
+  L:['Pray with her privately','a+5 c+5','D'],R:['Deliverance at the altar, live','c+10 g+10 a-5','S']},
+ {id:'prayer',s:0,p:'mama',t:"Pastor, prayer meeting attendance is dropping. Only me and the cleaner came on Tuesday.",
+  L:['Cut it to 30 minutes','c+10 a-5'],R:['Friday night vigils','a+10 c-5','H']},
+ {id:'widow',s:0,p:'widow',t:"Pastor, my son was sent home for school fees. I have paid my tithe faithfully for six years.",
+  L:['Church welfare pays it','o-10 a+10 c+5','D'],R:['Sow a seed and expect','o+5 a-10 c-5','P']},
+
+ // ---- Stage 1: classroom parish ----
+ {id:'viral',s:1,p:'femi',t:"Sir! TattleNaija posted your sermon clip. 200k views. The comments are… spicy.",
+  L:['Ignore it','g+10 c+5'],R:['Reply them from the pulpit','g+20 c+5 a-5','S']},
+ {id:'chief',s:1,once:1,p:'chief',t:"Pastor, I will sponsor your generator and new keyboard. Small thing: tell the church God has chosen me for councillor.",
+  L:["No politics in God's house",'a+10 o-10','H'],R:['Chief, the Lord has spoken','o+20 g+10 a-10','K',{set:'chief'}]},
+ {id:'chief2',s:1,once:1,req:'chief',p:'chief',t:"I won! Thanksgiving service next Sunday. Also, you will lead my rally for the next election.",
+  L:['Thanksgiving only','a+5 o+5'],R:['Lead the rally','o+15 g+15 a-10 c-5','K']},
+ {id:'tithe',s:1,p:'tunde',t:"Only 30% of members pay tithe. The rest are 'still praying about it'.",
+  L:['Preach on grace','c+10 o-10','D'],R:['Malachi 3 series, four weeks','o+15 c-10','P']},
+ {id:'choir',s:1,p:'nkechi',t:"Pastor, the choir needs uniforms. Aso-ebi, gele, everything. ₦1.2 million.",
+  L:['White shirts will do','o+5 c-5'],R:['Aso-ebi for the choir','o-15 c+10 g+5','S']},
+ {id:'gen',s:1,mx:3,p:'usher',t:"NEPA took light in the middle of your sermon and the generator has no diesel.",
+  L:['Preach in the dark like Paul','a+10 c-5','D'],R:['Special diesel offering','o+10 c-5 a-5','P']},
+ {id:'visa',s:1,once:1,p:'member',t:"Pastor! I got my UK visa after you prayed for me. I want to testify!",
+  L:['Let her testify','c+5 a+5'],R:['Launch a "Japa Anointing" service','c+15 o+10 a-10 g+10','P',{r:'240 people registered. Three have passports.'}]},
+ {id:'rivalcold',s:1,p:'rival',t:"On Facebook Live: 'That small church in Ikorodu is cold. No fire at all!'",
+  L:['Bless him and move on','a+10 g-5','D'],R:["'Some fire is strange fire'",'g+15 c+5 a-5','S']},
+ {id:'singles',s:1,p:'member',t:"Pastor, the singles want a Marriage Breakthrough programme. Some of us have been waiting since 2015.",
+  L:['Teach on contentment','a+5 c-5','H'],R:['Breakthrough service + anointed handkerchief','c+15 o+10 a-5','P']},
+ {id:'oil',s:1,p:'tunde',t:"We can sell branded anointing oil. ₦5,000 a bottle. Olive oil from the supermarket is ₦1,800.",
+  L:['Oil is free in this house','a+10 o-5','D'],R:['Print the labels','o+20 a-10 g+5','P']},
+ {id:'yahoo',s:1,once:1,p:'tunde',t:"A young man just paid ₦5m offering in cash. He drives a Benz. Nobody knows his job.",
+  L:['Return the money','a+15 o-15','H'],R:['God sanctifies the seed','o+20 a-10 g+5','P',{set:'yahoo'}]},
+ {id:'yahoo2',s:1,once:1,req:'yahoo',p:'blogger',t:"BREAKING: Church that collected ₦5m from wanted fraudster refuses to comment.",
+  L:['Refund it publicly','a+10 o-15 g+10'],R:["'We don't judge sinners'",'g+20 a-10 c-5','P',{scandal:1}]},
+ {id:'proprietor',s:1,mx:2,p:'landlord',t:"The school proprietor wants double rent for Sundays. And stop leaving chairs in Primary 4.",
+  L:['Pay double','o-15 c+5'],R:['Lease a warehouse on credit','o-20 c+15 g+5']},
+ {id:'counsel',s:1,p:'bro',t:"Pastor, my wife and I are fighting. She says it's my mother. I say it's her village people.",
+  L:['Proper counselling, three sessions','a+10 c+5','D'],R:["'It's a spirit of division!'",'c+5 a-5 g+5','S']},
+ {id:'tiktok',s:1,p:'femi',t:"New TikTok trend: pastors doing dance challenges. Prophet Ogbonge got five million views.",
+  L:['Absolutely not','a+5 g-5','H'],R:['Do the challenge','g+20 c+5 a-10','S']},
+ {id:'buses',s:1,p:'usher',t:"Members want church buses. Many are trekking from the junction in the sun.",
+  L:['Start a carpool ministry','c-5 o+5','D'],R:['Five branded buses','o-15 c+10 g+5']},
+
+ // ---- Stage 2: warehouse cathedral ----
+ {id:'celeb',s:2,once:1,p:'star',t:"I want to join your church, Daddy. I'll need a front-row seat and to perform 'sometimes'.",
+  L:['No special seats here','a+10 c-5','D'],R:['VIP row + concert Sunday','c+15 g+15 a-10','S']},
+ {id:'tax',s:2,p:'gov',t:"State revenue service: your church school, bookshop and event hall must now pay tax.",
+  L:['Render unto Caesar','o-15 a+10','D'],R:['Touch not my anointed!','g+15 o+5 a-5 c+5']},
+ {id:'crusade',s:2,p:'kelvin',t:"Let's do a mega crusade at the stadium! Lights, smoke machines, gospel artistes.",
+  L:['Small market outreach','c+5 a+5','D'],R:['Full crusade','c+20 o-15 g+10','S']},
+ {id:'staged',s:2,once:1,p:'femi',t:"Sir, there's a 'testimony consultant'. He brings people who walk after prayer. ₦50k per miracle.",
+  L:['Throw him out','a+10','H'],R:['Just this once…','c+20 a-15 g+10','S',{set:'staged'}]},
+ {id:'staged2',s:2,once:1,req:'staged',p:'blogger',t:"EXPOSED: Lame man healed at your church spotted playing five-a-side in Surulere.",
+  L:['Deny everything','g+20 c-10 a-5','',{scandal:1}],R:['Confess and apologise','a+15 c-15 g+10','H',{scandal:1}]},
+ {id:'election',s:2,once:1,p:'press',t:"Pastor, who will win the presidential election? The nation is waiting.",
+  L:['God is not a politician','a+5 g-5','H'],R:['"I see a man in a blue cap…"','g+25 a-10','K',{set:'prophecy'}]},
+ {id:'election2',s:2,once:1,req:'prophecy',p:'press',t:"Your candidate lost. Badly. Twitter has screenshots of your prophecy.",
+  L:['"God changed His mind"','g+15 a-10 c-5'],R:['"It was rigged in the spirit realm"','g+20 c+5 a-5','K',{scandal:1}]},
+ {id:'wedding',s:2,p:'wife',t:"Our daughter is getting married. The members are expecting the wedding of the year.",
+  L:['Simple church wedding','a+5 o+5','D'],R:['Owambe for 3,000 guests','g+15 o-15 c+5','S']},
+ {id:'buildfund',s:2,p:'tunde',t:"The building fund is ₦300m short. The roofers are threatening to remove the zinc.",
+  L:['Build slowly, as God provides','c+5 o-5','D'],R:['₦1m seed = your name on a pew','o+20 c-10','P']},
+ {id:'pos',s:2,p:'usher',t:"Two ushers fought over who counts the offering. One of them has a new iPhone.",
+  L:['Count the offering publicly','a+10 o-5','D'],R:['POS terminals at the altar','o+15 g+5 a-5','P']},
+ {id:'lexus',s:2,mx:3,p:'elder',t:"Members want to buy you a Lexus for your birthday. The contribution list is already on WhatsApp.",
+  L:["Give it to the widows' fund",'a+15 g+5 o-5','D'],R:['Receive it with joy','o+5 g+10 a-5','P']},
+ {id:'womenconf',s:2,p:'wife',t:"I want my own women's conference. 'Daughters of Destiny'. Separate budget.",
+  L:['Not this year','c-5 o+5'],R:['Go for it','c+10 o-5 g+5']},
+ {id:'wrongprophecy',s:2,p:'member',t:"Pastor, you prophesied my business would explode. It did. The warehouse caught fire.",
+  L:['Apologise and help her','a+5 c+5 o-5','D'],R:['Your faith was too small','c-10 g+5 a-5']},
+ {id:'livestream',s:2,p:'femi',t:"Let's put the livestream behind a paywall. ₦2,000 a month. Diaspora members will pay.",
+  L:['Free for everybody','c+10 o-5','D'],R:['Paywall it','o+15 c-10','P']},
+ {id:'moneyrain',s:2,p:'usher',t:"A big man is spraying dollars at the altar during praise. People are dancing around him.",
+  L:['Stop him','a+10 o-5','H'],R:['Dance along','g+20 o+10 a-10','S']},
+ {id:'escort',s:2,p:'chief',t:"Pastor, a man of your level needs police escort. Siren, convoy, the works.",
+  L:['Jesus is my escort','a+5','D'],R:['Sirens on!','g+10 c-5 o-5','S']},
+ {id:'trousers',s:2,p:'usher',t:"We sent home four sisters for wearing trousers. One was a first-timer.",
+  L:['Relax the dress code','c+10 a-5','D'],R:['Holiness is beauty','a+10 c-10','H']},
+ {id:'spirithusband',s:2,p:'member',t:"Pastor, my spirit husband is scattering my relationships. Every man runs after the second date.",
+  L:['Counselling first','a+5','D'],R:['Deliverance session tonight','c+10 g+5 a-5','S']},
+ {id:'foreignprophet',s:2,p:'kelvin',t:"A famous prophet from Accra wants to minister here. Fee: $20,000 plus business class.",
+  L:['We have our own fire','a+5 o+5'],R:['Book him','c+15 o-15 g+10','S']},
+ {id:'girlfriend',s:2,p:'blogger',t:"Rumour: a certain G.O. has a 'special friend' in Abuja. No evidence, but the gist is moving fast.",
+  L:['Ignore it','g+15 c-5'],R:['Couple photoshoot with Mrs Ada','g+10 a+5 o-5']},
+ {id:'tithedebate',s:2,p:'rival',t:"Hear me: tithe is Old Testament! My members don't pay it. #FreeFromTithe is trending.",
+  L:['Stay silent','a+5'],R:['Clap back with twelve scriptures','g+20 o+5 a-5','P']},
+
+ // ---- Stage 3: mega auditorium ----
+ {id:'jet',s:3,p:'broker',t:"A Gulfstream is available, sir. For the gospel. Only $15m. You can pay small small.",
+  L:['Fly commercial','a+10 g+5','D'],R:['Buy the jet','o-20 g+20','P',{jets:1}]},
+ {id:'university',s:3,once:1,p:'tunde',t:"Let's build our own university. Members' children will pay ₦4m a year.",
+  L:['Keep fees affordable','a+10 o-5','D'],R:['Premium fees','o+20 c-10 g+5','P']},
+ {id:'outbreak',s:3,once:1,p:'gov',t:"Ministry of Health: virus outbreak. All gatherings above 50 people are banned.",
+  L:['Obey, go online','c-10 a+5','D'],R:['"No virus can enter here!"','c+10 g+20 a-10','S',{scandal:1}]},
+ {id:'audio',s:3,p:'femi',t:"Sir, an audio of you shouting at a junior pastor has leaked. 1.2 million listens.",
+  L:['Apologise on Instagram','a+5 g+10 c-5'],R:['"It\'s AI-generated"','g+15 a-10','',{scandal:1}]},
+ {id:'breakaway',s:3,once:1,p:'kelvin',t:"Daddy, I feel led to start my own ministry. About 300 members want to come with me.",
+  L:['Bless and release him','a+15 c-10','D'],R:['Curse him from the pulpit','c+5 g+20 a-10','',{scandal:1}]},
+ {id:'governor',s:3,p:'chief',t:"The Governor wants to be ordained a Deacon in your church. Live broadcast.",
+  L:['Refuse','a+10 o-10','H'],R:['Ordain him','o+15 g+15 a-10','K']},
+ {id:'birthday',s:3,p:'elder',t:"Daddy's birthday is coming. The members want a 'Day of Honour' with compulsory gifts.",
+  L:['Visit an orphanage instead','a+10 g+5','D'],R:['Day of Honour!','o+15 g+10 a-5','P']},
+ {id:'estate',s:3,p:'tunde',t:"We can sell plots in 'New Canaan Estate'. Land near the church doubles in price after you pray.",
+  L:['Not our business','a+5'],R:['Start selling plots','o+20 g+10 a-5','P']},
+ {id:'japatithe',s:3,p:'bro',t:"Pastor, those of us abroad: tithe in pounds or naira? Gross or net?",
+  L:['Give as you are able','c+10','D'],R:['Pounds. Gross.','o+20 c-5 g+5','P']},
+ {id:'slap',s:3,p:'blogger',t:"VIDEO: Deliverance session gets physical. A man was slapped 'in the spirit'. Three million views.",
+  L:['Apologise and pay his bills','a+5 g+10 o-5'],R:['"It was the Holy Ghost"','g+20 c-5 a-10','S',{scandal:1}]},
+ {id:'book',s:3,p:'femi',t:"Your autobiography is ready! 'From Plastic Chairs to Glory'. ₦50,000 a copy?",
+  L:['Free PDF for everyone','c+10 a+5 o-5','D'],R:['Compulsory for all workers','o+15 c-5','P']},
+ {id:'deacon',s:3,once:1,p:'elder',t:"Deacon Tunde cannot account for ₦8m from the building fund.",
+  L:['Report it to the police','a+10 g+10 o-5','H'],R:['Settle it quietly','o+5 a-10','',{set:'coverup'}]},
+ {id:'coverup',s:3,once:1,req:'coverup',p:'blogger',t:"Insiders say a megachurch covered up a ₦8m fraud by its treasurer. We have the WhatsApp chats.",
+  L:['Publish a full audit','a+10 g+10 o-10','D'],R:["'Enemies of progress'",'g+20 a-10 c-5','',{scandal:1}]},
+
+ // ---- Stage 4: camp ground ----
+ {id:'campcity',s:4,p:'elder',t:"The camp ground needs roads, a bank, a police post and a hospital.",
+  L:['Partner with government','o-10 g+5','K'],R:['Build everything ourselves','o-20 c+15 g+10']},
+ {id:'jet2',s:4,p:'broker',t:"Prophet Ogbonge just bought two jets. There's a bigger one available. It has a bedroom.",
+  L:["We don't compete",'a+10','D'],R:['Buy the bigger one','o-25 g+20','P',{jets:1}]},
+ {id:'branches',s:4,p:'kelvin',t:"Diaspora members want branches in Houston, Toronto, Dublin and Peckham.",
+  L:['Train pastors first','a+5 c+5','D'],R:['Open twelve branches this year','c+15 o-15 g+10']},
+ {id:'documentary',s:4,once:1,p:'media',t:"We're making a documentary on Nigerian megachurches. Will you sit for an interview?",
+  L:['Grant the interview','a+5 g+20'],R:['Sue them before it airs','g+15 o-10','',{scandal:1}]},
+ {id:'succession',s:4,p:'elder',t:"Daddy, when the time comes, who succeeds you?",
+  L:['The most qualified pastor','a+15 c+5','D'],R:['My son, obviously','g+15 a-10 c-5']},
+ {id:'convention',s:4,p:'gov',t:"Your annual convention drew a million people. The expressway was jammed for three days.",
+  L:['Stagger the sessions','c-5 a+5','D'],R:['Close the expressway','c+15 g+20','K']}
+];
+
+const ENDINGS = {
+  c0:  ['Empty hall', ()=>`One Sunday it was just you, Pastor (Mrs) Ada and the drummer. The drummer was owed three months' salary.`],
+  c100:['Seven breakaways', ()=>`The flock got too big to shepherd. Seven assistant pastors left on the same Sunday to start their own ministries. With your members.`],
+  o0:  ['Padlock on the gate', g=>`The landlord padlocked the hall and the generator man carried his generator. ${g.ministry} now meets on WhatsApp.`],
+  o100:['Invitation from EFCC', ()=>`Too much money, not enough receipts. Some gentlemen from the anti-graft agency would like to discuss the building fund.`],
+  a0:  ['The grace has lifted', ()=>`Members started whispering that the anointing had left. By Easter they were all at Ogbonge Fire Tabernacle.`],
+  a100:['Walking on the lagoon', ()=>`You announced you would walk on Lagos Lagoon, live. Four million people watched. Marine police fished you out near Third Mainland Bridge.`],
+  g0:  ['Nobody knows you', ()=>`No blog posts, no viral clips, no crowd. You updated your LinkedIn to "Open to work".`],
+  g100:['Trending for the wrong reasons', g=>`#${acr(g.ministry)}Scandal trended for nine days. Even your mother called to ask what is going on.`],
+  win: ['Apostle-General of the nations', g=>`From plastic chairs in Ikorodu to branches in Houston and Peckham. ${g.ministry} is now a global brand.`]
+};
+
+const TYPES = {
+  P:['The Prosperity Prophet','More account numbers than Bible verses.'],
+  H:['The Holiness Hardliner','No trousers, no earrings, no nonsense.'],
+  S:['The Showman','Smoke machines, slow-mo entrances, miracles in 4K.'],
+  K:['The Kingmaker','Governors queue for your blessing.'],
+  D:['The Shepherd','Quietly feeding the flock. A rare breed.']
+};
+
+const NAME_A = ['Mountain of','Fountain of','Overflowing','Unstoppable','Double Portion','Commanding','Living','Open Heaven','Sure Banker','Mighty','Kingdom','Dominion','Everlasting','Pentecostal'];
+const NAME_B = ['Fire','Grace','Glory','Favour','Miracles','Restoration','Abundance','Power','Testimonies','Breakthrough','Victory'];
+const NAME_C = ['Ministries','Chapel International','Assembly Worldwide','Tabernacle','Bible Church','Gospel Mission','Church of God Global','Revival Centre'];
+
+/* ============ HELPERS ============ */
+const $ = id => document.getElementById(id);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const clamp = v => Math.max(0, Math.min(100, v));
+const fmt = n => n.toLocaleString('en-GB');
+const acr = s => s.split(/\s+/).filter(w=>w && !/^(of|the|and)$/i.test(w)).map(w=>w[0].toUpperCase()).join('');
+const genName = () => `${pick(NAME_A)} ${pick(NAME_B)} ${pick(NAME_C)}`;
+function parseFx(s){ const o={}; (s||'').split(/\s+/).filter(Boolean).forEach(t=>{ o[t[0]] = parseInt(t.slice(1),10); }); return o; }
+function store(k,v){ try{ v===undefined ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function load(k){ try{ const v=localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+const GAME_URL = (location.protocol.startsWith('http') && !/claude|usercontent|localhost|127\.0/.test(location.host)) ? location.host : 'ministry-life.pages.dev';
+
+/* ============ STATE ============ */
+let G = null, busy = false;
+const SAVE = 'ministrylife_save_v1', BEST = 'ministrylife_best_v1';
+
+function newGame(name, ministry){
+  G = { name, ministry, c:50, o:50, a:50, g:30, members:8, week:1, turn:0, stage:0, jets:0, scandals:0,
+        tags:{P:0,H:0,S:0,K:0,D:0}, flags:{}, used:{}, recent:[], cardId:null };
+  G.cardId = nextCard().id;
+}
+const card = () => CARDS.find(c=>c.id===G.cardId);
+
+function eligible(c){
+  if (c.s > G.stage) return false;
+  if (c.mx != null && G.stage > c.mx) return false;
+  if (c.req && !G.flags[c.req]) return false;
+  if (c.once && G.used[c.id]) return false;
+  if (G.recent.includes(c.id)) return false;
+  return true;
+}
+function nextCard(){
+  let pool = CARDS.filter(eligible);
+  if (!pool.length){ G.recent = []; pool = CARDS.filter(eligible); }
+  const follow = pool.filter(c=>c.req);
+  if (follow.length && Math.random() < 0.6) return pick(follow);
+  const weighted = [];
+  pool.forEach(c=>{
+    let w = c.s === G.stage ? 4 : 1;
+    if (!G.used[c.id]) w *= 2;
+    for (let i=0;i<w;i++) weighted.push(c);
+  });
+  return pick(weighted);
+}
+function stageFor(m){ let s=0; STAGES.forEach((st,i)=>{ if(m>=st.min) s=i; }); return s; }
+function checkEnd(){ for (const k of MK){ if (G[k] <= 0) return k+'0'; if (G[k] >= 100) return k+'100'; } return null; }
+
+/* ============ RENDER ============ */
+function buildMeters(){
+  $('meters').innerHTML = MK.map(k=>`
+    <div class="meter" id="m_${k}">
+      <div class="top"><span class="ic" aria-hidden="true">${METERS[k][0]}</span><span class="dot"></span></div>
+      <div class="bar" role="meter" aria-label="${METERS[k][1]}" aria-valuemin="0" aria-valuemax="100"><div class="fill"></div></div>
+      <div class="nm">${METERS[k][1]}</div>
+    </div>`).join('');
+}
+function renderMeters(){
+  MK.forEach(k=>{
+    const el = $('m_'+k), v = G[k];
+    el.querySelector('.fill').style.width = v+'%';
+    el.querySelector('.bar').setAttribute('aria-valuenow', v);
+    el.classList.toggle('danger', v<=15 || v>=85);
+  });
+}
+function renderStatus(){
+  const st = STAGES[G.stage];
+  $('sWho').textContent = `${st.title} ${G.name}`;
+  $('sWhere').textContent = st.name;
+  $('sMembers').textContent = fmt(G.members);
+}
+function renderCard(enter){
+  const c = card(), p = P[c.p];
+  $('cWeek').textContent = `Sunday ${G.week}`;
+  $('cAv').textContent = p[0]; $('cName').textContent = p[1]; $('cRole').textContent = p[2];
+  $('cText').textContent = c.t;
+  $('bLt').textContent = c.L[0]; $('bRt').textContent = c.R[0];
+  const el = $('card');
+  el.style.transform = ''; el.style.opacity = '';
+  setLean(null);
+  if (enter){ el.classList.add('enter'); requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.remove('enter'))); }
+}
+function render(enter){ renderMeters(); renderStatus(); renderCard(enter); }
+
+function setLean(side){
+  const lean = $('lean');
+  MK.forEach(k=>{ $('m_'+k).querySelector('.dot').className='dot'; });
+  if (!side){ lean.classList.remove('on'); return; }
+  const ch = card()[side];
+  lean.textContent = ch[0];
+  lean.className = 'lean on ' + side;
+  const fx = parseFx(ch[1]);
+  Object.entries(fx).forEach(([k,v])=>{ $('m_'+k).querySelector('.dot').className = 'dot ' + (Math.abs(v)>=15 ? 'lg' : 'sm'); });
+}
+
+let toastT;
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'), 2600); }
+
+/* ============ GAME FLOW ============ */
+function choose(side){
+  if (busy || !G) return;
+  busy = true;
+  const el = $('card');
+  el.classList.remove('dragging');
+  el.style.transform = `translateX(${side==='R'?'':'-'}140%) rotate(${side==='R'?18:-18}deg)`;
+  el.style.opacity = '0';
+  setTimeout(()=>{ apply(side); busy=false; }, 260);
+}
+
+function apply(side){
+  const c = card(), ch = c[side], fx = parseFx(ch[1]), ex = ch[3] || {};
+  MK.forEach(k=>{ if (fx[k]) G[k] = clamp(G[k] + fx[k]); });
+  if (ch[2]) G.tags[ch[2]]++;
+  if (ex.set) G.flags[ex.set] = 1;
+  if (c.req) delete G.flags[c.req];
+  if (ex.jets) G.jets += ex.jets;
+  if (ex.scandal) G.scandals++;
+  G.used[c.id] = 1;
+  G.recent.push(c.id); if (G.recent.length > 10) G.recent.shift();
+  if (ex.r) toast(ex.r);
+
+  let end = checkEnd();
+  if (end) return finish(end);
+
+  G.turn++;
+  if (G.turn % 3 === 0){
+    const res = sunday();
+    if (res === 'end') return;
+    if (res === 'promo'){ G.cardId = nextCard().id; save(); render(false); return showPromo(); }
+  }
+  G.cardId = nextCard().id;
+  save();
+  render(true);
+}
+
+function sunday(){
+  // growth, then weekly drift: flock settles, anointing needs upkeep, bills scale with size, gist fades
+  const d = Math.round(G.members * (G.c - 40) / 60 + (G.g - 20) / 5 + 4);
+  G.members = Math.max(0, G.members + d);
+  G.c = clamp(G.c - Math.round((G.c - 50) / 6));
+  G.a = clamp(G.a - 4);
+  G.o = clamp(G.o + Math.round((G.c - 50) / 12) - 1 - G.stage);
+  G.g = clamp(G.g - 6);
+  toast(`Sunday ${G.week}: ${d>=0?'+':''}${fmt(d)} members`);
+  G.week++;
+  if (G.members <= 0){ finish('c0'); return 'end'; }
+  const end = checkEnd(); if (end){ finish(end); return 'end'; }
+  const ns = stageFor(G.members);
+  if (ns > G.stage){
+    G.stage = ns;
+    if (ns === STAGES.length - 1){ finish('win'); return 'end'; }
+    return 'promo';
+  }
+  return 'ok';
+}
+
+function showPromo(){
+  const st = STAGES[G.stage];
+  $('pTitle').textContent = `${st.title} ${G.name}`;
+  $('pText').textContent = `${fmt(G.members)} members. ${G.ministry} has moved to ${st.place}. Bigger stage, bigger wahala.`;
+  $('promo').classList.add('on');
+  $('pOk').focus();
+}
+$('pOk').onclick = ()=>{ $('promo').classList.remove('on'); renderCard(true); };
+
+function save(){ store(SAVE, G); }
+
+function pastorType(){
+  const t = G.tags; let best='D', max=-1;
+  ['P','S','K','H','D'].forEach(k=>{ if (t[k] > max){ max=t[k]; best=k; } });
+  return TYPES[best];
+}
+
+async function finish(key){
+  const won = key === 'win';
+  const [title, fn] = ENDINGS[key];
+  const desc = fn(G);
+  const type = pastorType();
+  store(SAVE, undefined);
+  const best = load(BEST) || 0;
+  if (G.members > best) store(BEST, G.members);
+
+  renderMeters(); renderStatus();
+  $('eKick').textContent = won ? 'Glory!' : `${G.ministry} has closed`;
+  $('eTitle').textContent = title;
+  $('eDesc').textContent = desc;
+  $('end').classList.add('on');
+  try { await document.fonts.ready; } catch(e){}
+  const cv = drawBulletin(title, desc, type, won);
+  $('eImg').src = cv.toDataURL('image/png');
+  window._bulletin = { cv, title, type };
+}
+
+/* ============ SHARE CARD ============ */
+function wrap(ctx, text, x, y, maxW, lh, maxLines){
+  const words = text.split(' '); let line='', lines=[];
+  words.forEach(w=>{ const t = line ? line+' '+w : w; if (ctx.measureText(t).width > maxW && line){ lines.push(line); line=w; } else line=t; });
+  if (line) lines.push(line);
+  if (maxLines && lines.length > maxLines){ lines = lines.slice(0,maxLines); lines[maxLines-1] = lines[maxLines-1].replace(/\s+\S*$/,'') + '…'; }
+  lines.forEach((l,i)=>ctx.fillText(l, x, y + i*lh));
+  return lines.length;
+}
+function drawBulletin(title, desc, type, won){
+  const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const x = cv.getContext('2d');
+  const bg = x.createRadialGradient(W/2, 380, 60, W/2, 380, 1100);
+  bg.addColorStop(0,'#5B1A9E'); bg.addColorStop(.4,'#2B0B4F'); bg.addColorStop(1,'#14051F');
+  x.fillStyle=bg; x.fillRect(0,0,W,H);
+  x.save(); x.translate(W/2, 380); x.fillStyle='rgba(242,183,5,0.08)';
+  for (let i=0;i<24;i++){ x.rotate(Math.PI*2/24); x.beginPath(); x.moveTo(0,0); x.lineTo(-40,-1600); x.lineTo(40,-1600); x.closePath(); x.fill(); }
+  x.restore();
+
+  // paper bulletin
+  const px=70, py=70, pw=W-140, ph=H-140;
+  x.fillStyle='#FBF3DF'; x.fillRect(px,py,pw,ph);
+  x.strokeStyle='#2B0B4F'; x.lineWidth=5; x.strokeRect(px+18,py+18,pw-36,ph-36);
+  x.textAlign='center';
+
+  x.fillStyle='#D7261E'; x.save(); x.translate(W/2,160); x.rotate(-0.03);
+  x.fillRect(-210,-34,420,60); x.fillStyle='#fff'; x.font='40px Anton, Impact, sans-serif';
+  x.fillText(`Sunday bulletin, week ${G.week}`, 0, 10); x.restore();
+
+  x.fillStyle='#2B0B4F'; x.font='66px Anton, Impact, sans-serif';
+  const n = wrap(x, G.ministry.toUpperCase(), W/2, 285, pw-120, 72, 2);
+  let y = 285 + (n-1)*72 + 56;
+  x.fillStyle='#6B5A80'; x.font='600 32px Archivo, sans-serif';
+  x.fillText(`${STAGES[G.stage].title} ${G.name}`, W/2, y);
+
+  y += 90;
+  x.fillStyle = won ? '#F2B705' : '#1A0B2E'; x.fillRect(px+60, y-62, pw-120, 92);
+  x.fillStyle = won ? '#1A0B2E' : '#FFD95A'; x.font='54px Anton, Impact, sans-serif';
+  x.fillText(title, W/2, y);
+  y += 80;
+  x.fillStyle='#1A0B2E'; x.font='600 30px Archivo, sans-serif';
+  y += (wrap(x, desc, W/2, y, pw-140, 42, 3)-1)*42 + 80;
+
+  const stats = [[fmt(G.members),'members'],[String(G.week-1),'Sundays'],[String(G.jets),G.jets===1?'jet':'jets'],[String(G.scandals),G.scandals===1?'scandal':'scandals']];
+  const cw = (pw-120)/4;
+  stats.forEach((s,i)=>{
+    const cx = px+60 + cw*i + cw/2;
+    x.fillStyle='#2B0B4F'; x.font='72px Anton, Impact, sans-serif'; x.fillText(s[0], cx, y+20);
+    x.fillStyle='#6B5A80'; x.font='600 26px Archivo, sans-serif'; x.fillText(s[1], cx, y+62);
+  });
+
+  y += 170;
+  x.strokeStyle='#F2B705'; x.lineWidth=4; x.beginPath(); x.moveTo(px+200,y-70); x.lineTo(px+pw-200,y-70); x.stroke();
+  x.fillStyle='#6B5A80'; x.font='600 28px Archivo, sans-serif'; x.fillText('Your pastor type', W/2, y-20);
+  x.fillStyle='#D7261E'; x.font='64px Anton, Impact, sans-serif'; x.fillText(type[0], W/2, y+50);
+  x.fillStyle='#1A0B2E'; x.font='600 28px Archivo, sans-serif'; x.fillText(type[1], W/2, y+96);
+
+  x.fillStyle='#2B0B4F'; x.fillRect(px+18, py+ph-128, pw-36, 110);
+  x.fillStyle='#FFD95A'; x.font='40px Anton, Impact, sans-serif'; x.fillText('MINISTRY LIFE', W/2, py+ph-78);
+  x.fillStyle='#FBF3DF'; x.font='600 26px Archivo, sans-serif'; x.fillText(`Can you build a bigger ministry? ${GAME_URL}`, W/2, py+ph-38);
+  return cv;
+}
+
+function shareText(){
+  const b = window._bulletin;
+  return `I ran ${G.ministry} for ${G.week-1} Sundays and reached ${fmt(G.members)} members before "${b.title}". I'm ${b.type[0]}. Can you do better? https://${GAME_URL}`;
+}
+$('eShare').onclick = async ()=>{
+  const b = window._bulletin; if (!b) return;
+  const blob = await new Promise(r=>b.cv.toBlob(r,'image/png'));
+  const file = new File([blob], 'ministry-life-bulletin.png', { type:'image/png' });
+  try {
+    if (navigator.canShare && navigator.canShare({ files:[file] })){ await navigator.share({ files:[file], text:shareText() }); return; }
+  } catch(e){ if (e.name === 'AbortError') return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
+  toast('Bulletin saved. Post it anywhere.');
+};
+$('eWa').onclick = ()=>{ window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank'); };
+$('eAgain').onclick = ()=>{ $('end').classList.remove('on'); G=null; showIntro(); };
+
+/* ============ INPUT ============ */
+(function drag(){
+  const el = $('card'); let sx=0, dx=0, down=false;
+  el.addEventListener('pointerdown', e=>{ if (busy) return; down=true; sx=e.clientX; dx=0; el.setPointerCapture(e.pointerId); el.classList.add('dragging'); });
+  el.addEventListener('pointermove', e=>{
+    if (!down) return; dx = e.clientX - sx;
+    el.style.transform = `translateX(${dx}px) rotate(${dx/18}deg)`;
+    setLean(dx > 35 ? 'R' : dx < -35 ? 'L' : null);
+  });
+  const up = ()=>{
+    if (!down) return; down=false; el.classList.remove('dragging');
+    if (Math.abs(dx) > 90) choose(dx > 0 ? 'R' : 'L');
+    else { el.style.transform=''; setLean(null); }
+  };
+  el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+})();
+['L','R'].forEach(s=>{
+  const b = $('b'+s);
+  b.onclick = ()=>choose(s);
+  b.addEventListener('pointerenter', e=>{ if (e.pointerType==='mouse') setLean(s); });
+  b.addEventListener('pointerleave', ()=>setLean(null));
+  b.addEventListener('focus', ()=>setLean(s)); b.addEventListener('blur', ()=>setLean(null));
+});
+document.addEventListener('keydown', e=>{
+  if (!G || document.querySelector('.screen.on')) return;
+  if (e.key==='ArrowLeft') choose('L'); if (e.key==='ArrowRight') choose('R');
+});
+
+/* ============ INTRO ============ */
+function showIntro(){
+  $('iMin').value = genName();
+  const sv = load(SAVE);
+  $('iCont').style.display = sv ? 'block' : 'none';
+  const best = load(BEST);
+  $('iBest').textContent = best ? `Your record: ${fmt(best)} members.` : '';
+  $('intro').classList.add('on');
+}
+$('iDice').onclick = ()=>{ $('iMin').value = genName(); };
+$('iStart').onclick = ()=>{
+  const name = $('iName').value.trim() || 'Emeka';
+  const min = $('iMin').value.trim() || genName();
+  newGame(name, min); save(); render(true);
+  $('intro').classList.remove('on');
+  setTimeout(()=>toast(`Welcome, Brother ${name}. Eight souls in your sitting room.`), 400);
+};
+$('iCont').onclick = ()=>{
+  const sv = load(SAVE); if (!sv) return;
+  G = sv; if (!card()) G.cardId = nextCard().id;
+  render(true); $('intro').classList.remove('on');
+};
+
+buildMeters();
+showIntro();
+</script>
+</body>
+</html>
