@@ -34,6 +34,7 @@ button{font-family:inherit;cursor:pointer}
 @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.bg::before{animation:none}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 
+body.menu #app{visibility:hidden}
 #app{height:100%;max-width:460px;margin:0 auto;display:flex;flex-direction:column;padding:10px 16px 8px}
 
 /* meters */
@@ -125,7 +126,7 @@ button{font-family:inherit;cursor:pointer}
 .end .two .btn{font-size:17px;padding:13px}
 </style>
 </head>
-<body>
+<body class="menu">
 <div class="bg" aria-hidden="true"></div>
 
 <main id="app" aria-live="polite">
@@ -725,19 +726,20 @@ function showIntro(){
   const best = load(BEST);
   $('iBest').textContent = best ? `Your record: ${fmt(best)} members.` : '';
   $('intro').classList.add('on');
+  document.body.classList.add('menu');
 }
 $('iDice').onclick = ()=>{ $('iMin').value = genName(); };
 $('iStart').onclick = ()=>{
   const name = $('iName').value.trim() || 'Emeka';
   const min = $('iMin').value.trim() || genName();
   newGame(name, min); save(); render(true);
-  $('intro').classList.remove('on');
+  $('intro').classList.remove('on'); document.body.classList.remove('menu');
   setTimeout(()=>toast(`Welcome, Brother ${name}. Eight souls in your sitting room.`), 400);
 };
 $('iCont').onclick = ()=>{
   const sv = load(SAVE); if (!sv) return;
   G = sv; if (!card()) G.cardId = nextCard().id;
-  render(true); $('intro').classList.remove('on');
+  render(true); $('intro').classList.remove('on'); document.body.classList.remove('menu');
 };
 
 buildMeters();
