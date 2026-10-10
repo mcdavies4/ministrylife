@@ -47,6 +47,8 @@ button{font-family:inherit;cursor:pointer}
   background:repeating-conic-gradient(from 0deg,rgba(242,183,5,.07) 0deg 5deg,transparent 5deg 15deg);animation:spin 180s linear infinite}
 @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 @media (max-height:620px){#app{height:auto}}
+@media (max-height:780px){#app{height:auto}.scene{height:26vh;min-height:150px}.deck{flex:0 0 auto;min-height:0}.card{height:auto;min-height:240px;max-height:none}}
+@media (min-width:900px){#app{max-width:520px}.scene{height:38vh;max-height:380px}}
 @media (prefers-reduced-motion:reduce){.bg::before{animation:none}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 
 body.menu #app{visibility:hidden}
@@ -71,19 +73,26 @@ body.menu #app{visibility:hidden}
 .status .count b{font-family:'Anton',Impact,sans-serif;font-size:22px;font-weight:400;color:var(--paper);display:block;line-height:1}
 .status .count span{font-size:11px;color:var(--lilac)}
 
-.deck{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:340px;padding:12px 0}
-.card{width:100%;max-width:360px;height:100%;max-height:440px;background:var(--paper);color:var(--ink);border-radius:6px;position:relative;
-  display:flex;flex-direction:column;padding:22px 22px 20px;touch-action:none;cursor:grab;z-index:2;
+.scene{position:relative;flex:0 0 auto;height:34vh;min-height:190px;max-height:330px;margin-top:8px;border-radius:8px;overflow:hidden;background:#3A1466;box-shadow:inset 0 0 0 1px rgba(242,183,5,.3),0 10px 24px rgba(0,0,0,.35)}
+.scene canvas{display:block;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+.scene.off{height:auto;min-height:0;background:none;box-shadow:none;overflow:visible}
+.scene.off canvas,.scene.off .scene-tip{display:none}
+.scene.off .toast{top:auto;bottom:-300px}
+.scene-tip{position:absolute;right:8px;bottom:8px;background:rgba(20,5,31,.7);color:var(--lilac);font-size:11px;font-weight:600;padding:4px 8px;border-radius:3px;pointer-events:none;transition:opacity .6s}
+.scene.touched .scene-tip{opacity:0}
+.deck{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:250px;padding:10px 0}
+.card{width:100%;max-width:360px;height:100%;max-height:340px;background:var(--paper);color:var(--ink);border-radius:6px;position:relative;
+  display:flex;flex-direction:column;padding:18px 20px 16px;touch-action:none;cursor:grab;z-index:2;
   box-shadow:0 2px 0 #E6D6AE,0 24px 48px rgba(0,0,0,.55);transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s}
 .card::before{content:"";position:absolute;inset:8px;border:2px solid var(--purple);border-radius:3px;pointer-events:none;opacity:.85}
 .card.ghost{position:absolute;z-index:1;transform:translateY(12px) scale(.94);opacity:.35;pointer-events:none;box-shadow:none}
 .card.enter{transform:translateY(30px) scale(.96);opacity:0}
 .card .week{align-self:flex-start;background:var(--purple);color:var(--gold-hi);font-family:'Anton',Impact,sans-serif;font-size:14px;letter-spacing:.04em;padding:4px 10px;border-radius:2px}
-.card .who{display:flex;align-items:center;gap:14px;margin:18px 0 14px}
-.card .av{width:62px;height:62px;border-radius:50%;background:var(--purple);border:3px solid var(--gold);display:grid;place-items:center;font-size:32px;flex-shrink:0}
-.card .nm{font-family:'Anton',Impact,sans-serif;font-size:24px;line-height:1.05;color:var(--purple)}
+.card .who{display:flex;align-items:center;gap:12px;margin:12px 0 10px}
+.card .av{width:50px;height:50px;border-radius:50%;background:var(--purple);border:3px solid var(--gold);display:grid;place-items:center;font-size:26px;flex-shrink:0}
+.card .nm{font-family:'Anton',Impact,sans-serif;font-size:21px;line-height:1.05;color:var(--purple)}
 .card .rl{font-size:13px;color:#6B5A80;margin-top:3px}
-.card .tx{font-size:clamp(17px,4.6vw,20px);line-height:1.42;font-weight:600;flex:1;overflow:auto}
+.card .tx{font-size:clamp(16px,4.3vw,18px);line-height:1.42;font-weight:600;flex:1;overflow:auto}
 .card .lean{position:absolute;left:8px;right:8px;top:8px;background:var(--purple);color:var(--gold-hi);font-family:'Anton',Impact,sans-serif;font-size:21px;line-height:1.15;
   padding:16px 18px;border-radius:3px 3px 0 0;opacity:0;transition:opacity .12s;pointer-events:none;min-height:70px;display:flex;align-items:center}
 .card .lean.R{justify-content:flex-end;text-align:right}
@@ -98,7 +107,7 @@ body.menu #app{visibility:hidden}
 .choices button .arr{display:block;font-size:12px;color:var(--gold);margin-bottom:3px;font-weight:800}
 .hint{text-align:center;font-size:11px;color:var(--lilac);opacity:.75;padding-bottom:2px}
 
-.toast{position:absolute;left:50%;bottom:34px;transform:translate(-50%,12px);background:var(--gold);color:var(--ink);
+.toast{position:absolute;left:50%;top:10px;transform:translate(-50%,-12px);background:var(--gold);color:var(--ink);
   font-weight:800;font-size:14px;padding:10px 16px;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:all .3s;width:max-content;max-width:min(320px,80%);text-align:center;z-index:15;pointer-events:none}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
@@ -178,9 +187,9 @@ body.menu #app{visibility:hidden}
     </div>
     <div class="count"><b id="sMembers">0</b><span id="sUnit">members</span></div>
   </div>
+  <div class="scene" id="scene"><div class="scene-tip">Drag to look around</div><div class="toast" id="toast" role="status"></div></div>
   <div class="deck" id="deck">
     <div class="card ghost" aria-hidden="true"></div>
-    <div class="toast" id="toast" role="status"></div>
     <article class="card" id="card" tabindex="0" aria-label="Current decision">
       <div class="lean" id="lean"></div>
       <div class="week" id="cWeek"></div>
@@ -280,6 +289,7 @@ body.menu #app{visibility:hidden}
   </div>
 </section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* ================= DATA ================= */
 const MK = ['f','c','o','h'];
@@ -795,7 +805,7 @@ function renderCard(enter){
   setLean(null);
   if (enter){ el.classList.add('enter'); requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.remove('enter'))); }
 }
-function render(enter){ renderMeters(); renderStatus(); renderCard(enter); }
+function render(enter){ renderMeters(); renderStatus(); renderCard(enter); World.sync(G); }
 
 function setLean(side){
   const lean = $('lean');
@@ -820,6 +830,7 @@ function choose(side){
 function apply(side){
   const c = card(), ch = c[side], fx = parseFx(ch[1]), ex = ch[3] || {};
   MK.forEach(k=>{ if (fx[k]) G[k] = clamp(G[k] + fx[k]); });
+  if ((fx.c || 0) >= 10 || Object.keys(ex).length) World.burst(fx.c >= 15 ? 20 : 12);
   if (ch[2]) G.tags[ch[2]]++;
   Object.keys(G.legacy).forEach(k=>{ if (ex[k]) G.legacy[k] += ex[k]; });
   G.used[c.id] = 1; G.recent.push(c.id); if (G.recent.length > 10) G.recent.shift();
@@ -848,6 +859,7 @@ function sunday(){
   G.week++;
   if (G.members <= 0){ finish('c0'); return 'end'; }
   const end = checkEnd(); if (end){ finish(end); return 'end'; }
+  if (d > 0) World.burst(Math.min(24, 8 + Math.round(Math.log2(d + 1)) * 2));
   const ns = stageFor(G.members);
   if (ns > G.stage){
     G.stage = ns;
@@ -898,7 +910,7 @@ async function finish(key){
   store(SAVE, undefined);
   const best = load(BEST) || {};
   if (!best[G.path] || G.members > best[G.path]){ best[G.path] = G.members; store(BEST, best); }
-  renderMeters(); renderStatus();
+  renderMeters(); renderStatus(); World.sync(G);
   $('eKick').textContent = won ? 'Journey complete' : 'Your journey paused';
   $('eTitle').textContent = title; $('eDesc').textContent = desc; $('eLesson').textContent = 'Lesson: ' + lesson;
   $('end').classList.add('on');
@@ -1011,6 +1023,419 @@ $('iHall').onclick = showHall;
 $('hallClose').onclick = ()=>$('hall').classList.remove('on');
 $('eAgain').onclick = ()=>{ $('end').classList.remove('on'); G=null; showIntro(); };
 
+/* ================= 3D MINISTRY WORLD ================= */
+const World = (function(){
+  const el = document.getElementById('scene');
+  const NOOP = { sync(){}, burst(){}, setActive(){} };
+  if (!window.THREE){ el.classList.add('off'); return NOOP; }
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ antialias:true }); }
+  catch(e){ el.classList.add('off'); return NOOP; }
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  el.insertBefore(renderer.domElement, el.firstChild);
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color('#3A1466');
+  scene.fog = new THREE.Fog('#3A1466', 60, 140);
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 400);
+  const hemi = new THREE.HemisphereLight('#FFE9C4', '#5B2B1A', 0.75);
+  const sun = new THREE.DirectionalLight('#FFF1D6', 0.6); sun.position.set(12, 24, 10);
+  scene.add(hemi, sun);
+
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(120, 48), new THREE.MeshLambertMaterial({ color:'#7A4A2C' }));
+  ground.rotation.x = -Math.PI/2; ground.position.y = -0.01; scene.add(ground);
+
+  /* ---------- helpers ---------- */
+  const MC = {};
+  function M(c, emissive){ const k = c + (emissive||''); if (!MC[k]) MC[k] = new THREE.MeshLambertMaterial(emissive ? { color:c, emissive:c, emissiveIntensity:.8 } : { color:c }); return MC[k]; }
+  function put(g, m, x, y, z, ry){ m.position.set(x, y, z); if (ry) m.rotation.y = ry; g.add(m); return m; }
+  function box(g, w, h, d, c, x, y, z, ry, em){ return put(g, new THREE.Mesh(new THREE.BoxGeometry(w, h, d), M(c, em)), x, y + h/2, z, ry); }
+  function cyl(g, rt, rb, h, c, x, y, z, seg){ return put(g, new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg || 12), M(c)), x, y + h/2, z); }
+  function cone(g, r, h, c, x, y, z, seg, ry){ return put(g, new THREE.Mesh(new THREE.ConeGeometry(r, h, seg || 4), M(c)), x, y + h/2, z, ry); }
+  function ball(g, r, c, x, y, z, em){ return put(g, new THREE.Mesh(new THREE.SphereGeometry(r, 12, 8), M(c, em)), x, y, z); }
+  function crossAt(g, x, y, z, s, c){ s = s || 1; c = c || '#FFD95A'; box(g, .16*s, 1.3*s, .16*s, c, x, y, z); box(g, .75*s, .16*s, .16*s, c, x, y + .8*s, z); }
+  function figure(g, x, z, body, s, y){
+    s = s || 1; y = y || 0;
+    const f = new THREE.Group();
+    put(f, new THREE.Mesh(new THREE.CylinderGeometry(.17*s, .24*s, .62*s, 7), M(body)), 0, .31*s, 0);
+    put(f, new THREE.Mesh(new THREE.SphereGeometry(.14*s, 10, 8), M('#5A3825')), 0, .78*s, 0);
+    f.position.set(x, y, z); g.add(f); return f;
+  }
+  function tree(g, x, z, s){ s = s || 1; cyl(g, .15*s, .22*s, 1.4*s, '#5D4037', x, 0, z, 6); ball(g, 1.1*s, '#2E7D32', x, 2*s, z); }
+  function house(g, x, z, ry){
+    const h = new THREE.Group();
+    box(h, 3, 2, 3, '#EFE6D8', 0, 0, 0);
+    cone(h, 2.5, 1.4, '#8D3B2B', 0, 2, 0, 4, Math.PI/4);
+    box(h, .7, 1.2, .05, '#5D4037', 0, 0, 1.52);
+    box(h, .6, .5, .05, '#FFE082', -.9, .9, 1.52, 0, true);
+    h.position.set(x, 0, z); if (ry) h.rotation.y = ry; g.add(h); return h;
+  }
+  function church(g, x, z, s){ s = s || 1; box(g, 2*s, 1.6*s, 3*s, '#F5F0E6', x, 0, z); cone(g, 1.7*s, 1.1*s, '#7B2D26', x, 1.6*s, z, 4, Math.PI/4); crossAt(g, x, 2.7*s, z, .6*s); }
+  function school(g, x, z){ box(g, 4, 1.8, 2.2, '#FFF3E0', x, 0, z); box(g, 4.3, .25, 2.5, '#1565C0', x, 1.8, z); cyl(g, .05, .05, 3, '#9E9E9E', x + 2.6, 0, z); box(g, .8, .5, .03, '#2E7D32', x + 3, 2.4, z); }
+  function clinic(g, x, z){ box(g, 3, 1.8, 2.2, '#FFFFFF', x, 0, z); box(g, .9, .25, .05, '#D32F2F', x, 1, z + 1.12); box(g, .25, .9, .05, '#D32F2F', x, .67, z + 1.12); }
+  function tent(g, x, z, s, c){ s = s || 1; cone(g, 2*s, 1.8*s, c || '#FFFFFF', x, 0, z, 4, Math.PI/4); }
+  function van(g, x, z, ry, c){ const v = new THREE.Group(); box(v, 2.4, 1.1, 1.2, c || '#FFFFFF', 0, .25, 0); box(v, .05, .4, 1.1, '#1565C0', 1.2, .7, 0); box(v, 2.42, .15, 1.22, '#1565C0', 0, .7, 0); [-0.8, .8].forEach(dx=>{ [-0.6,.6].forEach(dz=>cyl(v, .25, .25, .2, '#212121', dx, 0, dz, 10)); }); v.position.set(x, 0, z); v.rotation.y = ry || 0; g.add(v); return v; }
+  function danfo(g, x, z, ry){ const v = van(g, x, z, ry, '#F9C80E'); v.children[1].material = M('#111111'); v.children[2].material = M('#111111'); return v; }
+  function grid(cx, cz, rows, cols, dx, dz){
+    const a = [];
+    for (let r = 0; r < rows; r++){
+      const row = [];
+      for (let c = 0; c < cols; c++) row.push({ x: cx + (c - (cols - 1)/2) * dx, z: cz + r * dz });
+      row.sort((p, q)=>Math.abs(p.x - cx) - Math.abs(q.x - cx));
+      a.push(...row);
+    }
+    return a;
+  }
+  function rings(cx, cz, r0, step, n, arc, start){
+    const a = []; let r = r0;
+    while (a.length < n){
+      const count = Math.max(6, Math.floor((arc * r) / .8));
+      for (let i = 0; i < count && a.length < n; i++){ const t = start + (count === 1 ? 0 : (i / (count - 1)) * arc); a.push({ x: cx + Math.cos(t) * r, z: cz + Math.sin(t) * r }); }
+      r += step;
+    }
+    return a;
+  }
+  function chairs(g, seats, c){
+    const geo = new THREE.BoxGeometry(.5, .42, .5);
+    const im = new THREE.InstancedMesh(geo, M(c), seats.length), d = new THREE.Object3D();
+    seats.forEach((s, i)=>{ d.position.set(s.x, .21, s.z + .12); d.updateMatrix(); im.setMatrixAt(i, d.matrix); });
+    g.add(im);
+  }
+  function pews(g, seats, cols, c){
+    for (let i = 0; i < seats.length; i += cols){
+      const row = seats.slice(i, i + cols), xs = row.map(s=>s.x), z = row[0].z;
+      box(g, Math.max(...xs) - Math.min(...xs) + .8, .45, .45, c, (Math.max(...xs) + Math.min(...xs))/2, 0, z + .3);
+    }
+  }
+  function stage(g, w, d, x, z, c){ box(g, w, .6, d, c || '#4E342E', x, 0, z); }
+
+  /* ---------- scenes: [path][stage] ---------- */
+  const SCENES = {
+    p:[
+      function sittingRoom(g){
+        box(g, 9, .2, 7, '#C9A57A', 0, 0, 0);
+        box(g, 9, 3.2, .2, '#E9D8B8', 0, 0, -3.5); box(g, .2, 3.2, 7, '#E3CFAA', -4.5, 0, 0);
+        box(g, 1.6, 1, .05, '#9FD3FF', 2, 1.4, -3.38, 0, true);
+        box(g, 1.1, .5, 3, '#7B2D26', -3.8, .2, .2); box(g, .3, .7, 3, '#7B2D26', -4.25, .2, .2);
+        box(g, 4, .03, 3, '#B0413E', .3, .2, .4);
+        box(g, .8, 1, .5, '#6B4226', 0, .2, -2.7); box(g, .5, .08, .35, '#FFFFFF', 0, 1.2, -2.7);
+        box(g, 1.2, .8, .05, '#2B0B4F', -1.8, 1.6, -3.38); crossAt(g, -1.8, 1.65, -3.34, .35);
+        return { seats: grid(.4, -1.4, 3, 6, .78, .85), cap:18, cam:{ r:10.5, h:7, ty:.8 }, altar:{ x:0, y:1.3, z:-2.7 },
+                 fam:{ house:null, spots:[[-3.75, -.6], [-3.75, .3], [-3.75, 1.1]], y:.45 }, legacy:[[7, -2], [7, 3], [-2, 6.5], [3, 6.5], [-7, 4], [8, 7]] };
+      },
+      function rentedHall(g){
+        box(g, 14, .15, 11, '#A7A7A7', 0, 0, 0);
+        box(g, 14, 3.6, .2, '#D8CFC4', 0, 0, -5.5); box(g, .2, 3.6, 11, '#CFC4B6', -7, 0, 0);
+        stage(g, 5, 2, 0, -4.3, '#5D3A1A'); box(g, .7, 1.1, .5, '#3E2723', 0, .6, -4.4);
+        box(g, 4.4, 1, .06, '#2B0B4F', 0, 2.2, -5.36); box(g, 4.4, .12, .07, '#F2B705', 0, 2.1, -5.34);
+        const seats = grid(0, -2.2, 6, 8, .9, 1.05); chairs(g, seats, '#ECECEC');
+        box(g, 1.2, .9, .8, '#C62828', 9, 0, 3.5); cyl(g, .06, .06, .8, '#424242', 9.4, .9, 3.3, 6);
+        return { seats, cap:48, ps:1.1, cam:{ r:13, h:8, ty:.5 }, altar:{ x:0, y:1.8, z:-4.4 },
+                 fam:{ house:[-12, 7, .5] }, legacy:[[11, -4], [12, 8], [-3, 10], [4, 11], [-12, -4], [9, -9]] };
+      },
+      function churchBuilding(g){
+        box(g, 13, .2, 17, '#D7CCC8', 0, 0, -1);
+        box(g, 13, 5.5, .3, '#F5F0E6', 0, 0, -9.5); crossAt(g, 0, 2.2, -9.3, 1.3);
+        box(g, .3, 1.8, 17, '#EFE8DC', -6.5, 0, -1); box(g, .3, 1.8, 17, '#EFE8DC', 6.5, 0, -1);
+        box(g, 4.5, 1.8, .3, '#EFE8DC', -4.25, 0, 7.4); box(g, 4.5, 1.8, .3, '#EFE8DC', 4.25, 0, 7.4);
+        stage(g, 8, 2.4, 0, -7.6, '#6D4C41'); box(g, .8, 1.2, .5, '#3E2723', 0, .6, -7.4);
+        const seats = grid(0, -5, 8, 10, .9, 1.25); pews(g, seats, 10, '#8D6E63');
+        box(g, 2.4, 7.5, 2.4, '#F5F0E6', 0, 0, 9); cone(g, 1.9, 2.5, '#7B2D26', 0, 7.5, 9, 4, Math.PI/4); crossAt(g, 0, 10, 9, 1);
+        [['#1565C0', 10, 2], ['#C62828', 10, 4.5], ['#F5F5F5', 12.5, 2]].forEach(([c, x, z])=>{ box(g, 2, .8, 1.1, c, x, 0, z); box(g, 1.2, .5, 1, '#90CAF9', x, .8, z); });
+        return { seats, cap:80, ps:1.3, cam:{ r:19, h:11, ty:-1 }, altar:{ x:0, y:1.8, z:-7.4 },
+                 fam:{ house:[-15, 9, .4] }, legacy:[[14, -8], [16, 10], [-15, -4], [-6, 15], [6, 16], [17, -1]] };
+      },
+      function auditorium(g){
+        cyl(g, 12, 12, .3, '#BCAAA4', 0, 0, 0, 40);
+        const wall = new THREE.Mesh(new THREE.CylinderGeometry(12.2, 12.2, 2.2, 40, 1, true, Math.PI*.15, Math.PI*1.7), new THREE.MeshLambertMaterial({ color:'#EDE3D3', side:THREE.DoubleSide }));
+        put(g, wall, 0, 1.1, 0, Math.PI);
+        stage(g, 9, 3.2, 0, -9.2, '#4E342E'); box(g, .8, 1.2, .5, '#3E2723', 0, .6, -8.6);
+        box(g, 3.2, 2, .2, '#4FC3F7', -6.2, 2.2, -10.3, .3, true); box(g, 3.2, 2, .2, '#4FC3F7', 6.2, 2.2, -10.3, -.3, true);
+        const seats = grid(0, -5.5, 10, 12, .95, 1.05); chairs(g, seats, '#B71C1C');
+        church(g, 21, -9, 1.2); church(g, 23, 6, 1.2); church(g, -21, 10, 1.2);
+        tree(g, -17, -14); tree(g, 18, 16); tree(g, -8, 18);
+        return { seats, cap:120, ps:1.45, cam:{ r:25, h:14, ty:-2 }, altar:{ x:0, y:1.8, z:-8.6 },
+                 fam:{ house:[-19, -9, .8] }, legacy:[[16, -18], [24, 16], [-25, 2], [-12, 21], [8, 22], [27, -3]] };
+      },
+      function campGround(g){
+        box(g, 26, .3, 19, '#BCAAA4', 0, 0, -5);
+        box(g, 26, 5, .4, '#EDE3D3', 0, 0, -14.6); crossAt(g, 0, 2, -14.3, 1.6);
+        box(g, .4, 2.4, 19, '#EDE3D3', -13, 0, -5); box(g, .4, 2.4, 19, '#EDE3D3', 13, 0, -5);
+        stage(g, 12, 3, 0, -12.8, '#4E342E'); box(g, 4, 2.2, .2, '#4FC3F7', -8, 2.5, -14.2, 0, true); box(g, 4, 2.2, .2, '#4FC3F7', 8, 2.5, -14.2, 0, true);
+        const seats = grid(0, -10, 10, 15, .95, 1); chairs(g, seats, '#1A237E');
+        box(g, 3, .05, 70, '#424242', 0, 0, 30); box(g, 70, .05, 3, '#424242', 0, 0, 14);
+        box(g, .5, 4, .5, '#F2B705', -3, 0, 40); box(g, .5, 4, .5, '#F2B705', 3, 0, 40); box(g, 7, .8, .5, '#2B0B4F', 0, 4, 40);
+        for (let i = 0; i < 18; i++){ const a = i / 18 * Math.PI * 2; tree(g, Math.cos(a) * 42, Math.sin(a) * 42 + 4, 1.3); }
+        return { seats, cap:150, ps:1.7, cam:{ r:34, h:19, ty:-5 }, altar:{ x:0, y:1.8, z:-12.5 },
+                 fam:{ house:[-28, 22, .6] }, legacy:[[22, -8], [24, 6], [-24, 4], [20, 22], [-10, 24], [26, 26]] };
+      }
+    ],
+    g:[
+      function choirStand(g){
+        box(g, 12, .15, 10, '#A1887F', 0, 0, 0);
+        box(g, 12, 3.6, .2, '#E7DCCF', 0, 0, -5); box(g, .2, 3.6, 10, '#DCCFBF', -6, 0, 0);
+        [[-3.0, .35], [-3.8, .7], [-4.5, 1.05]].forEach(([z, h])=>box(g, 6, h, .8, '#5D4037', 0, 0, z));
+        [[-2, -3.8, .7], [-1, -3.8, .7], [1, -3.8, .7], [2, -3.8, .7], [-2.5, -4.5, 1.05], [-1.2, -4.5, 1.05], [1.2, -4.5, 1.05], [2.5, -4.5, 1.05], [-1.8, -3.0, .35], [1.8, -3.0, .35]].forEach(([x, z, y])=>figure(g, x, z, '#6A1B9A', 1, y));
+        const seats = grid(0, -.4, 5, 6, .9, 1); chairs(g, seats, '#ECECEC');
+        return { seats, cap:30, cam:{ r:13, h:8, ty:.6 }, altar:{ x:0, y:1.55, z:-3.0 }, me:{ x:0, z:-3.0, y:.35 },
+                 fam:{ house:[-11, 6, .5] }, legacy:[[9, -4], [10, 6], [-3, 9], [4, 10], [-11, -4], [9, -9]] };
+      },
+      function leadWorship(g){
+        box(g, 14, .15, 11, '#A1887F', 0, 0, 0);
+        box(g, 14, 3.8, .2, '#E7DCCF', 0, 0, -5.5); box(g, .2, 3.8, 11, '#DCCFBF', -7, 0, 0);
+        stage(g, 8, 3, 0, -4, '#3E2723');
+        cyl(g, .03, .03, 1.3, '#BDBDBD', 0, .6, -3.1, 6); ball(g, .08, '#212121', 0, 1.95, -3.1);
+        box(g, 1.4, .1, .5, '#212121', -2.6, 1.3, -4.2); box(g, .1, .7, .4, '#424242', -2.6, .6, -4.2);
+        [[2.4, -4.6, .35], [3.1, -4.2, .3], [2.6, -3.8, .28]].forEach(([x, z, r])=>cyl(g, r, r, .35, '#B71C1C', x, .6, z, 12));
+        figure(g, -2.6, -4.7, '#37474F', 1, .6); figure(g, 2.8, -5, '#37474F', 1, .6); figure(g, -1, -5, '#6A1B9A', 1, .6); figure(g, 1, -5, '#6A1B9A', 1, .6);
+        const seats = grid(0, -1.4, 6, 9, .9, 1.05); chairs(g, seats, '#ECECEC');
+        return { seats, cap:54, ps:1.05, cam:{ r:14, h:8, ty:.6 }, altar:{ x:0, y:1.8, z:-3.4 }, me:{ x:0, z:-3.4, y:.6 },
+                 fam:{ house:[-12, 7, .5] }, legacy:[[11, -4], [12, 8], [-3, 10], [4, 11], [-12, -4], [9, -9]] };
+      },
+      function studio(g){
+        box(g, 9, .2, 7, '#455A64', -4, 0, -3);
+        box(g, 9, 3, .2, '#263238', -4, 0, -6.5); box(g, .2, 3, 7, '#37474F', -8.5, 0, -3);
+        const glass = new THREE.Mesh(new THREE.BoxGeometry(3, 2.4, 2.6), new THREE.MeshLambertMaterial({ color:'#81D4FA', transparent:true, opacity:.3 }));
+        put(g, glass, -6.3, 1.4, -4.6);
+        box(g, 3, .9, 1, '#212121', -2, .2, -2.5); box(g, 2.8, .05, .8, '#4FC3F7', -2, 1.1, -2.6, 0, true);
+        box(g, .5, 1.2, .5, '#111111', -4, .2, -5.6); box(g, .5, 1.2, .5, '#111111', 0, .2, -5.6);
+        figure(g, -2, -1.6, '#37474F');
+        cyl(g, .12, .3, 18, '#B0BEC5', 12, 0, -10, 4); const tip = ball(g, .35, '#FF1744', 12, 18.3, -10, true); tip.userData.blink = true;
+        const seats = grid(4, 3, 4, 10, .8, .9);
+        box(g, 10, .05, 5, '#5D5D5D', 4, 0, 4.3);
+        return { seats, cap:40, ps:1.15, cam:{ r:17, h:9, ty:0 }, altar:{ x:-6.3, y:1, z:-4.6 }, me:{ x:-6.3, z:-4.6, y:.2 },
+                 fam:{ house:[-14, 7, .5] }, legacy:[[14, 2], [13, 10], [-4, 10], [-14, -6], [2, -11], [15, -10]] };
+      },
+      function concertHall(g){
+        box(g, 20, .2, 18, '#37474F', 0, 0, -1);
+        stage(g, 12, 4, 0, -8, '#212121');
+        [[-6, -9.6], [6, -9.6]].forEach(([x, z])=>{ box(g, .25, 6, .25, '#9E9E9E', x, 0, z); box(g, 1.8, 2.5, 1.2, '#111111', x + (x < 0 ? 1.5 : -1.5), .6, z + .8); });
+        box(g, 12.25, .25, .25, '#9E9E9E', 0, 6, -9.6);
+        const beams = [];
+        ['#E040FB', '#FFD740', '#40C4FF', '#FF5252'].forEach((c, i)=>{
+          const b = new THREE.Mesh(new THREE.ConeGeometry(1.4, 6, 16, 1, true), new THREE.MeshBasicMaterial({ color:c, transparent:true, opacity:.22, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide }));
+          b.position.set(-4.5 + i*3, 3, -9.6); b.userData.sweep = i; g.add(b); beams.push(b);
+        });
+        const seats = grid(0, -4.5, 10, 11, .9, 1);
+        return { seats, cap:110, ps:1.3, cam:{ r:21, h:11, ty:-2 }, altar:{ x:0, y:.6, z:-7.5 }, me:{ x:0, z:-7.2, y:.6 },
+                 fam:{ house:[-17, 9, .5] }, legacy:[[15, -6], [16, 8], [-16, -4], [-6, 14], [6, 15], [17, 15]] };
+      },
+      function stadium(g){
+        const field = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, .2, 48), M('#2E7D32')); field.scale.set(20, 1, 13); put(g, field, 0, .1, 0);
+        const track = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, .1, 48), M('#B23B2E')); track.scale.set(23, 1, 16); put(g, track, 0, .05, 0);
+        for (let i = 0; i < 44; i++){
+          const a = i / 44 * Math.PI * 2; if (Math.abs(Math.sin(a)) < .2 && Math.cos(a) < 0) continue;
+          const x = Math.cos(a) * 27, z = Math.sin(a) * 19;
+          box(g, 3.2, 3 + (i % 2) * .4, 2.4, i % 3 ? '#90A4AE' : '#78909C', x, 0, z, -a + Math.PI/2);
+        }
+        stage(g, 12, 5, -16, 0, '#212121'); box(g, .3, 7, .3, '#9E9E9E', -18, 0, -5); box(g, .3, 7, .3, '#9E9E9E', -18, 0, 5); box(g, .3, .3, 10.3, '#9E9E9E', -18, 7, 0);
+        box(g, .2, 3, 6, '#4FC3F7', -18.3, 3, 0, 0, true);
+        const seats = grid(0, 0, 15, 10, 1, .95).map(s=>({ x: -10 + s.z * 1.1, z: s.x * 1.25 }));
+        return { seats, cap:150, ps:1.6, cam:{ r:32, h:18, ty:0 }, altar:{ x:-16, y:.6, z:0 }, me:{ x:-15.5, z:0, y:.6 },
+                 fam:{ house:[-34, 22, .5] }, legacy:[[34, -14], [34, 10], [12, 26], [-6, -27], [22, -26], [28, 24]] };
+      }
+    ],
+    e:[
+      function busPark(g){
+        box(g, 26, .05, 20, '#5D5D5D', 0, 0, 0);
+        danfo(g, -8, -6, .2); danfo(g, -4.5, -7, .1); danfo(g, 7, -6, -.2); danfo(g, 9, 5, 1.4);
+        [['#E53935', -9, 4], ['#1E88E5', -6, 6.5], ['#FDD835', 6, 7]].forEach(([c, x, z])=>{ box(g, 2, .9, 1.2, '#8D6E63', x, 0, z); cyl(g, .05, .05, 2.2, '#9E9E9E', x, 0, z, 6); cone(g, 1.4, .6, c, x, 2.2, z, 8); });
+        box(g, .8, .5, .8, '#8D6E63', 0, 0, -1.5);
+        return { seats: rings(0, -1.5, 2, .9, 30, Math.PI * 1.2, Math.PI * -.1), cap:30, cam:{ r:13, h:8, ty:.5 }, altar:{ x:0, y:1.4, z:-1.5 }, me:{ x:0, z:-1.5, y:.5 },
+                 fam:{ house:[-13, -8, .6] }, legacy:[[12, -2], [13, -11], [-14, 4], [-2, 11], [4, 12], [14, 10]] };
+      },
+      function campus(g){
+        box(g, 9, 4, 3.5, '#E0D3B8', -9, 0, -8); box(g, 9, 4, 3.5, '#E0D3B8', 9, 0, -8);
+        for (let i = 0; i < 4; i++){ box(g, 1.2, .8, .05, '#90CAF9', -12 + i*2, 2.4, -6.23); box(g, 1.2, .8, .05, '#90CAF9', 6 + i*2, 2.4, -6.23); }
+        box(g, 16, .05, 3, '#9E9E9E', 0, 0, -4.5);
+        const roof = new THREE.Mesh(new THREE.ConeGeometry(7.5, 2, 4), new THREE.MeshLambertMaterial({ color:'#FAFAFA', transparent:true, opacity:.45, side:THREE.DoubleSide, depthWrite:false }));
+        put(g, roof, 0, 3.4, 1.8, Math.PI/4);
+        [[-5.2, -3.4], [5.2, -3.4], [-5.2, 7], [5.2, 7]].forEach(([x, z])=>cyl(g, .07, .07, 2.4, '#9E9E9E', x, 0, z, 6));
+        const seats = grid(0, -.8, 6, 9, .85, .95);
+        tree(g, -12, 4); tree(g, 12, 3); tree(g, -6, 9); tree(g, 8, 10);
+        return { seats, cap:54, ps:1.15, cam:{ r:17, h:9.5, ty:.5 }, altar:{ x:0, y:1, z:-1.8 }, me:{ x:0, z:-1.8, y:0 }, roofed:true,
+                 fam:{ house:[-15, 9, .5] }, legacy:[[15, 4], [16, 12], [-15, -1], [-2, 13], [5, 14], [16, -2]] };
+      },
+      function crusadeField(g){
+        const field = new THREE.Mesh(new THREE.CylinderGeometry(22, 22, .1, 40), M('#558B2F')); put(g, field, 0, .05, 0);
+        stage(g, 12, 5, 0, -11, '#3E2723'); box(g, 10, 2.2, .2, '#2B0B4F', 0, 3.2, -13.4); box(g, 10, .25, .22, '#F2B705', 0, 3.1, -13.38);
+        box(g, 1.6, 6, 1.4, '#111111', -7.5, 0, -11); box(g, 1.6, 6, 1.4, '#111111', 7.5, 0, -11);
+        [[-14, -4], [14, -4], [-14, 8], [14, 8]].forEach(([x, z])=>{ box(g, .25, 9, .25, '#9E9E9E', x, 0, z); ball(g, .6, '#FFF59D', x, 9.2, z, true); });
+        const seats = grid(0, -7.5, 10, 14, .8, .85);
+        return { seats, cap:140, ps:1.35, cam:{ r:24, h:13, ty:-4 }, altar:{ x:0, y:.6, z:-10.5 }, me:{ x:0, z:-10.3, y:.6 },
+                 fam:{ house:[-24, 14, .5] }, legacy:[[20, -10], [24, 6], [-24, -6], [-12, 22], [8, 22], [24, 18]] };
+      },
+      function village(g){
+        const hutAt = (x, z, s)=>{ cyl(g, 1.3*s, 1.4*s, 1.5*s, '#A1663A', x, 0, z, 14); cone(g, 1.9*s, 1.5*s, '#C9A44C', x, 1.5*s, z, 14); box(g, .5*s, .9*s, .05, '#4E342E', x, 0, z + 1.38*s); };
+        [[-9, -6, 1], [-12, 1, 1.1], [9, -7, 1], [12, 0, .9], [-6, 9, 1], [8, 9, 1.1], [0, -12, 1.2]].forEach(([x, z, s])=>hutAt(x, z, s));
+        cyl(g, .5, .9, 4, '#5D4037', 0, 0, 0, 8); ball(g, 4, '#33691E', 0, 5.5, 0);
+        cyl(g, .8, .8, .7, '#9E9E9E', 5, 0, 4, 14); cyl(g, .6, .6, .72, '#1E88E5', 5, 0, 4, 14);
+        tent(g, -4, -7.5, 1.1, '#ECEFF1');
+        const seats = rings(0, 0, 2.8, .85, 60, Math.PI * 2 * .92, Math.PI * .55);
+        return { seats, cap:60, ps:1.15, cam:{ r:18, h:11, ty:0 }, altar:{ x:0, y:1, z:-2.2 }, me:{ x:0, z:-2.2, y:0 },
+                 fam:{ house:[15, 10, -.6] }, legacy:[[16, -9], [-16, -8], [-17, 8], [3, 15], [-3, -16], [17, 3]] };
+      },
+      function agencyHQ(g){
+        box(g, 12, 7.5, 5, '#ECEFF1', -2, 0, -10);
+        for (let f = 0; f < 3; f++) for (let i = 0; i < 5; i++) box(g, 1.4, 1, .05, '#90CAF9', -6.8 + i*2.4, 1.2 + f*2.2, -7.47);
+        box(g, 12.4, .4, 5.4, '#2B0B4F', -2, 7.5, -10);
+        box(g, 7, 3, 5, '#FFF3E0', 11, 0, -9); cone(g, 4.6, 1.6, '#8D3B2B', 11, 3, -9, 4, Math.PI/4);
+        cyl(g, .07, .07, 7, '#BDBDBD', 6, 0, -5, 6); box(g, 1.6, 1, .04, '#008751', 6.85, 6, -5); box(g, .53, 1, .05, '#FFFFFF', 6.85, 6, -5);
+        box(g, 26, .05, 12, '#BDBDBD', 0, 0, 1);
+        [-9, -6, -3].forEach(x=>van(g, x, 9, Math.PI/2));
+        const seats = grid(0, -4.8, 7, 10, .9, .95);
+        return { seats, cap:70, ps:1.25, cam:{ r:22, h:12, ty:-2 }, altar:{ x:-2, y:.6, z:-6.8 }, me:{ x:-2, z:-6.4, y:0 },
+                 fam:{ house:[-17, 11, .5] }, legacy:[[16, 3], [17, 12], [-17, -3], [2, 13], [9, 14], [-18, -12]] };
+      }
+    ]
+  };
+
+  /* ---------- dynamic layers ---------- */
+  const MAXP = 160, CLOTH = ['#C62828', '#F2B705', '#2E7D32', '#1565C0', '#6A1B9A', '#EF6C00', '#FAFAFA', '#00838F', '#AD1457', '#558B2F', '#283593'];
+  const SKIN = ['#5A3825', '#4A2E1E', '#6B4430', '#3E2618', '#7A5038'];
+  const bodies = new THREE.InstancedMesh(new THREE.CylinderGeometry(.17, .24, .62, 7), new THREE.MeshLambertMaterial({ color:'#ffffff' }), MAXP);
+  const heads = new THREE.InstancedMesh(new THREE.SphereGeometry(.14, 10, 8), new THREE.MeshLambertMaterial({ color:'#ffffff' }), MAXP);
+  for (let i = 0; i < MAXP; i++){
+    bodies.setColorAt(i, new THREE.Color(CLOTH[(i * 7 + 3) % CLOTH.length]));
+    heads.setColorAt(i, new THREE.Color(SKIN[(i * 3) % SKIN.length]));
+  }
+  bodies.count = heads.count = 0; scene.add(bodies, heads);
+
+  const beam = new THREE.Mesh(new THREE.CylinderGeometry(.5, 1.4, 16, 20, 1, true), new THREE.MeshBasicMaterial({ color:'#FFD95A', transparent:true, opacity:.2, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide }));
+  scene.add(beam);
+
+  const PN = 48, parts = new THREE.InstancedMesh(new THREE.OctahedronGeometry(.16), new THREE.MeshBasicMaterial({ color:'#FFD95A' }), PN);
+  parts.count = 0; scene.add(parts);
+  let partState = [];
+
+  let cur = { key:'', set:null, root:null, dyn:null, rise:1, shown:0, target:0, cfg:null };
+  const dummy = new THREE.Object3D();
+  let angle = .5, dir = 1, dragging = false, lastX = 0, active = false, power = 1, faith = .5, notes = [];
+
+  function disposeGroup(g){ g.traverse(o=>{ if (o.geometry) o.geometry.dispose(); if (o.material && !Object.values(MC).includes(o.material)) o.material.dispose(); }); }
+
+  function build(path, stageIdx){
+    if (cur.root){ scene.remove(cur.root); disposeGroup(cur.root); }
+    const root = new THREE.Group(), set = new THREE.Group(), dyn = new THREE.Group();
+    root.add(set, dyn); scene.add(root);
+    const fn = SCENES[path][Math.min(stageIdx, 4)];
+    const cfg = fn(set);
+    cur = Object.assign(cur, { key: path + stageIdx, root, set, dyn, cfg, rise:0, legacyKey:'' });
+    return cfg;
+  }
+
+  function rebuildDynamic(G){
+    const cfg = cur.cfg, dyn = cur.dyn;
+    while (dyn.children.length){ const c = dyn.children.pop(); disposeGroup(c); }
+    notes = [];
+    // the minister
+    const me = cfg.me || { x:cfg.altar.x, z:cfg.altar.z + .5, y:cfg.altar.y - 1.2 };
+    const meFig = figure(dyn, me.x, me.z + (cfg.me ? 0 : .3), '#F2B705', 1.05, Math.max(0, me.y));
+    ball(meFig, .2, '#FFD95A', 0, 1.15, 0, true);
+    // family home
+    const H = G.h, famCount = H > 60 ? 3 : H > 35 ? 2 : H > 15 ? 1 : 0;
+    if (cfg.fam.house){ const [hx, hz, ry] = cfg.fam.house; house(dyn, hx, hz, ry); [[1.8, 2.2], [2.6, 1.8], [2.2, 2.8]].slice(0, famCount).forEach(([dx, dz], i)=>figure(dyn, hx + dx, hz + dz, i ? '#26A69A' : '#AD1457', i ? .7 : 1)); }
+    else cfg.fam.spots.slice(0, famCount).forEach(([x, z], i)=>figure(dyn, x, z, i ? '#26A69A' : '#AD1457', i ? .7 : 1, cfg.fam.y));
+    // legacy
+    const L = G.legacy, slots = cfg.legacy.slice();
+    const nSchools = Math.min(L.schools || 0, 3), nOut = Math.min(L.outreach || 0, 3);
+    for (let i = 0; i < nSchools; i++){ const [x, z] = slots.shift(); (G.path === 'e' && i % 2 === 0 ? clinic : school)(dyn, x, z); }
+    for (let i = 0; i < nOut; i++){ const [x, z] = slots.pop(); if (G.path === 'e' || i % 2) van(dyn, x, z, i); else { tent(dyn, x, z, .9, '#FFFFFF'); figure(dyn, x + 1.6, z + 1.2, '#F2B705', .9); } }
+    const nLead = Math.min(G.path === 'g' ? Math.floor((L.trained || 0) / 3) : (L.leaders || 0), 6);
+    for (let i = 0; i < nLead; i++){ const side = i % 2 ? 1 : -1, k = Math.floor(i / 2) + 1; figure(dyn, cfg.altar.x + side * (1 + k * .7), cfg.altar.z - .4, G.path === 'g' ? '#6A1B9A' : '#FAFAFA', .95, Math.max(0, cfg.altar.y - 1.2)); }
+    if (G.path === 'g'){
+      const n = Math.min(L.songs || 0, 8);
+      for (let i = 0; i < n; i++){ const nt = new THREE.Group(); ball(nt, .22, '#FFD95A', 0, 0, 0, true); box(nt, .06, .7, .06, '#FFD95A', .2, 0, 0, 0, true); dyn.add(nt); notes.push(nt); }
+    }
+    beam.position.set(cfg.altar.x, cfg.altar.y + 8, cfg.altar.z);
+  }
+
+  function target(G, cfg){
+    const st = PATHS[G.path].stages, s = Math.min(G.stage, 4), lo = st[s].min, hi = st[Math.min(s + 1, 5)].min;
+    if (G.members <= cfg.cap) return Math.max(1, Math.round(G.members));
+    const frac = Math.max(0, Math.min(1, (G.members - lo) / Math.max(1, hi - lo)));
+    return Math.round(cfg.cap * (.35 + .65 * frac));
+  }
+
+  function sync(G){
+    if (!G) return;
+    const key = G.path + Math.min(G.stage, 4);
+    const fresh = key !== cur.key;
+    if (fresh) build(G.path, Math.min(G.stage, 4));
+    const lk = [G.legacy.schools, G.legacy.outreach, G.legacy.leaders, G.legacy.trained, G.legacy.songs, G.h > 60 ? 3 : G.h > 35 ? 2 : G.h > 15 ? 1 : 0].join('|');
+    if (fresh || lk !== cur.legacyKey){ rebuildDynamic(G); cur.legacyKey = lk; }
+    cur.target = Math.min(MAXP, cur.cfg.seats.length, target(G, cur.cfg));
+    if (fresh) cur.shown = Math.min(cur.target, Math.max(1, Math.round(cur.target * .6)));
+    faith = G.f / 100;
+    power = G.o < 12 ? .45 : G.o < 25 ? .7 : 1;
+  }
+
+  function burst(n){
+    if (!cur.cfg || cur.shown < 1) return;
+    for (let i = 0; i < (n || 14); i++){
+      const s = cur.cfg.seats[Math.floor(Math.random() * Math.max(1, cur.shown))];
+      partState.push({ x:s.x, z:s.z, y:1, vy:2 + Math.random() * 2, t:0 });
+    }
+    if (partState.length > PN) partState = partState.slice(-PN);
+  }
+
+  /* ---------- camera + input ---------- */
+  function resize(){
+    const w = el.clientWidth, h = el.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(el); else window.addEventListener('resize', resize);
+  const cv = renderer.domElement;
+  cv.addEventListener('pointerdown', e=>{ dragging = true; lastX = e.clientX; cv.setPointerCapture(e.pointerId); el.classList.add('touched'); });
+  cv.addEventListener('pointermove', e=>{ if (!dragging) return; angle = Math.max(-1.5, Math.min(1.5, angle - (e.clientX - lastX) * .008)); lastX = e.clientX; });
+  const end = ()=>{ dragging = false; };
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+
+  const clock = new THREE.Clock();
+  function frame(){
+    requestAnimationFrame(frame);
+    if (!active || document.hidden || !cur.cfg) return;
+    const dt = Math.min(.05, clock.getDelta()), t = clock.elapsedTime;
+    if (!dragging){ angle += dt * .06 * dir; if (angle > .95){ angle = .95; dir = -1; } if (angle < -.95){ angle = -.95; dir = 1; } }
+    const c = cur.cfg.cam;
+    camera.position.set(Math.sin(angle) * c.r, c.h, Math.cos(angle) * c.r);
+    camera.lookAt(0, c.ty, 0);
+
+    if (cur.rise < 1){ cur.rise = Math.min(1, cur.rise + dt * 1.4); const e = 1 - Math.pow(1 - cur.rise, 3); cur.set.scale.set(1, Math.max(.01, e), 1); }
+
+    if (cur.shown < cur.target) cur.shown = Math.min(cur.target, cur.shown + Math.max(.25, (cur.target - cur.shown) * dt * 2));
+    else if (cur.shown > cur.target) cur.shown = Math.max(cur.target, cur.shown - Math.max(.25, (cur.shown - cur.target) * dt * 2));
+    const n = Math.floor(cur.shown), seats = cur.cfg.seats;
+    for (let i = 0; i < n; i++){
+      const s = seats[i], ps = cur.cfg.ps || 1, bob = Math.abs(Math.sin(t * 2.2 + i * 1.7)) * .06 * ps, base = s.y || 0;
+      dummy.scale.set(ps, ps, ps);
+      dummy.position.set(s.x, base + bob + .31 * ps, s.z); dummy.updateMatrix(); bodies.setMatrixAt(i, dummy.matrix);
+      dummy.position.y = base + bob + .78 * ps; dummy.updateMatrix(); heads.setMatrixAt(i, dummy.matrix);
+    }
+    dummy.scale.set(1, 1, 1);
+    bodies.count = heads.count = n; bodies.instanceMatrix.needsUpdate = heads.instanceMatrix.needsUpdate = true;
+    if (bodies.instanceColor) bodies.instanceColor.needsUpdate = true;
+
+    const flick = power < .5 ? (Math.sin(t * 23) > .6 ? .55 : 1) : 1;
+    hemi.intensity = .75 * power * flick; sun.intensity = .6 * power;
+    beam.material.opacity = (.04 + .32 * faith) * (.85 + .15 * Math.sin(t * 1.6));
+    beam.scale.set(.6 + faith * .6, 1, .6 + faith * .6);
+
+    cur.set.traverse(o=>{ if (o.userData.blink) o.visible = Math.sin(t * 4) > 0; if (o.userData.sweep !== undefined) o.rotation.z = Math.sin(t * 1.3 + o.userData.sweep) * .5; });
+    notes.forEach((nt, i)=>{ const a = t * .6 + i * (Math.PI * 2 / notes.length); nt.position.set(cur.cfg.altar.x + Math.cos(a) * 3, cur.cfg.altar.y + 2.2 + Math.sin(t * 2 + i) * .3, cur.cfg.altar.z + Math.sin(a) * 3); });
+
+    let k = 0;
+    partState = partState.filter(p=>(p.t += dt) < 1.4);
+    partState.forEach(p=>{ p.y += p.vy * dt; dummy.position.set(p.x, p.y, p.z); dummy.rotation.y = t * 3; const sc = 1 - p.t / 1.4; dummy.scale.set(sc, sc, sc); dummy.updateMatrix(); parts.setMatrixAt(k++, dummy.matrix); });
+    dummy.scale.set(1, 1, 1); dummy.rotation.set(0, 0, 0);
+    parts.count = k; parts.instanceMatrix.needsUpdate = true;
+
+    renderer.render(scene, camera);
+  }
+  resize(); frame();
+  return { sync, burst, setActive(v){ active = v; if (v){ resize(); clock.getDelta(); } } };
+})();
+
 /* ================= INPUT ================= */
 (function drag(){
   const el = $('card'); let sx=0, dx=0, down=false;
@@ -1059,9 +1484,9 @@ function showIntro(){
   if (best && best.e) bits.push(`${fmt(best.e)} lives reached as an evangelist`);
   $('iHall').textContent = `🏛️ Hall of Faith · ${hallIds().filter(id=>HERO_DB[id]).length} of ${ALL_HEROES.length} unlocked`;
   $('iBest').textContent = bits.length ? `Your best: ${bits.join(', ')}.` : '';
-  $('intro').classList.add('on'); document.body.classList.add('menu');
+  $('intro').classList.add('on'); document.body.classList.add('menu'); World.setActive(false);
 }
-function startPlaying(){ buildMeters(); render(true); $('intro').classList.remove('on'); document.body.classList.remove('menu'); }
+function startPlaying(){ buildMeters(); $('intro').classList.remove('on'); document.body.classList.remove('menu'); World.setActive(true); render(true); }
 $('iStart').onclick = ()=>{
   const name = $('iName').value.trim() || 'Emeka';
   const min = $('iMin').value.trim() || NAMES[setup.path]();
