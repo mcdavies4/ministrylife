@@ -1511,18 +1511,21 @@ const Sound = (function(){
     }
   }
   // the opening prayer room: a real recording (intro-voice.mp3 beside index.html) if one is uploaded, otherwise the synthesized one
-  function intro(onDone){
+  let introAudio = null;
+  function preloadIntro(){ if (!introAudio && on){ introAudio = new Audio('intro-voice.mp3'); introAudio.preload = 'auto'; } }
+  function intro(onDone, onEnd){
     const c = ensure(); if (!c){ onDone && onDone(0); return ()=>{}; }
     let stopped = false, rec = null, g = null;
-    const a = new Audio('intro-voice.mp3'); a.preload = 'auto'; a.volume = 1;
+    preloadIntro(); const a = introAudio; a.volume = 1;
+    a.addEventListener('ended', ()=>{ if (rec && !stopped) onEnd && onEnd(); });
     const synth = ()=>{
       if (stopped || g) return;
       g = c.createGain(); g.gain.value = 1; g.connect(master);
       onDone && onDone(prayerRoom(c, g, c.currentTime + .05));
     };
     a.addEventListener('error', synth);
-    const p = a.play(); if (p && p.then) p.then(()=>{ if (stopped || g){ a.pause(); return; } rec = a; onDone && onDone(isFinite(a.duration) ? a.duration : 12); }).catch(synth);
-    setTimeout(()=>{ if (!rec) synth(); }, 1200);   // slow network: don't keep them waiting
+    const p = a.play(); if (p && p.then) p.then(()=>{ if (stopped || g){ a.pause(); return; } rec = a; onDone && onDone(isFinite(a.duration) ? a.duration + 1 : 40); }).catch(synth);
+    setTimeout(()=>{ if (!rec) synth(); }, 2500);   // slow network: don't keep them waiting
     return ()=>{
       stopped = true;
       if (rec){ const r = rec, v0 = r.volume; let k = 0; const iv = setInterval(()=>{ k++; r.volume = Math.max(0, v0 * (1 - k / 10)); if (k >= 10){ clearInterval(iv); r.pause(); } }, 60); }
@@ -1531,7 +1534,7 @@ const Sound = (function(){
     };
   }
   return {
-    play, hum: humOn, intro,
+    play, hum: humOn, intro, preloadIntro,
     get on(){ return on; },
     toggle(){ on = !on; store('ministrylife_sound', on); if (!on && hum){ const h = hum; hum = null; try { h.g.gain.value = 0; h.oscs.forEach(o=>o.stop()); h.lfo.stop(); } catch(e){} } return on; }
   };
@@ -2788,12 +2791,12 @@ $('iCont').onclick = ()=>{
     if (phase) return;
     phase = 1; gate.classList.add('live');
     if (!Sound.on){ timer = setTimeout(close, 2600); return; }
-    stop = Sound.intro(d=>{ clearTimeout(timer); timer = setTimeout(close, Math.max(2.5, (d || 0) - .6) * 1000); });
-    timer = setTimeout(close, 14000);
+    timer = setTimeout(close, 15000);   // safety net if nothing starts
+    stop = Sound.intro(d=>{ clearTimeout(timer); timer = setTimeout(close, Math.max(2.5, (d || 0) - .6) * 1000); }, ()=>setTimeout(close, 300));
   };
   gate.addEventListener('click', enter);
   gate.addEventListener('keydown', e=>{ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); enter(); } });
-  gate.focus();
+  gate.focus(); Sound.preloadIntro();
 })();
 buildMeters();
 showIntro();
