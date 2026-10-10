@@ -5,5 +5,4 @@ compatibility_date = "2025-06-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "ministrylife"
-# Paste your D1 database ID here if you deploy with wrangler instead of the dashboard
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "05a00dbd-e397-4941-a9c2-dc87e6d71fcd"

@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Ministry Life Admin</title>
+<style>
+.viz-root{
+  color-scheme:light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --good:#006300; --crit:#d03b3b;
+  --accent:#2B0B4F;
+}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])) .viz-root{
+    color-scheme:dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#0ca30c; --crit:#e66767;
+    --accent:#FFD95A;
+  }
+}
+:root[data-theme="dark"] .viz-root{
+  color-scheme:dark;
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#f0efec; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --good:#0ca30c; --crit:#e66767;
+  --accent:#FFD95A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+.viz-root{min-height:100vh;background:var(--page);color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+h1{font-size:20px;font-weight:700}
+h1 span{color:var(--muted);font-weight:500}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--ring);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:7px 12px;font:inherit;color:var(--ink2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface);font-weight:600}
+.btn{border:1px solid var(--ring);background:var(--surface);color:var(--ink);padding:7px 12px;border-radius:8px;font:inherit;cursor:pointer}
+.updated{color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+.card{background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:16px;min-width:0}
+.card h2{font-size:14px;font-weight:600;margin-bottom:2px}
+.card .sub{color:var(--muted);font-size:12px;margin-bottom:12px}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}
+@media (max-width:900px){.c3{grid-column:span 6}.c4,.c6,.c8{grid-column:span 12}}
+@media (max-width:520px){.c3{grid-column:span 6}}
+.kpi .v{font-size:28px;font-weight:700;line-height:1.1;margin-top:4px}
+.kpi .l{color:var(--ink2);font-size:12px}
+.kpi .d{color:var(--muted);font-size:12px;margin-top:2px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px;color:var(--ink2);font-size:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+svg{display:block;width:100%;overflow:visible}
+svg text{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.tip{position:fixed;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--ring);border-radius:8px;padding:8px 10px;font-size:12px;box-shadow:0 6px 18px rgba(0,0,0,.18);opacity:0;transition:opacity .1s;z-index:10;min-width:140px}
+.tip b{display:block;margin-bottom:4px}
+.tip .row{display:flex;justify-content:space-between;gap:12px}
+.tip .row i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;padding:6px 8px;border-bottom:1px solid var(--grid)}
+td{padding:7px 8px;border-bottom:1px solid var(--grid);vertical-align:top}
+td.date{white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.inbar{position:relative;height:8px;border-radius:4px;background:var(--grid);margin-top:5px;overflow:hidden}
+.inbar span{position:absolute;inset:0 auto 0 0;background:var(--s1);border-radius:0 4px 4px 0}
+.blist .row{display:grid;grid-template-columns:minmax(90px,38%) 1fr auto;gap:10px;align-items:center;padding:5px 0}
+.blist .lab{color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.blist .bar{height:12px;background:var(--grid);border-radius:0 4px 4px 0;position:relative}
+.blist .bar span{position:absolute;inset:0 auto 0 0;background:var(--s1);border-radius:0 4px 4px 0;min-width:2px}
+.blist .val{font-variant-numeric:tabular-nums;color:var(--ink);min-width:64px;text-align:right}
+.empty{color:var(--muted);padding:16px 0}
+.gate{max-width:420px;margin:12vh auto;background:var(--surface);border:1px solid var(--ring);border-radius:12px;padding:24px}
+.gate h1{margin-bottom:6px}
+.gate p{color:var(--ink2);margin-bottom:16px}
+.gate label{display:block;font-size:12px;color:var(--ink2);margin:10px 0 4px}
+.gate input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--axis);background:var(--page);color:var(--ink);font:inherit}
+.gate .btn{margin-top:16px;width:100%;background:var(--ink);color:var(--surface);font-weight:600}
+.err{color:var(--crit);margin-top:10px;min-height:1em}
+.scroll{overflow-x:auto}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:11px;border:1px solid var(--ring);color:var(--ink2)}
+.toggle{background:none;border:0;color:var(--ink2);text-decoration:underline;cursor:pointer;font:inherit;font-size:12px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+<section class="gate" id="gate" hidden>
+  <h1>Ministry Life <span>Admin</span></h1>
+  <p>Enter the admin key you set on the vote worker. It stays in this browser only.</p>
+  <label for="kApi">Worker address</label>
+  <input id="kApi" autocomplete="off">
+  <label for="kKey">Admin key</label>
+  <input id="kKey" type="password" autocomplete="current-password">
+  <button class="btn" id="kGo">Open dashboard</button>
+  <p class="err" id="kErr"></p>
+</section>
+
+<main id="dash" hidden>
+  <header>
+    <h1>Ministry Life <span>Admin</span></h1>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Period">
+        <button data-days="7">7 days</button><button data-days="30" aria-pressed="true">30 days</button><button data-days="90">90 days</button>
+      </div>
+      <button class="btn" id="refresh">Refresh</button>
+      <button class="btn" id="logout">Sign out</button>
+      <span class="updated" id="updated"></span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card kpi c3"><div class="l">Players today</div><div class="v" id="k1">–</div><div class="d" id="k1d"></div></div>
+    <div class="card kpi c3"><div class="l">New players today</div><div class="v" id="k2">–</div><div class="d" id="k2d"></div></div>
+    <div class="card kpi c3"><div class="l">Journeys started today</div><div class="v" id="k3">–</div><div class="d" id="k3d"></div></div>
+    <div class="card kpi c3"><div class="l">Daily Card votes today</div><div class="v" id="k4">–</div><div class="d" id="k4d"></div></div>
+    <div class="card kpi c3"><div class="l">Active this week</div><div class="v" id="k5">–</div><div class="d" id="k5d"></div></div>
+    <div class="card kpi c3"><div class="l">All-time players</div><div class="v" id="k6">–</div><div class="d" id="k6d"></div></div>
+    <div class="card kpi c3"><div class="l">Came back next day (D1)</div><div class="v" id="k7">–</div><div class="d" id="k7d"></div></div>
+    <div class="card kpi c3"><div class="l">Came back a week later (D7)</div><div class="v" id="k8">–</div><div class="d" id="k8d"></div></div>
+
+    <div class="card c12">
+      <h2>Players per day</h2><div class="sub">Unique players who opened the game, and how many were new</div>
+      <div class="legend" id="lgPlayers"></div>
+      <div id="chPlayers"></div>
+    </div>
+
+    <div class="card c8">
+      <h2>Journeys started per day, by calling</h2><div class="sub">Each new game counts once</div>
+      <div class="legend" id="lgGames"></div>
+      <div id="chGames"></div>
+      <button class="toggle" id="tgGames">Show as table</button>
+      <div class="scroll" id="tbGames" hidden></div>
+    </div>
+    <div class="card c4">
+      <h2>Calling, language and device</h2><div class="sub">Share of journeys (calling, language) and players (device)</div>
+      <div class="blist" id="blMix"></div>
+    </div>
+
+    <div class="card c6">
+      <h2>How journeys end</h2><div class="sub">Finished journeys in this period</div>
+      <div class="blist" id="blEnd"></div>
+    </div>
+    <div class="card c6">
+      <h2>Furthest season reached</h2><div class="sub">Finished journeys, by calling</div>
+      <div class="scroll" id="tbStage"></div>
+    </div>
+
+    <div class="card c12">
+      <h2>Daily Card results</h2><div class="sub">How players voted each day</div>
+      <div class="scroll" id="tbDaily"></div>
+      <button class="toggle" id="tgDaily">Show all days</button>
+    </div>
+
+    <div class="card c12">
+      <h2>What players choose</h2><div class="sub">Most-answered decision cards in finished journeys</div>
+      <div class="scroll" id="tbChoice"></div>
+    </div>
+
+    <div class="card c4">
+      <h2>Top countries</h2><div class="sub">Unique players</div>
+      <div class="blist" id="blCountry"></div>
+    </div>
+    <div class="card c4">
+      <h2>Badges earned</h2><div class="sub">Unlocks in this period</div>
+      <div class="blist" id="blBadge"></div>
+    </div>
+    <div class="card c4">
+      <h2>Shares</h2><div class="sub">Share and WhatsApp taps</div>
+      <div class="blist" id="blShare"></div>
+      <h2 style="margin-top:16px">Averages by calling</h2>
+      <div class="scroll" id="tbAvg"></div>
+    </div>
+
+    <div class="card c12">
+      <h2>Latest finished journeys</h2><div class="sub">Most recent 25, anonymous</div>
+      <div class="scroll" id="tbRecent"></div>
+    </div>
+  </div>
+</main>
+</div>
+<div class="tip" id="tip"></div>
+</div>
+
+<script>
+const META = {"cards":{"p_altar":["Before you gather people, gather yourself. Will you give the first hour of every day to prayer and the Word?","Mornings are for the hustle","The first hour is God's"],"p_saturday":["Three of my colleagues want to join the Bible study, but they can only come on Saturday mornings.","Keep Tuesday evenings","Move it to Saturdays"],"p_talk":["You're at the office all day and at fellowship every evening. When do we actually talk?","The ministry needs me now","Friday nights are ours"],"p_promo":["There's a promotion for you, but it comes with weekend travel.","Take the promotion","Decline for now"],"p_musa":["I lost my job last month. I'm ashamed to ask, but my family hasn't eaten well this week.","Pray with him and encourage him","Share from your own salary"],"p_pace":["We study one chapter a week. Some say it's too slow, others say it's too fast.","Go deep, slowly","Cover more ground"],"p_noise":["Your neighbours ask if the fellowship can keep the singing down after 9pm.","Respect them, end by 9","Move to a school classroom"],"p_class":["You're teaching others, but who is teaching you? Join my Thursday leaders' class.","No time right now","I'll be there"],"p_hymn":["Should we buy a keyboard, or keep singing with just clapping and a tambourine?","Clapping is enough","Buy a second-hand keyboard"],"p_invite":["My neighbour wants to come, but she's a Muslim and worried she won't be welcome.","Maybe it's not the place for her","Welcome her warmly"],"p_snacks":["I've been buying snacks for the Bible study from our own money every week.","It's our offering to God","Ask members to take turns"],"p_poly":["Can we start an outreach to the students at the polytechnic?","Build the core first","Let's go"],"p_count":["Offerings are growing. Who should count the money and sign for it?","I'll handle it myself","Two counters, everything recorded"],"p_hall":["I'll rent you my hall every Sunday. ₦150,000 a month.","Stay in the sitting room","Rent the hall"],"p_account":["Many will start churches this year. Few will be accountable. Will you submit to a council of senior ministers?","God speaks to me directly","Yes, I'll be accountable"],"p_choir":["A sister wants to join the choir, but she has only attended for two weeks.","Let her serve straight away","Disciple her first"],"p_nephew":["I'll pay your hall rent for a full year. Just make my nephew an assistant pastor.","Positions aren't for sale","Accept the gift"],"p_long":["The young people say services are too long. Some are slipping away to other churches.","Keep the full service","Tighten the programme"],"p_baby":["Our first baby is due next month. Can someone else lead the vigil that week?","I'll still lead it","Raise someone to cover"],"p_format":["A visitor says we should drop Bible study for a talk-show format to attract young people.","Keep teaching the Word","Try a Q&A night"],"p_cholera":["There's a cholera scare in the area. Can the church help the community?","We'll pray for the community","Run a clean-water drive"],"p_gen":["We've saved ₦400,000. Do we buy a generator now or keep saving for land?","Generator now","Keep saving for land"],"p_raise":["The work is now bigger than one person. Who are you raising?","I'll keep leading everything","Start a leadership class"],"p_pledge":["Members are pledging to the building fund. Some are promising more than they can afford.","Accept every pledge","Give as you are able"],"p_register":["Churches must now register properly and file annual accounts.","Delay it","Register and get audited"],"p_quarrel":["Two workers are in a bitter quarrel and half the choir has taken sides.","Let them sort it out","Mediate personally"],"p_tv":["We'll give you a weekly TV slot for your teaching. ₦2 million a quarter.","Too expensive for now","Take the slot"],"p_branch":["Five families travel an hour each Sunday. Should we plant a branch in their town?","Not yet","Plant the branch"],"p_prize":["You missed my school prize-giving again.","The ministry needs me","Block out family time"],"p_widow":["My husband passed last week. Pastor, will you come to the house?","Send an associate pastor","Visit her yourself"],"p_fast":["A new year is coming. Will you lead the church into 21 days of prayer and fasting?","Keep the normal programme","21 days of prayer"],"p_dirty":["I want to make a large donation to the building. Pay no attention to what people say about my business.","Decline politely","Accept it, it's for God"],"p_canopy":["The church is packed. People are standing outside in the sun.","Add a second service","Build a canopy"],"p_land":["We can buy 50 hectares outside the city for a camp ground. It will take every naira we have.","Wait three years","Buy the land"],"p_school":["Start a school. Teach the next generation, not just on Sundays.","Church first, schools later","Open a primary school"],"p_pulpit":["A politician offers the church a land allocation if you endorse his campaign from the pulpit.","The pulpit is not for sale","Accept the land"],"p_release":["A senior pastor feels called to start his own ministry. He's asking for your blessing.","Ask him to stay","Release him with a blessing"],"p_north":["A team is ready to serve rural communities in the north. They need full support.","Support them partly","Fully fund the mission"],"p_books":["A national newspaper is profiling you. They'll ask about the church's finances.","Decline the interview","Open the books"],"p_rest":["You haven't had a real holiday in seven years. The doctor says you must rest.","I'll rest in heaven","Take two weeks off"],"p_skills":["Our graduates can't find jobs. Can the church help?","Pray for job openings","Start skills training"],"p_clinic":["The hospital nearby turns away patients who can't pay.","Leave it to government","Set up a welfare fund"],"p_succ":["You've built much. Now, who will carry it after you?","There's still time","Put a succession plan in place"],"p_uni":["There's a proposal for a Christian university. The fees will decide who it serves.","Premium fees fund growth","Scholarships for the poor"],"p_abroad":["Members abroad are asking for parishes in London, Houston and Johannesburg.","Focus on Nigeria for now","Send trained pastors abroad"],"p_convention":["Your convention will draw a million people. The expressway will be gridlocked.","Scale it down","Plan it with the authorities"],"p_kids":["Our children are grown. Will you groom them to lead, or let them find their own calling?","Groom them to succeed me","Let them hear God themselves"],"p_doc":["A documentary crew wants a year of full access to the ministry.","Keep our privacy","Let the world see"],"p_board":["Some say you should step back from the daily running of things. Others say the church still needs you.","Stay hands-on","Delegate to the board"],"g_rehearse":["Choir rehearsal is on Thursday nights, and you keep missing it because of work.","Work pays the bills","Make rehearsal a priority"],"g_practice":["Talent opens doors, but character and practice keep you inside. Will you practise two hours a day?","I'm talented enough","Two hours daily"],"g_mum":["Music? You studied engineering. Get a proper job.","Get the job, sing on Sundays","Follow the call"],"g_highlife":["The keyboardist wants to try a highlife arrangement of an old hymn.","Keep it traditional","Try it"],"g_testimony":["After service, a woman tells you your solo made her feel God hadn't forgotten her.","Thank God quietly","Ask her to share it online"],"g_6am":["We need someone to lead worship at the 6am service.","I'm not a morning person","I'll do it"],"g_record":["I can record your first song for ₦300,000. That's a friends' price.","Save up first","Record it now"],"g_solo":["The choir director wants you to lead the solo at Easter. Some senior choristers feel overlooked.","Let a senior chorister lead","Take the solo"],"g_theory":["A music school runs evening classes in theory and voice. ₦80,000 a term.","YouTube will do","Enrol for a term"],"g_wedding":["Will you sing at my wedding on Saturday? I can't pay much.","I only sing in church","Sing as a gift"],"g_write":["Write what God is teaching you, not what's trending.","Write what's trending","Write from devotion"],"g_master":["Your song is finished. Who owns the master recording?","A handshake is enough","Sign a fair written agreement"],"g_video":["Your single is on thousands of phones! Will there be a music video?","Keep it simple","Shoot a video"],"g_planted":["Other churches invite you every weekend. Your home church misses you.","Accept the invitations","Stay planted at home"],"g_nopreach":["Perform at my concert for ₦500,000. One condition: no talking about Jesus between songs.","Decline","Take the booking"],"g_paid":["We haven't been paid for the last three gigs.","Pay them later","Pay them first, from your fee"],"g_road":["You're on the road every weekend. The kids keep asking where you are.","This is the season","Limit trips to two a month"],"g_youthchoir":["Will you lead the youth choir? Teach them what I taught you.","I'm too busy recording","Train the youth choir"],"g_feature":["Let's collaborate. The song is about money and nightlife, and you'd sing the hook.","Not that song","Do the feature"],"g_scripture":["I love your new song, but one line misquotes a scripture.","It's just art","Check with your pastor and fix it"],"g_deal":["Five-album deal with a big advance. We control your image and your content.","Sign it","Stay independent"],"g_twelve":["The album needs 12 songs. You have 8 strong ones.","Rush four more","Release the eight good ones"],"g_fee":["Streams are up. Should we raise your ministration fee?","Raise it","Keep it affordable for small churches"],"g_prayer":["Fame is loud. Is your prayer life still loud?","I'm fine","Return to early-morning prayer"],"g_ward":["A children's hospital ward asks if you'll come and sing. There's no fee.","My schedule is full","Go and sing"],"g_judge":["A TV talent show wants you as a judge for the whole season.","Stay focused on ministry","Be a judge"],"g_anniv":["Our anniversary falls on the night of your biggest concert.","Keep the concert","Move the concert"],"g_fallen":["One of our band members has fallen into sin publicly. Fans are asking questions.","Hide it, protect the brand","Address it with grace, restore him"],"g_streams":["We could buy streams to chart higher this month.","Buy them","Grow it honestly"],"g_tour":["A 12-city national tour. It means three months away from home.","Do six cities","All twelve"],"g_midnight":["Start a midnight worship hour online. No stage, no lights, just worship.","Too risky","Go live at midnight"],"g_name":["An international label is interested, but wants 'Jesus' taken out of the lyrics for wider radio play.","Keep the Name","Remove it"],"g_mentee":["I send you new songs every week. Could you give me feedback?","Ignore the messages","Mentor her"],"g_piracy":["Pirated copies of your album are being sold in markets across the country.","Let it go, the message spreads","Enforce your copyright"],"g_voice":["You're exhausted and your voice is cracking. Please rest.","Push through","Take a month off"],"g_fundraise":["Our church is building a new auditorium. Will you do a fundraising concert?","I'm fully booked","Give the proceeds"],"g_awards":["Perform at our awards show on national TV. Sing whatever you want.","Not my audience","Sing about Jesus there"],"g_school":["Start a school of music ministry. Raise the next generation.","Later","Open the school"],"g_cover":["Your song is being covered worldwide. The lawyers say we could charge everyone.","Charge every church","Free for churches, licensed for business"],"g_london":["A stadium concert in London, with a very large fee.","Decline","Accept"],"g_home":["The children want you home during their school years.","Keep touring","Base the ministry at home"],"g_villages":["Come and lead worship in rural villages. No stage, no cameras.","It's not cost-effective","Go"],"g_brands":["Brand deals have come in from soft drinks, telecoms and a betting company.","Take them all","Only brands that fit your values"],"g_family":["Your song carried our family through a long hospital stay. Will you come to our thanksgiving?","Send a video message","Attend in person"],"g_songbook":["Your songs will outlive your tours. What's your plan for them?","Keep performing","Publish a songbook for churches"],"e_bus":["Let's preach at the bus park at rush hour. It's loud, but thousands of people pass through.","Hand out tracts quietly","Preach at rush hour"],"e_follow":["Reaching people is only the start. Who follows up the ones who respond?","God will keep them","Start follow-up Bible studies"],"e_job":["You keep leaving work early for outreaches. One more warning and you're out.","Keep the job steady","The outreach comes first"],"e_mock":["Someone filmed you preaching and is mocking you online. The video is spreading.","Stop street preaching for a while","Bless him and keep going"],"e_pray":["Evangelism without prayer is just noise. Will you pray for an hour before every outreach?","No time for that","Pray first, always"],"e_sat":["Every Saturday is outreach now. Saturdays used to be ours.","People are waiting","Alternate Saturdays"],"e_wards":["The general hospital allows visitors on Sunday afternoons. Shall we go and pray with patients?","Stick to the streets","Visit the wards"],"e_market":["The market women say you can preach at the market, but only after 4pm when trading slows down.","Preach at noon anyway","Respect their hours"],"e_partner":["I can't afford transport to outreaches anymore. Maybe I should stop coming.","Pray about it, brother","Cover his transport"],"e_rain":["It's pouring with rain and the outreach is in an hour.","Cancel this week","Go anyway, with umbrellas"],"e_tracts":["Printing 10,000 tracts will cost ₦250,000.","Print 1,000 for now","Print all 10,000"],"e_campus":["Students at the university want a weekly fellowship that you lead.","Monthly is enough","Weekly fellowship"],"e_team":["We need a proper team: musicians, counsellors and ushers.","Keep it just the two of us","Recruit and train a team"],"e_church":["Your converts need a church home. Will you start your own, or send them to local churches?","Start my own church","Send them to local churches"],"e_drama":["Let's use drama and music at outreaches. Young people respond to stories.","Preaching only","Add drama and music"],"e_food":["Many people here are hungry. A sermon won't fill their stomachs.","Preach first, food later","Food and the gospel together"],"e_edit":["Let's edit the outreach videos so the crowd looks bigger than it was.","Post the edited video","Only honest numbers"],"e_van":["The outreach van needs repairs. ₦600,000.","Take a loan","Use buses for now"],"e_school":["Go to Bible school for a year. Your zeal needs depth.","The harvest can't wait","Enrol for a year"],"e_crusade":["A three-day crusade on the stadium field. It will cost ₦8 million.","Smaller street rallies","Book the stadium"],"e_permit":["Your crusade permit is pending. An official hints that 'something small' would speed it up.","Pay him","Wait for due process"],"e_adverts":["Crowds come for miracles. Should the crusade posters promise healing?","Promise miracles","Promise prayer, preach Jesus"],"e_counsel":["Hundreds responded last night, and we only have twelve counsellors.","Pray for them as a group","Train 100 counsellors"],"e_pastors":["Local pastors feel bypassed by your crusades. They're wary of you.","Do it without them","Invite them to partner"],"e_away":["You've been away for three crusades in a row.","This is the season","Bring the family along"],"e_betting":["A betting company wants to sponsor your next crusade.","Accept the sponsorship","Decline politely"],"e_radio":["A radio station offers you a nightly gospel slot.","Stay on the streets","Take the slot"],"e_lang":["To truly reach this region, you need to learn the language. It will take two years.","Use interpreters","Learn the language"],"e_clinic":["The nearest clinic is 40 km away. Shall we open one here?","Focus on preaching","Open a clinic"],"e_village_school":["Our children have no school.","Pray for a government school","Start a community school"],"e_unsafe":["The area has become unsafe. Local leaders advise your team to relocate for a season.","Stay put","Relocate for a season"],"e_listen":["If you want to be heard here, first understand our ways.","Preach against them openly","Listen first, then speak"],"e_locals":["Train local believers to lead. You won't be here forever.","They aren't ready yet","Train local leaders"],"e_kids":["Life out here is hard on the children. They miss their friends and their old school.","God called us here","Home-school and visit family often"],"e_support":["Support from churches back home has dropped by half.","Cut the programmes","Tour churches to share the story"],"e_send":["Forty trained missionaries are ready. Where do we send them?","Only within Nigeria","Across West Africa"],"e_care":["Your missionaries are burning out. Who cares for the carers?","They signed up for hardship","Start a missionary care programme"],"e_reports":["Partners want a detailed report on how every naira is spent.","Too much paperwork","Publish full accounts"],"e_bible":["This language still has no Bible. Shall we fund a translation team?","Too long and too costly","Fund the translation"],"e_succ":["You're the face of the agency. What happens when you're gone?","God will provide","Appoint and train a successor board"],"e_keynote":["A global missions conference invites you to give the keynote in Cape Town.","Stay in the field","Go and recruit"],"e_home":["We've given twenty years to the field. Is it time to train others from home?","One more term","Lead from home"],"x_nepa":["NEPA has taken light in the middle of service, and the generator is coughing.","Carry on with torches and candles","Buy diesel for the big generator"],"x_fuel":["Fuel scarcity. Queues everywhere and transport fares have doubled. Fewer people can get to you.","Pray for the nation","Organise shuttles for people"],"x_naira":["The naira has crashed again. Prices have doubled and giving is down.","Cut costs and wait it out","Start a food bank for struggling families"],"x_asuu":["ASUU strike. The universities are shut and the young people are home with nothing to do.","Not our problem","Run a skills bootcamp for them"],"x_flood":["Heavy rain has flooded the area. Families have lost their homes.","Pray from a distance","Open your doors as a shelter"],"x_election":["Election season. A candidate's convoy pulls up with a 'gift for the work of God'.","Pray for all candidates, take nothing","Accept the gift"],"x_japa":["Five of your best workers have japa'd to the UK and Canada this year.","Bless them and train new workers","Start an online fellowship to keep them"],"x_owambe":["A big owambe falls on Sunday. Half your people will be at the party in matching aso-ebi.","Move the programme earlier","Go and bless the couple"],"x_bridge":["Third Mainland Bridge is closed for repairs. People on the Island can't get across to you.","Wait for the repairs","Start an Island house fellowship"],"x_agbero":["Agberos say you must 'settle' them before your programme can hold on their street.","Pay them off","Talk to the community head instead"],"x_network":["The bank app and POS are down nationwide. Nobody can transfer their offering or pay you.","Wait till next week","Keep calm and keep serving"],"x_heat":["The heat is unbearable and there's no light for the fans. People are fainting.","Shorten the programme","Buy water and hand fans for everyone"],"h_harvest":["Harvest thanksgiving is next Sunday. Families want to dance to the altar with their offerings.","Keep it short and simple","Full harvest, with bazaar and auction"],"h_yam":["A farmer from the village has brought 50 tubers of yam as his harvest offering.","Sell them for the building fund","Share them with widows"],"h_auction":["At the harvest auction, two chiefs are bidding wildly for a single cake.","Let them bid it up","Close the bidding and thank them both"],"h_dance":["The youth want to dance to the altar with talking drums, in Ankara.","Hymns only, please","Let them dance"],"c_cross":["Crossover night! Everyone wants to be in church when the clock strikes twelve.","A simple prayer meeting","Praise and prayer till dawn"],"c_carol":["Carol service: shall we take it out to the streets this year?","Keep it inside","Carols in the community"],"c_village":["Everyone is travelling home to the village for Christmas. Numbers will drop.","Encourage them to go","Plan a village outreach with them"],"c_bonus":["Your workers are quietly hoping for a Christmas bonus.","Not this year","Give what we can"],"f_21":["The new year has begun with 21 days of prayer and fasting. How will you lead it?","Make it optional","Lead from the front, every day"],"f_theme":["People want to hear the theme and vision for the new year.","Same as last year","Pray and write a fresh vision"],"f_january":["January is long. Everyone is broke after Christmas.","Push the building fund anyway","Pause special levies this month"],"a_drama":["Easter is coming. Shall we stage a drama of the crucifixion and resurrection?","A simple service","Stage the Easter drama"],"a_palm":["Palm Sunday: shall we march through the streets with palm fronds?","Stay inside","March and sing"],"a_retreat":["Let's take the children to the Easter retreat this year.","Too expensive","Go as a family"],"k_lead":["It's Children's Day! Can the children lead everything this Sunday?","Adults will lead","Let the children lead"],"k_party":["Shall we throw a Children's Day party for the whole street?","Only our own children","Invite every child on the street"]},"daily":[["Should a pastor's child automatically take over the church?","Yes, keep it in the family","Only if called and qualified"],["Tithe: on your gross pay or your net pay?","Gross, before tax","Net, what you take home"],["Should churches pay tax on the businesses they run, like schools and event halls?","Yes, business is business","No, it all serves the ministry"],["Members bought their pastor an expensive car as a gift. Should he accept it?","Accept it, it's a blessing","Sell it and help the poor"],["Night vigil: every Friday, or once a month?","Every Friday","Once a month is enough"],["Should churches relax dress codes like no trousers or earrings for women?","Keep the dress code","Relax it, focus on the heart"],["Afrobeats-style beats in praise and worship: yes or no?","Yes, God owns every sound","No, keep worship distinct"],["How many offerings should one service collect?","One is enough","As many as needed"],["Is online church real church?","Yes, God is everywhere","No, nothing replaces gathering"],["Should a church tell its members who to vote for?","Yes, guide the flock","No, pray but stay neutral"],["A politician offers to build the church a new hall. Accept?","Accept, it helps the church","Decline, avoid strings"],["Should a pastor also keep a day job?","Yes, like Paul the tentmaker","No, ministry is full-time"],["Should churches help members to japa?","Yes, bless their journey","No, build Nigeria"],["Should women be ordained as pastors?","Yes, God calls women too","No, keep the tradition"],["What should a growing church build first?","A school","A bigger auditorium"],["Should testimonies be checked before they are shared on the pulpit?","Yes, verify first","No, trust people's word"],["Should a gospel artist perform at a secular concert?","Yes, go where the people are","No, stay in church spaces"],["Should gospel artists charge a fee to minister in churches?","Yes, labourers deserve wages","No, freely give"],["A big owambe falls on Sunday morning. Church or party?","Church first, party later","Show love, go to the party"],["Children's church: separate service, or with the adults?","Separate, at their level","Together as a family"],["Should every church publish its accounts publicly?","Yes, full transparency","No, members can ask privately"],["Should pastors post their daily lives on social media?","Yes, it makes them relatable","No, keep some privacy"],["Can a private jet be justified for missions?","Yes, it saves time for the gospel","No, fly commercial"],["Should Sunday service end before 12 noon?","Yes, respect people's time","No, let the Spirit lead"],["Should members contribute money for their pastor's birthday?","Yes, honour your pastor","No, keep it voluntary and small"],["Preaching inside danfo buses: bold evangelism or a disturbance?","Bold evangelism","Disturbing passengers"],["Should the youth lead one full service every month?","Yes, raise them now","No, they are not ready"],["Should churches open on weekdays as free study centres for students?","Yes, use the space","No, too much cost and risk"],["Should a gospel artist sing at a politician's campaign rally?","Yes, if paid fairly","No, stay out of politics"],["Is it okay to borrow money to pay your tithe?","Yes, never miss your tithe","No, give from what you have"]],"stages":{"p":["Bible study group","House fellowship","Growing church","Regional church","Camp & institutions","Global mission"],"g":["Choir member","Lead worshipper","First single","Debut album","National tours","Songs for the nations"],"e":["Street evangelist","Campus outreach","City crusades","Mission field","Missions agency","To the nations"]},"endings":{"f0":["Running on empty","Every lasting ministry is built on a private altar."],"h0":["Lost at home","Your first ministry is your family."],"c0":["The doors closed","People need a shepherd who stays close to them."],"c100":["Spread too thin","Raise leaders before you raise crowds."],"o0":["The bills won","Vision needs provision, planning and wise stewardship."],"o100":["Money became the message","Transparency protects the work God gives you."],"win":["Well done, good and faithful","Faithful in little, faithful in much."]},"badges":null};
+const BADGES = {
+  first:     ['🌱', 'First steps', 'Finish your first journey'],
+  promoted:  ['📈', 'Rising', 'Reach the fourth season of any calling'],
+  finished:  ['👑', 'Good and faithful', 'Complete a whole journey'],
+  family:    ['🏠', 'Family first', 'End a journey with your family strong'],
+  builder:   ['🏫', 'Builder', 'Build two schools or clinics in one journey'],
+  outreach:  ['🤲', 'Hands that serve', 'Run four outreaches in one journey'],
+  nepa:      ['🕯️', 'Survived NEPA', 'Carry on by candlelight'],
+  pulpit:    ['🎤', 'Pulpit not for sale', 'Refuse a politician\'s offer'],
+  name:      ['✝️', 'Kept the Name', 'Refuse to take Jesus out of your songs'],
+  nobet:     ['🚫', 'No betting money', 'Turn down a betting sponsor'],
+  honest:    ['📏', 'Honest numbers', 'Refuse to fake your numbers'],
+  allcall:   ['🌍', 'Every calling', 'Play as a pastor, a gospel minister and an evangelist'],
+  daily5:    ['📅', 'Faithful voter', 'Answer five Daily Cards'],
+  streak3:   ['🔥', 'On fire', 'Play three days in a row'],
+  streak7:   ['⚡', 'Seven-day streak', 'Play seven days in a row'],
+  pidgin:    ['🗣️', 'Naija sabi', 'Play a journey in Pidgin']
+};
+
+const DEFAULT_API = 'https://ministrylife-votes.azubuikedavies.workers.dev';
+const CALLINGS = { p:'Pastor', g:'Gospel minister', e:'Evangelist' };
+const SERIES = [['p','--s1'],['g','--s2'],['e','--s3']];
+const $ = id => document.getElementById(id);
+const fmt = n => (n == null ? '–' : Number(n).toLocaleString('en-GB'));
+const pct = (a, b) => b ? Math.round(a / b * 100) + '%' : '–';
+const css = v => getComputedStyle(document.querySelector('.viz-root')).getPropertyValue(v).trim();
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c=>({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+const dateOf = dn => new Date(dn * 864e5).toLocaleDateString('en-GB', { day:'numeric', month:'short', timeZone:'UTC' });
+let DAYS = 30, DATA = null, SHOW_ALL_DAILY = false;
+let rz; addEventListener('resize', ()=>{ clearTimeout(rz); rz = setTimeout(()=>{ if (DATA) render(DATA); }, 150); });
+const get = k => { try { return localStorage.getItem(k); } catch(e){ return null; } };
+const set = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch(e){} };
+
+/* ---------- auth ---------- */
+function showGate(msg){ $('gate').hidden = false; $('dash').hidden = true; $('kApi').value = get('ml_admin_api') || DEFAULT_API; $('kErr').textContent = msg || ''; $('kKey').focus(); }
+$('kGo').onclick = ()=>{ set('ml_admin_api', $('kApi').value.trim().replace(/\/$/, '')); set('ml_admin_key', $('kKey').value.trim()); load(); };
+$('kKey').addEventListener('keydown', e=>{ if (e.key === 'Enter') $('kGo').click(); });
+$('logout').onclick = ()=>{ set('ml_admin_key', null); showGate('Signed out.'); };
+document.querySelectorAll('.seg button').forEach(b=>b.onclick = ()=>{ DAYS = +b.dataset.days; document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed', x === b)); load(); });
+$('refresh').onclick = ()=>load();
+
+async function load(){
+  const api = get('ml_admin_api') || DEFAULT_API, key = get('ml_admin_key');
+  if (!key) return showGate();
+  $('updated').textContent = 'Loading…';
+  try {
+    const r = await fetch(`${api}/admin/stats?days=${DAYS}`, { headers:{ Authorization:'Bearer ' + key } });
+    const j = await r.json().catch(()=>({}));
+    if (r.status === 401) return showGate('That admin key is not right.');
+    if (!r.ok) return showGate(j.error || ('Server error ' + r.status));
+    DATA = j; $('gate').hidden = true; $('dash').hidden = false; render(j);
+    $('updated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+  } catch(e){ showGate('Could not reach the worker. Check the address.'); }
+}
+
+/* ---------- tooltip ---------- */
+const tip = $('tip');
+function showTip(e, html){ tip.innerHTML = html; tip.style.opacity = 1; const w = tip.offsetWidth, h = tip.offsetHeight; let x = e.clientX + 14, y = e.clientY + 14; if (x + w > innerWidth - 8) x = e.clientX - w - 14; if (y + h > innerHeight - 8) y = e.clientY - h - 14; tip.style.left = x + 'px'; tip.style.top = y + 'px'; }
+function hideTip(){ tip.style.opacity = 0; }
+
+/* ---------- helpers ---------- */
+function dayRange(d){ const a = []; for (let i = d.from; i <= d.today; i++) a.push(i); return a; }
+function byDay(rows){ const m = {}; rows.forEach(r=>m[r.dn] = r.c); return m; }
+function niceMax(v){ if (v <= 4) return 4; const p = Math.pow(10, Math.floor(Math.log10(v))); for (const m of [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (m * p >= v) return m * p; return 10 * p; }
+function ticks(max){ return [0, max / 2, max]; }
+function legend(el, items){ $(el).innerHTML = items.map(([label, color, total])=>`<span><i style="background:var(${color})"></i>${esc(label)}${total != null ? ` · <b>${fmt(total)}</b>` : ''}</span>`).join(''); }
+
+/* line chart: series = [{label, color, values}] */
+function lineChart(el, days, series){
+  const W = Math.max(320, $(el).clientWidth || 1000), H = 240, L = 40, B = 22, T = 10, R = 46;
+  const max = niceMax(Math.max(1, ...series.flatMap(s=>s.values)));
+  const x = i => L + (days.length === 1 ? (W - L - R) / 2 : i * (W - L - R) / (days.length - 1));
+  const y = v => T + (H - T - B) * (1 - v / max);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Players per day">`;
+  ticks(max).forEach(t=>{ svg += `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}" stroke="var(--grid)" stroke-width="1"/><text x="${L - 6}" y="${y(t) + 4}" text-anchor="end">${fmt(t)}</text>`; });
+  const step = Math.ceil(days.length / Math.max(3, Math.floor(W / 110)));
+  days.forEach((d, i)=>{ if ((i % step === 0 && days.length - 1 - i >= step * .7) || i === days.length - 1) svg += `<text x="${x(i)}" y="${H - 4}" text-anchor="middle">${dateOf(d)}</text>`; });
+  series.forEach(s=>{
+    const pts = s.values.map((v, i)=>`${x(i)},${y(v)}`).join(' ');
+    svg += `<polyline points="${pts}" fill="none" stroke="var(${s.color})" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    const li = s.values.length - 1;
+    svg += `<circle cx="${x(li)}" cy="${y(s.values[li])}" r="4" fill="var(${s.color})" stroke="var(--surface)" stroke-width="2"/>`;
+    svg += `<text x="${x(li) + 8}" y="${y(s.values[li]) + 4}" style="fill:var(--ink2)">${fmt(s.values[li])}</text>`;
+  });
+  svg += `<line id="${el}_x" x1="0" x2="0" y1="${T}" y2="${H - B}" stroke="var(--axis)" stroke-width="1" visibility="hidden"/>`;
+  svg += `<rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" class="hit"/></svg>`;
+  $(el).innerHTML = svg;
+  const s = $(el).querySelector('svg'), hit = s.querySelector('.hit'), xl = s.querySelector('#' + el + '_x');
+  hit.addEventListener('mousemove', e=>{
+    const r = s.getBoundingClientRect(), px = (e.clientX - r.left) / r.width * W;
+    const i = Math.max(0, Math.min(days.length - 1, Math.round((px - L) / ((W - L - R) / Math.max(1, days.length - 1)))));
+    xl.setAttribute('x1', x(i)); xl.setAttribute('x2', x(i)); xl.setAttribute('visibility', 'visible');
+    showTip(e, `<b>${dateOf(days[i])}</b>` + series.map(sr=>`<div class="row"><span><i style="background:var(${sr.color})"></i>${esc(sr.label)}</span><span>${fmt(sr.values[i])}</span></div>`).join(''));
+  });
+  hit.addEventListener('mouseleave', ()=>{ xl.setAttribute('visibility', 'hidden'); hideTip(); });
+}
+
+/* stacked bar chart: stacks = [{label,color,values}] */
+function stackChart(el, days, stacks){
+  const W = Math.max(320, $(el).clientWidth || 1000), H = 240, L = 40, B = 22, T = 10, R = 10, gap = 2;
+  const totals = days.map((_, i)=>stacks.reduce((a, s)=>a + s.values[i], 0));
+  const max = niceMax(Math.max(1, ...totals));
+  const bw = (W - L - R) / days.length, w = Math.max(2, Math.min(28, bw * .62));
+  const y = v => T + (H - T - B) * (1 - v / max);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Journeys started per day by calling">`;
+  ticks(max).forEach(t=>{ svg += `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}" stroke="var(--grid)" stroke-width="1"/><text x="${L - 6}" y="${y(t) + 4}" text-anchor="end">${fmt(t)}</text>`; });
+  const step = Math.ceil(days.length / Math.max(3, Math.floor(W / 110)));
+  days.forEach((d, i)=>{
+    const cx = L + bw * i + bw / 2; let acc = 0;
+    const segs = stacks.map(s=>({ s, v:s.values[i] })).filter(o=>o.v > 0);
+    segs.forEach((o, k)=>{
+      const y0 = y(acc), y1 = y(acc + o.v); acc += o.v;
+      const top = k === segs.length - 1, h = Math.max(1, y0 - y1 - (k ? gap : 0));
+      const yy = y1;
+      if (top){ const r = Math.min(4, h, w / 2); svg += `<path d="M${cx - w/2},${yy + h} V${yy + r} Q${cx - w/2},${yy} ${cx - w/2 + r},${yy} H${cx + w/2 - r} Q${cx + w/2},${yy} ${cx + w/2},${yy + r} V${yy + h} Z" fill="var(${o.s.color})"/>`; }
+      else svg += `<rect x="${cx - w/2}" y="${yy}" width="${w}" height="${h}" fill="var(${o.s.color})"/>`;
+    });
+    svg += `<rect x="${L + bw * i}" y="${T}" width="${bw}" height="${H - T - B}" fill="transparent" data-i="${i}" class="hit"/>`;
+    if ((i % step === 0 && days.length - 1 - i >= step * .7) || i === days.length - 1) svg += `<text x="${cx}" y="${H - 4}" text-anchor="middle">${dateOf(d)}</text>`;
+  });
+  svg += `<line x1="${L}" x2="${W - R}" y1="${y(0)}" y2="${y(0)}" stroke="var(--axis)" stroke-width="1"/></svg>`;
+  $(el).innerHTML = svg;
+  $(el).querySelectorAll('.hit').forEach(h=>{
+    h.addEventListener('mousemove', e=>{ const i = +h.dataset.i; showTip(e, `<b>${dateOf(days[i])}</b>` + stacks.map(s=>`<div class="row"><span><i style="background:var(${s.color})"></i>${esc(s.label)}</span><span>${fmt(s.values[i])}</span></div>`).join('') + `<div class="row" style="margin-top:4px;color:var(--ink2)"><span>Total</span><span>${fmt(totals[i])}</span></div>`); });
+    h.addEventListener('mouseleave', hideTip);
+  });
+}
+
+function barList(el, rows, opts){
+  opts = opts || {};
+  if (!rows.length){ $(el).innerHTML = '<div class="empty">No data yet</div>'; return; }
+  const max = Math.max(...rows.map(r=>r.value)), tot = opts.total || rows.reduce((a, r)=>a + r.value, 0);
+  $(el).innerHTML = rows.map(r=>`<div class="row" title="${esc(r.title || r.label)}"><span class="lab">${esc(r.label)}</span><span class="bar"><span style="width:${max ? r.value / max * 100 : 0}%;background:var(${r.color || '--s1'})"></span></span><span class="val">${fmt(r.value)}${opts.pct ? ` <span style="color:var(--muted)">${pct(r.value, tot)}</span>` : ''}</span></div>`).join('');
+}
+function table(el, head, rows){
+  if (!rows.length){ $(el).innerHTML = '<div class="empty">No data yet</div>'; return; }
+  $(el).innerHTML = `<table><thead><tr>${head.map(h=>`<th class="${h[1] || ''}">${esc(h[0])}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c, i)=>`<td class="${head[i][1] || ''}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+
+/* ---------- render ---------- */
+function render(d){
+  const days = dayRange(d), act = byDay(d.active), nw = byDay(d.newPlayers), today = d.today;
+  const startsBy = {}; d.starts.forEach(r=>{ (startsBy[r.path] = startsBy[r.path] || {})[r.dn] = r.c; });
+  const startsToday = d.starts.filter(r=>r.dn === today).reduce((a, r)=>a + r.c, 0);
+  const startsYday = d.starts.filter(r=>r.dn === today - 1).reduce((a, r)=>a + r.c, 0);
+  const votesBy = {}; d.daily.forEach(r=>{ const k = r.day; votesBy[k] = votesBy[k] || { L:0, R:0 }; votesBy[k][r.side] = r.c; });
+  const vt = votesBy['d' + today] || { L:0, R:0 }, vy = votesBy['d' + (today - 1)] || { L:0, R:0 };
+  const delta = (a, b)=> b ? `${a >= b ? '▲' : '▼'} ${fmt(Math.abs(a - b))} vs yesterday` : 'Yesterday: 0';
+  $('k1').textContent = fmt(act[today] || 0); $('k1d').textContent = delta(act[today] || 0, act[today - 1] || 0);
+  $('k2').textContent = fmt(nw[today] || 0); $('k2d').textContent = delta(nw[today] || 0, nw[today - 1] || 0);
+  $('k3').textContent = fmt(startsToday); $('k3d').textContent = delta(startsToday, startsYday);
+  $('k4').textContent = fmt(vt.L + vt.R); $('k4d').textContent = delta(vt.L + vt.R, vy.L + vy.R);
+  $('k5').textContent = fmt(d.totals.weekly); $('k5d').textContent = `${fmt(d.totals.period)} in the last ${d.days} days`;
+  $('k6').textContent = fmt(d.totals.players); $('k6d').textContent = `${fmt(d.totals.games)} journeys started all-time`;
+  const ret1 = d.retention.filter(r=>r.dn <= today - 1), ret7 = d.retention.filter(r=>r.dn <= today - 13);
+  const sum = (a, k)=>a.reduce((x, r)=>x + (r[k] || 0), 0);
+  $('k7').textContent = pct(sum(ret1, 'r1'), sum(ret1, 'newp')); $('k7d').textContent = `of ${fmt(sum(ret1, 'newp'))} new players`;
+  $('k8').textContent = ret7.length ? pct(sum(ret7, 'r7'), sum(ret7, 'newp')) : '–'; $('k8d').textContent = ret7.length ? `of ${fmt(sum(ret7, 'newp'))} new players` : 'Needs two weeks of data';
+
+  const sA = days.map(x=>act[x] || 0), sN = days.map(x=>nw[x] || 0);
+  legend('lgPlayers', [['Active players', '--s1', sA.reduce((a, b)=>a + b, 0)], ['New players', '--s2', sN.reduce((a, b)=>a + b, 0)]]);
+  lineChart('chPlayers', days, [{ label:'Active players', color:'--s1', values:sA }, { label:'New players', color:'--s2', values:sN }]);
+
+  const stacks = SERIES.map(([p, c])=>({ label:CALLINGS[p], color:c, values:days.map(x=>(startsBy[p] || {})[x] || 0) }));
+  legend('lgGames', stacks.map(s=>[s.label, s.color, s.values.reduce((a, b)=>a + b, 0)]));
+  stackChart('chGames', days, stacks);
+  table('tbGames', [['Date', 'date'], ...stacks.map(s=>[s.label, 'num']), ['Total', 'num']], days.slice().reverse().map((x, j)=>{ const i = days.length - 1 - j; const t = stacks.reduce((a, s)=>a + s.values[i], 0); return [dateOf(x), ...stacks.map(s=>fmt(s.values[i])), fmt(t)]; }));
+  $('tgGames').onclick = ()=>{ const h = $('tbGames').hidden; $('tbGames').hidden = !h; $('tgGames').textContent = h ? 'Hide table' : 'Show as table'; };
+
+  const pathTot = SERIES.map(([p, c])=>({ label:CALLINGS[p], value:stacks[SERIES.findIndex(s=>s[0] === p)].values.reduce((a, b)=>a + b, 0), color:c }));
+  const langRows = d.lang.filter(r=>r.lang).map(r=>({ label:r.lang === 'pg' ? 'Pidgin' : 'English', value:r.c }));
+  const devRows = d.device.map(r=>({ label:r.mobile ? 'Phone' : 'Computer', value:r.c }));
+  $('blMix').innerHTML = '';
+  const mix = [['Calling', pathTot], ['Language', langRows], ['Device', devRows]];
+  $('blMix').innerHTML = mix.map(([h], i)=>`<div style="font-size:12px;font-weight:600;margin:${i ? 12 : 0}px 0 2px">${h}</div><div id="mix${i}"></div>`).join('');
+  mix.forEach(([, rows], i)=>barList('mix' + i, rows, { pct:true }));
+
+  const endTot = d.endings.reduce((a, r)=>a + r.c, 0);
+  barList('blEnd', d.endings.slice().sort((a, b)=>b.c - a.c).map(r=>({ label:(META.endings[r.k] || [r.k])[0], title:(META.endings[r.k] || [, ''])[1], value:r.c })), { pct:true, total:endTot });
+
+  const stageRows = [];
+  for (let s = 0; s < 6; s++){
+    const row = [`<span class="tag">Season ${s + 1}</span>`];
+    SERIES.forEach(([p])=>{ const c = (d.stages.find(r=>r.path === p && r.stage === s) || {}).c || 0; const tot = d.stages.filter(r=>r.path === p).reduce((a, r)=>a + r.c, 0); row.push(`${esc(META.stages[p][s] || '')}<div class="inbar"><span style="width:${tot ? c / tot * 100 : 0}%;background:var(${SERIES.find(x=>x[0] === p)[1]})"></span></div><div style="color:var(--muted);font-size:12px">${fmt(c)} · ${pct(c, tot)}</div>`); });
+    stageRows.push(row);
+  }
+  table('tbStage', [['Reached'], ...SERIES.map(([p])=>[CALLINGS[p]])], stageRows);
+
+  const dailyRows = Object.keys(votesBy).sort().reverse().slice(0, SHOW_ALL_DAILY ? 999 : 10).map(k=>{
+    const n = parseInt(k.slice(1), 10), q = META.daily[n % META.daily.length], v = votesBy[k], tot = v.L + v.R;
+    return [dateOf(n), esc(q[0]), `${esc(q[1])}<div class="inbar"><span style="width:${tot ? v.L / tot * 100 : 0}%"></span></div>`, `<b>${pct(v.L, tot)}</b>`, `${esc(q[2])}<div class="inbar"><span style="width:${tot ? v.R / tot * 100 : 0}%;background:var(--s2)"></span></div>`, `<b>${pct(v.R, tot)}</b>`, fmt(tot)];
+  });
+  table('tbDaily', [['Date', 'date'], ['Question'], ['Option A'], ['', 'num'], ['Option B'], ['', 'num'], ['Votes', 'num']], dailyRows);
+
+  const ch = Object.entries(d.choices).map(([id, v])=>({ id, L:v.L, R:v.R, n:v.L + v.R })).filter(o=>META.cards[o.id]).sort((a, b)=>b.n - a.n).slice(0, 20);
+  table('tbChoice', [['Card'], ['Left choice'], ['', 'num'], ['Right choice'], ['', 'num'], ['Answers', 'num']], ch.map(o=>{
+    const c = META.cards[o.id];
+    return [esc(c[0]), `${esc(c[1])}<div class="inbar"><span style="width:${o.L / o.n * 100}%"></span></div>`, `<b>${pct(o.L, o.n)}</b>`, `${esc(c[2])}<div class="inbar"><span style="width:${o.R / o.n * 100}%;background:var(--s2)"></span></div>`, `<b>${pct(o.R, o.n)}</b>`, fmt(o.n)];
+  }));
+
+  barList('blCountry', d.countries.map(r=>({ label:r.country || 'Unknown', value:r.c })), { pct:true });
+  barList('blBadge', d.badges.map(r=>({ label:BADGES[r.k] ? `${BADGES[r.k][0]} ${BADGES[r.k][1]}` : r.k, value:r.c })));
+  const shareNames = { card:'End card (share)', card_whatsapp:'End card (WhatsApp)', daily:'Daily Card (share)', daily_whatsapp:'Daily Card (WhatsApp)' };
+  barList('blShare', d.shares.map(r=>({ label:shareNames[r.k] || r.k, value:r.c })));
+  table('tbAvg', [['Calling'], ['Journeys', 'num'], ['Avg cards', 'num'], ['Avg size', 'num']], d.averages.filter(r=>r.path).map(r=>[CALLINGS[r.path], fmt(r.c), fmt(Math.round(r.turns || 0)), fmt(Math.round(r.members || 0))]));
+
+  $('tgDaily').hidden = Object.keys(votesBy).length <= 10; $('tgDaily').textContent = SHOW_ALL_DAILY ? 'Show fewer days' : 'Show all days';
+  $('tgDaily').onclick = ()=>{ SHOW_ALL_DAILY = !SHOW_ALL_DAILY; render(DATA); };
+  table('tbRecent', [['When'], ['Calling'], ['Ending'], ['Season'], ['Size', 'num'], ['Cards', 'num'], ['Lang'], ['Where']], d.recent.map(r=>[
+    new Date(r.ts).toLocaleString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }),
+    esc(CALLINGS[r.path] || '–'), esc((META.endings[r.k] || [r.k])[0]), esc(r.path && META.stages[r.path] ? META.stages[r.path][r.x] || '' : ''),
+    fmt(r.y), fmt(r.n), r.lang === 'pg' ? 'Pidgin' : 'English', esc((r.country || '–') + (r.mobile ? ' · phone' : ' · computer'))]));
+}
+load();
+</script>
+</body>
+</html>

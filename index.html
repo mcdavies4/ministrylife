@@ -280,6 +280,7 @@ body.menu #app{visibility:hidden}
 
     <div class="how"><strong>How to play.</strong> Swipe each card left or right, or tap a button. Every choice moves four things: <strong>Faith 🙏</strong>, <strong>Flock 👥</strong> (your people), <strong>Finances 💰</strong> and <strong>Family 🏠</strong>. Watch out for <strong>Naija news</strong>: NEPA, fuel scarcity, ASUU strikes and more can hit at any time. If faith or family runs dry, or your flock or finances hit zero or grow beyond what you can steward, the journey pauses with a lesson. As you grow you'll unlock <strong>Heroes of Faith</strong>: true milestones from the lives of Nigerian ministers, gospel artists and missionaries. Collect them all in the <strong>Hall of Faith</strong>.</div>
     <p class="fine" id="iBest"></p>
+    <p class="fine">Anonymous play stats (never your name) help us improve the game.</p>
     <p class="fine">Your journey is fictional. Every Hero of Faith card is a true milestone from public sources, with the source shown.</p>
   </div>
 </section>
@@ -1176,6 +1177,25 @@ async function api(path, body){
   } finally { clearTimeout(timer); }
 }
 
+/* ================= ANONYMOUS USAGE STATS (no names) ================= */
+const Track = (function(){
+  let q = [], timer = null;
+  function flush(beacon){
+    if (!q.length || !VOTE_API) return;
+    const body = JSON.stringify({ uid: clientId(), ev: q.splice(0, 25) });
+    if (beacon && navigator.sendBeacon){ try { if (navigator.sendBeacon(VOTE_API + '/e', new Blob([body], { type:'text/plain' }))) return; } catch(e){} }
+    try { fetch(VOTE_API + '/e', { method:'POST', body, headers:{ 'Content-Type':'text/plain' }, keepalive:true }).catch(()=>{}); } catch(e){}
+    if (q.length) setTimeout(()=>flush(beacon), 400);
+  }
+  function add(type, d){ q.push(Object.assign({ type }, d || {})); clearTimeout(timer); timer = setTimeout(flush, 2500); }
+  addEventListener('pagehide', ()=>flush(true));
+  document.addEventListener('visibilitychange', ()=>{ if (document.hidden) flush(true); });
+  return {
+    add, flush,
+    visit(lang){ const d = dayIndex(); if (load('ministrylife_lastvisit') !== d){ store('ministrylife_lastvisit', d); add('visit', { lang }); } }
+  };
+})();
+
 /* ================= STATS, STREAKS, BADGES ================= */
 const STATS = 'ministrylife_stats_v1';
 function stats(){ const s = load(STATS) || {}; return Object.assign({ last:null, streak:0, best:0, games:0, daily:0, dailyDays:{}, callings:{}, badges:{}, blessing:false }, s); }
@@ -1212,7 +1232,7 @@ const BADGE_ON_CHOICE = {
 };
 function award(id){
   const s = stats(); if (s.badges[id] || !BADGES[id]) return;
-  s.badges[id] = Date.now(); saveStats(s);
+  s.badges[id] = Date.now(); saveStats(s); Track.add('badge', { k:id });
   const b = BADGES[id];
   setTimeout(()=>{ toast(`${b[0]} Badge unlocked: ${b[1]}`); Sound.play('chime'); }, 700);
 }
@@ -1299,7 +1319,8 @@ const card = () => deckOf().find(c=>c.id===G.cardId);
 function newGame(name, ministry, path, sex){
   G = { name, ministry, path, sex, f:55, c:50, o:50, h:60, members:PATHS[path].start, week:1, turn:0, stage:0,
         tags:{F:0,W:0,S:0,E:0,B:0}, legacy:{leaders:0,outreach:0,schools:0,songs:path==='g'?1:0,trained:0},
-        heroes:0, heroIds:[], fx:{}, used:{}, recent:[], cardId:null };
+        heroes:0, heroIds:[], fx:{}, log:[], used:{}, recent:[], cardId:null };
+  Track.add('start', { path, lang:LANG, k:SEASON || '' });
   G.cardId = nextCard().id;
   const st = stats();
   if (st.blessing){ G.f = clamp(G.f + 5); st.blessing = false; saveStats(st); G._blessed = true; }
@@ -1398,6 +1419,7 @@ function apply(side){
   MK.forEach(k=>{ if (fx[k]) G[k] = clamp(G[k] + fx[k]); });
   if ((fx.c || 0) >= 10 || Object.keys(ex).length) World.burst(fx.c >= 15 ? 20 : 12);
   const bk = BADGE_ON_CHOICE[c.id + ':' + side]; if (bk) award(bk);
+  (G.log = G.log || []).push(c.id + ':' + side);
   G.fx = G.fx || {};
   if (c.wfx) G.fx[c.wfx] = G.turn + 4;
   if (ex.fx) G.fx[ex.fx] = G.turn + 4;
@@ -1484,6 +1506,7 @@ async function finish(key){
   if (!best[G.path] || G.members > best[G.path]){ best[G.path] = G.members; store(BEST, best); }
   renderMeters(); renderStatus(); World.sync(G);
   Sound.play(won ? 'amen' : 'sad');
+  Track.add('end', { path:G.path, lang:LANG, k:key, n:G.turn, x:G.stage, y:G.members, v:(G.log || []).join(',') }); Track.flush();
   { const st = stats(); st.games++; st.callings[G.path] = 1; saveStats(st);
     award('first'); if (won) award('finished'); if (G.h >= 60) award('family');
     if ((G.legacy.schools || 0) >= 2) award('builder'); if ((G.legacy.outreach || 0) >= 4) award('outreach');
@@ -1567,7 +1590,7 @@ function shareText(){
   const c = window._card;
   return `My Ministry Life journey: ${G.ministry} reached ${fmt(G.members)} ${cfg().unit}. I'm ${c.type[0]}. Answer the call: https://${GAME_URL}`;
 }
-$('eShare').onclick = async ()=>{
+$('eShare').onclick = async ()=>{ Track.add('share', { k:'card' });
   const c = window._card; if (!c) return;
   const blob = await new Promise(r=>c.cv.toBlob(r,'image/png'));
   const file = new File([blob], 'ministry-life-journey.png', { type:'image/png' });
@@ -1576,7 +1599,7 @@ $('eShare').onclick = async ()=>{
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
   toast('Card saved. Share your testimony.');
 };
-$('eWa').onclick = ()=>{ window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank'); };
+$('eWa').onclick = ()=>{ Track.add('share', { k:'card_whatsapp' }); window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank'); };
 function showHall(){
   const got = stats().badges;
   $('badgeList').innerHTML = Object.entries(BADGES).map(([k, b])=>`<div class="bd ${got[k] ? 'got' : ''}" title="${b[2]}"><span class="i">${b[0]}</span>${b[1]}</div>`).join('');
@@ -1660,8 +1683,8 @@ function dailyShareText(){
 $('iDaily').onclick = showDaily;
 $('dL').onclick = ()=>voteDaily('L'); $('dR').onclick = ()=>voteDaily('R');
 $('dBack').onclick = ()=>{ $('daily').classList.remove('on'); showIntro(); };
-$('dWa').onclick = ()=>window.open('https://wa.me/?text=' + encodeURIComponent(dailyShareText()), '_blank');
-$('dShare').onclick = async ()=>{
+$('dWa').onclick = ()=>Track.add('share', { k:'daily_whatsapp' }) || window.open('https://wa.me/?text=' + encodeURIComponent(dailyShareText()), '_blank');
+$('dShare').onclick = async ()=>{ Track.add('share', { k:'daily' });
   const text = dailyShareText();
   try { if (navigator.share){ await navigator.share({ text }); return; } } catch(e){ if (e.name === 'AbortError') return; }
   try { await navigator.clipboard.writeText(text); toast('Copied. Paste it anywhere.'); } catch(e){ window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); }
@@ -2215,6 +2238,7 @@ $('iCont').onclick = ()=>{
 
 buildMeters();
 showIntro();
+Track.visit(LANG);
 </script>
 </body>
 </html>
