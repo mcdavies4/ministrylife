@@ -121,7 +121,38 @@ body.menu #app{visibility:hidden}
 .screen.on{display:flex}
 #intro{background:radial-gradient(ellipse at 50% 28%,#5B1A9E 0%,#2B0B4F 38%,#14051F 82%)}
 .screen.dim{background:rgba(20,5,31,.97)}
-.screen.academy,.screen.lesson{background:#14051F}
+.screen.academy,.screen.lesson,.screen.cupS,.screen.bqS{background:#14051F}
+.cupS .dT,.bqS .dT{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(34px,10vw,46px);line-height:1;color:var(--paper);margin:6px 0 12px}
+.two2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.two2 .btn{font-size:17px;padding:13px 8px}
+.cup-sel{width:100%;padding:12px;border-radius:6px;border:2px solid var(--gold);background:#1F0A36;color:var(--paper);font:600 16px 'Archivo',sans-serif;margin:4px 0 14px}
+.cup-last{background:rgba(242,183,5,.14);border-radius:8px;padding:10px 12px;font-weight:800;color:var(--gold-hi);margin-bottom:12px}
+#cupList{display:flex;flex-direction:column;gap:8px;text-align:left;margin-bottom:14px}
+.cup-row{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.05)}
+.cup-row.me{background:rgba(242,183,5,.16);outline:2px solid var(--gold)}
+.cup-row .rk{font-size:20px;text-align:center;font-weight:800;color:var(--lilac)}
+.cup-row .nm{font-weight:700;min-width:0}
+.cup-row .bar{display:block;height:6px;border-radius:3px;background:rgba(255,255,255,.1);margin-top:6px;overflow:hidden}
+.cup-row .bar i{display:block;height:100%;background:var(--gold)}
+.cup-row .pt{text-align:right}
+.cup-row .pt b{display:block;font-size:18px;color:var(--gold-hi)}
+.cup-row .pt small{color:var(--lilac);font-size:12px}
+.cup-empty,.cup-gap{color:var(--lilac);text-align:center;padding:10px}
+.cup-status{color:var(--lilac);min-height:1.2em}
+.bq-ch{background:rgba(242,183,5,.14);border-radius:8px;padding:14px;font-size:18px;margin-bottom:12px;text-align:center}
+.bq-timer{height:8px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden;margin:8px 0 4px}
+.bq-timer i{display:block;height:100%;width:100%;background:var(--gold);transition:width .1s linear}
+.bq-timer i.low{background:var(--red)}
+.bq-score{text-align:center;margin:8px 0 14px}
+.bq-score b{display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:72px;line-height:1;color:var(--gold-hi)}
+.bq-score b small{font-size:32px;color:var(--lilac)}
+.bq-score span{font-weight:800;font-size:18px}
+.bq-vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;text-align:center;background:rgba(255,255,255,.06);border-radius:8px;padding:12px;margin-bottom:8px}
+.bq-vs b{display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:40px;color:var(--paper)}
+.bq-vs small{color:var(--lilac);font-weight:700}
+.bq-vs .vs{color:var(--gold-hi);font-weight:800}
+.bq-verdict{font-weight:800;text-align:center;margin-bottom:12px}
+.e-cup{margin:10px 0 0;padding:10px 12px;border-radius:8px;background:rgba(242,183,5,.14);font-weight:700;color:var(--gold-hi);cursor:pointer}
 .screen .inner{margin:auto;width:100%;max-width:400px;text-align:center}
 .kicker{font-weight:800;font-size:14px;color:var(--gold);display:inline-block;margin-bottom:6px}
 .title{font-family:'Anton',Impact,sans-serif;font-size:clamp(58px,18vw,84px);line-height:.9;color:var(--paper);text-shadow:4px 4px 0 var(--purple),8px 8px 0 rgba(0,0,0,.35);letter-spacing:.01em}
@@ -312,6 +343,7 @@ body.menu #app{visibility:hidden}
     <p class="season-banner" id="iSeason" hidden></p>
     <button class="btn daily-btn" id="iDaily">📅 Today's Daily Card<span class="new" id="iDailyNew">NEW</span></button>
     <button class="btn acad-btn" id="iAcad">🎓 Ministry Academy</button>
+    <div class="two2"><button class="btn acad-btn" id="iCup">⛪ Church Cup</button><button class="btn acad-btn" id="iQuiz">📖 Bible Quiz</button></div>
     <p class="streak" id="iStreak"></p>
     <p class="tagline">Start with a Bible study in your sitting room, a seat in the choir or a bag of tracts at the bus park. Build a ministry that outlives you, the way the heroes of faith did.</p>
     <div class="field">
@@ -347,6 +379,7 @@ body.menu #app{visibility:hidden}
     <button class="btn" id="iStart">Begin the journey</button>
     <button class="btn ghost" id="iCont" style="display:none">Continue your journey</button>
     <button class="btn ghost" id="iHall">🏛️ Hall of Faith</button>
+    <button class="btn ghost" id="iInstall" hidden>📲 Add to your home screen · plays offline</button>
 
     <div class="how"><strong>How to play.</strong> Swipe each card left or right, or tap a button. Every choice moves four things: <strong>Faith 🙏</strong>, <strong>Flock 👥</strong> (your people), <strong>Finances 💰</strong> and <strong>Family 🏠</strong>. Watch out for <strong>Naija news</strong>: NEPA, fuel scarcity, ASUU strikes and more can hit at any time. If faith or family runs dry, or your flock or finances hit zero or grow beyond what you can steward, the journey pauses with a lesson. As you grow you'll unlock <strong>Heroes of Faith</strong>: true milestones from the lives of Nigerian ministers, gospel artists and missionaries. Collect them all in the <strong>Hall of Faith</strong>.</div>
     <p class="fine" id="iBest"></p>
@@ -455,12 +488,38 @@ body.menu #app{visibility:hidden}
   </div>
 </section>
 
+<section class="screen dim cupS" id="cup">
+  <div class="inner">
+    <div class="kicker">Represent your church</div>
+    <h2 class="dT">Church Cup</h2>
+    <p class="acsub" id="cupSub"></p>
+    <label class="lbl" for="cupSel">My church</label>
+    <select class="cup-sel" id="cupSel"></select>
+    <p class="cup-last" id="cupLast" hidden></p>
+    <p class="cup-status" id="cupStatus"></p>
+    <div id="cupList"></div>
+    <p class="acnext" id="cupRules"></p>
+    <button class="btn" id="cupWa">Rally your church on WhatsApp</button>
+    <button class="btn ghost" id="cupBack">Back</button>
+    <p class="fine">Church names are only used to group players. Ministry Life is independent and not affiliated with any church.</p>
+  </div>
+</section>
+
+<section class="screen dim bqS" id="bq">
+  <div class="inner">
+    <div class="kicker">Know the Book</div>
+    <h2 class="dT">Bible Quiz Challenge</h2>
+    <div class="quiz" id="bqBody"></div>
+  </div>
+</section>
+
 <section class="screen dim end" id="end">
   <div class="inner">
     <div class="kicker" id="eKick"></div>
     <h2 id="eTitle"></h2>
     <p class="desc" id="eDesc"></p>
     <div class="lessonbox" id="eLesson"></div>
+    <p class="e-cup" id="eCup" role="button" tabindex="0"></p>
     <img id="eImg" alt="Your ministry journey share card">
     <div class="two">
       <button class="btn" id="eShare">Share card</button>
@@ -1342,7 +1401,8 @@ const BADGES = {
   streak7:   ['⚡', 'Seven-day streak', 'Play seven days in a row'],
   pidgin:    ['🗣️', 'Naija sabi', 'Play a journey in Pidgin'],
   student:   ['🎓', 'Student of ministry', 'Complete your first Academy lesson'],
-  scholar:   ['📜', 'Academy graduate', 'Complete all 12 Academy lessons']
+  scholar:   ['📜', 'Academy graduate', 'Complete all 12 Academy lessons'],
+  quizmaster:['📖', 'Bible scholar', 'Score 10 out of 10 in the Bible Quiz']
 };
 const BADGE_ON_CHOICE = {
   'x_nepa:L':'nepa', 'p_pulpit:L':'pulpit', 'x_election:L':'pulpit', 'g_name:L':'name',
@@ -1815,6 +1875,241 @@ function tryRescue(end){
   return true;
 }
 
+/* ================= COMMUNITY: CHURCH CUP + BIBLE QUIZ CHALLENGE ================= */
+// keys must match CHURCHES in worker/worker.js
+const CHURCHES = [
+  ['rccg', 'RCCG'], ['winners', 'Winners (Living Faith)'], ['deeper', 'Deeper Life'], ['mfm', 'MFM'],
+  ['christembassy', 'Christ Embassy'], ['cac', 'CAC'], ['anglican', 'Anglican'], ['catholic', 'Catholic'],
+  ['methodist', 'Methodist'], ['baptist', 'Baptist'], ['ecwa', 'ECWA'], ['aog', 'Assemblies of God'],
+  ['foursquare', 'Foursquare'], ['cands', 'Cherubim & Seraphim'], ['celestial', 'Celestial Church'],
+  ['hotr', 'House on the Rock'], ['otherpent', 'Other Pentecostal'], ['other', 'Another church']
+];
+const churchName = k => (CHURCHES.find(c=>c[0] === k) || [, ''])[1];
+const myChurch = () => { const k = load('ministrylife_church'); return churchName(k) ? k : null; };
+function setChurch(k){
+  if (!churchName(k)) return;
+  store('ministrylife_church', k);
+  Track.add('church', { k }); Track.flush();
+}
+const CUP_RULES = 'Points: finish a journey 10–35 · pass an Academy lesson 15 · vote on the Daily Card 5 · Bible Quiz up to 10. Up to 80 per player per day. The table resets every Monday.';
+const journeyPts = stage => 10 + 5 * (stage || 0);
+
+let cupData = null;
+function showCup(){
+  const sel = $('cupSel'), mine = myChurch();
+  sel.innerHTML = `<option value="">Choose your church…</option>` + CHURCHES.map(([k, n])=>`<option value="${k}"${k === mine ? ' selected' : ''}>${escH(n)}</option>`).join('');
+  $('cupRules').textContent = CUP_RULES;
+  $('cup').classList.add('on'); $('cup').scrollTop = 0;
+  renderCup(); loadCup();
+}
+async function loadCup(){
+  $('cupStatus').textContent = cupData ? '' : 'Loading this week’s table…';
+  try { cupData = await api('/churches'); $('cupStatus').textContent = ''; }
+  catch(e){ if (!cupData) $('cupStatus').textContent = 'Couldn’t load the table. Check your connection and try again.'; }
+  renderCup();
+}
+function renderCup(){
+  const mine = myChurch(), rows = (cupData && cupData.rows || []).filter(r=>churchName(r.k));
+  $('cupSub').textContent = mine ? `You’re playing for ${churchName(mine)}` : 'Pick your church and every journey earns it points.';
+  const last = cupData && cupData.last && churchName(cupData.last.k) ? `🏆 Last week’s champion: ${churchName(cupData.last.k)}` : '';
+  $('cupLast').textContent = last; $('cupLast').hidden = !last;
+  if (!cupData){ $('cupList').innerHTML = ''; return; }
+  if (!rows.length){ $('cupList').innerHTML = `<p class="cup-empty">No points yet this week. ${mine ? `Play a journey and put ${escH(churchName(mine))} on top!` : 'Pick your church and be the first on the table!'}</p>`; return; }
+  const top = rows[0].pts || 1;
+  let html = rows.slice(0, 12).map((r, i)=>cupRow(r, i, top, mine)).join('');
+  const mi = rows.findIndex(r=>r.k === mine);
+  if (mi >= 12) html += `<div class="cup-gap">…</div>` + cupRow(rows[mi], mi, top, mine);
+  $('cupList').innerHTML = html;
+}
+function cupRow(r, i, top, mine){
+  const medal = ['🥇', '🥈', '🥉'][i] || `${i + 1}`;
+  return `<div class="cup-row${r.k === mine ? ' me' : ''}"><span class="rk">${medal}</span><span class="nm">${escH(churchName(r.k))}<span class="bar"><i style="width:${Math.max(4, r.pts / top * 100)}%"></i></span></span><span class="pt"><b>${fmtN(r.pts)}</b><small>${fmtN(r.players)} player${r.players === 1 ? '' : 's'}</small></span></div>`;
+}
+const fmtN = n => (n || 0).toLocaleString('en-GB');
+function cupShareText(){
+  const mine = myChurch(), rows = cupData && cupData.rows || [], i = rows.findIndex(r=>r.k === mine);
+  const link = `https://${GAME_URL}/?c=${mine || ''}`;
+  if (!mine) return `⛪ Which church is leading the Ministry Life Church Cup this week? Play for yours: https://${GAME_URL}`;
+  return i >= 0
+    ? `⛪ ${churchName(mine)} is #${i + 1} in the Ministry Life Church Cup this week! Every journey you play earns points for us. Come and play for ${churchName(mine)}: ${link}`
+    : `⛪ I’m playing for ${churchName(mine)} in the Ministry Life Church Cup. Join me and let’s top the table this week: ${link}`;
+}
+
+/* ----- Bible Quiz Challenge ----- */
+// [question, [correct, wrong, wrong, wrong]]  (KJV wording; the correct answer is always listed first and shuffled on screen)
+const BQ = [
+  ['Who built the ark?', ['Noah', 'Moses', 'Abraham', 'Elijah']],
+  ['How many days and nights did it rain in the flood?', ['40', '7', '100', '12']],
+  ['Who was swallowed by a great fish?', ['Jonah', 'Jeremiah', 'Peter', 'Daniel']],
+  ['What did God create on the first day?', ['Light', 'Animals', 'Man', 'The stars']],
+  ['Who led Israel out of Egypt?', ['Moses', 'Joshua', 'Aaron', 'Samuel']],
+  ['Who killed Goliath?', ['David', 'Saul', 'Jonathan', 'Samson']],
+  ['Whose walls fell after Israel marched around the city?', ['Jericho', 'Jerusalem', 'Babylon', 'Nineveh']],
+  ['Who was thrown into the den of lions?', ['Daniel', 'Shadrach', 'Joseph', 'Elisha']],
+  ['Shadrach, Meshach and who were thrown into the fiery furnace?', ['Abednego', 'Belteshazzar', 'Barnabas', 'Ebedmelech']],
+  ['In which town was Jesus born?', ['Bethlehem', 'Nazareth', 'Jerusalem', 'Capernaum']],
+  ['Who baptised Jesus?', ['John the Baptist', 'Peter', 'Andrew', 'James']],
+  ['How many apostles did Jesus choose?', ['12', '7', '70', '10']],
+  ['Who betrayed Jesus?', ['Judas Iscariot', 'Peter', 'Thomas', 'Pilate']],
+  ['Who denied Jesus three times?', ['Peter', 'John', 'Judas', 'Thomas']],
+  ['What was Jesus’ first miracle, at Cana?', ['Water into wine', 'Feeding the 5,000', 'Walking on water', 'Raising Lazarus']],
+  ['How many loaves fed the five thousand?', ['Five', 'Seven', 'Twelve', 'Two']],
+  ['Who was the first king of Israel?', ['Saul', 'David', 'Solomon', 'Samuel']],
+  ['Which king asked God for wisdom?', ['Solomon', 'David', 'Saul', 'Hezekiah']],
+  ['Which disciple would not believe until he saw the risen Jesus?', ['Thomas', 'Philip', 'Bartholomew', 'Matthew']],
+  ['On which feast day did the Holy Spirit come in Acts 2?', ['Pentecost', 'Passover', 'Tabernacles', 'The Sabbath']],
+  ['Saul of Tarsus met Jesus on the road to…', ['Damascus', 'Emmaus', 'Jericho', 'Antioch']],
+  ['Who was sold by his brothers and taken to Egypt?', ['Joseph', 'Benjamin', 'Reuben', 'Judah']],
+  ['On which mountain were the Ten Commandments given?', ['Sinai', 'Carmel', 'Zion', 'The Mount of Olives']],
+  ['Who called down fire from heaven on Mount Carmel?', ['Elijah', 'Elisha', 'Moses', 'Samuel']],
+  ['Who was the mother of the prophet Samuel?', ['Hannah', 'Sarah', 'Ruth', 'Rachel']],
+  ['Who said, “Whither thou goest, I will go”?', ['Ruth', 'Naomi', 'Esther', 'Deborah']],
+  ['Which queen said, “If I perish, I perish”?', ['Esther', 'Vashti', 'Jezebel', 'The Queen of Sheba']],
+  ['Whose great strength was tied to his uncut hair?', ['Samson', 'Gideon', 'Goliath', 'Jephthah']],
+  ['What is the first book of the New Testament?', ['Matthew', 'Mark', 'Acts', 'Romans']],
+  ['What is the last book of the Bible?', ['Revelation', 'Jude', 'Malachi', 'Acts']],
+  ['How many books are in the Protestant Bible?', ['66', '72', '39', '27']],
+  ['How many books are in the New Testament?', ['27', '39', '21', '66']],
+  ['Which is the shortest verse in the King James Bible?', ['Jesus wept.', 'Pray without ceasing.', 'Rejoice evermore.', 'God is love.']],
+  ['Whom did Jesus raise after four days in the tomb?', ['Lazarus', 'Jairus’ daughter', 'Dorcas', 'Eutychus']],
+  ['Who climbed a sycomore tree to see Jesus?', ['Zacchaeus', 'Nicodemus', 'Bartimaeus', 'Matthew']],
+  ['Who came to Jesus by night in John 3?', ['Nicodemus', 'Joseph of Arimathaea', 'Zacchaeus', 'Gamaliel']],
+  ['Which disciple walked on the water towards Jesus?', ['Peter', 'John', 'Andrew', 'James']],
+  ['Where is the fruit of the Spirit listed?', ['Galatians 5', 'Romans 8', 'Ephesians 6', '1 Corinthians 13']],
+  ['“The LORD is my shepherd; I shall not want” is Psalm…', ['23', '91', '1', '121']],
+  ['Where is “For God so loved the world…”?', ['John 3:16', 'John 1:1', 'Romans 8:28', 'John 14:6']],
+  ['Who wrote most of the letters in the New Testament?', ['Paul', 'Peter', 'John', 'James']],
+  ['Who was the first Christian martyr, in Acts 7?', ['Stephen', 'James', 'Peter', 'Paul']],
+  ['Which apostle had been a tax collector?', ['Matthew', 'Luke', 'Simon', 'Thaddaeus']],
+  ['Paul called Luke “the beloved…”', ['Physician', 'Fisherman', 'Tentmaker', 'Scribe']],
+  ['What was Paul’s trade?', ['Tentmaker', 'Carpenter', 'Fisherman', 'Shepherd']],
+  ['Who was Abraham’s wife?', ['Sarah', 'Rebekah', 'Leah', 'Rachel']],
+  ['Who was the son God promised to Abraham and Sarah?', ['Isaac', 'Ishmael', 'Jacob', 'Esau']],
+  ['Jacob’s name was changed to…', ['Israel', 'Judah', 'Abram', 'Peter']],
+  ['Who interpreted Pharaoh’s dreams?', ['Joseph', 'Daniel', 'Moses', 'Aaron']],
+  ['Who led Israel after Moses died?', ['Joshua', 'Caleb', 'Aaron', 'Eleazar']],
+  ['Which woman judged Israel under a palm tree?', ['Deborah', 'Jael', 'Miriam', 'Hannah']],
+  ['What did Esau sell for a bowl of pottage?', ['His birthright', 'His flock', 'His sword', 'His land']],
+  ['How many men did Gideon go to battle with?', ['300', '3,000', '10,000', '12']],
+  ['Who was Moses’ brother?', ['Aaron', 'Joshua', 'Caleb', 'Hur']],
+  ['In which river was Jesus baptised?', ['Jordan', 'Nile', 'Euphrates', 'Jabbok']],
+  ['Where was Jesus crucified?', ['Golgotha', 'Gethsemane', 'The Mount of Olives', 'Bethany']],
+  ['Where did Jesus pray on the night He was arrested?', ['Gethsemane', 'Golgotha', 'Galilee', 'Bethel']],
+  ['How many days was Jesus tempted in the wilderness?', ['40', '3', '7', '12']],
+  ['“Now faith is the substance of things hoped for” is in…', ['Hebrews 11', 'James 2', 'Romans 10', '1 John 5']],
+  ['Where is the Sermon on the Mount?', ['Matthew 5–7', 'Mark 1–3', 'John 14–16', 'Acts 1–3']],
+  ['Who is the oldest man recorded in the Bible?', ['Methuselah', 'Noah', 'Adam', 'Enoch']],
+  ['Which prophet went up by a whirlwind into heaven?', ['Elijah', 'Elisha', 'Isaiah', 'Ezekiel']],
+  ['Who asked for a double portion of Elijah’s spirit?', ['Elisha', 'Gehazi', 'Jonah', 'Obadiah']],
+  ['What did God send Israel to eat in the wilderness?', ['Manna', 'Bread from Egypt', 'Figs', 'Locusts']],
+  ['Which king saw the writing on the wall?', ['Belshazzar', 'Nebuchadnezzar', 'Darius', 'Cyrus']],
+  ['“I can do all things through Christ which strengtheneth me” is in…', ['Philippians 4', 'Romans 8', 'Isaiah 40', 'Joshua 1']],
+  ['Who was made to carry Jesus’ cross?', ['Simon of Cyrene', 'Simon Peter', 'Joseph of Arimathaea', 'Barabbas']],
+  ['Which prisoner was released instead of Jesus?', ['Barabbas', 'Silas', 'Onesimus', 'Bartimaeus']],
+  ['Whose ear did Peter cut off in the garden?', ['Malchus', 'Malchiah', 'Matthias', 'Mark']],
+  ['Who wrote the book of Revelation, on the isle of Patmos?', ['John', 'Paul', 'Peter', 'Luke']]
+];
+const BQ_N = 10, BQ_SECS = 15;
+function rng(seed){ let a = seed >>> 0; return ()=>{ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function quizFor(seed){
+  const r = rng(seed), idx = BQ.map((_, i)=>i);
+  for (let i = idx.length - 1; i > 0; i--){ const j = Math.floor(r() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  return idx.slice(0, BQ_N).map(i=>{
+    const [q, opts] = BQ[i], order = [0, 1, 2, 3];
+    for (let k = 3; k > 0; k--){ const j = Math.floor(r() * (k + 1)); [order[k], order[j]] = [order[j], order[k]]; }
+    return { q, opts: order.map(o=>opts[o]), ans: order.indexOf(0) };
+  });
+}
+let BQS = null, bqTick = null;
+function bqParams(){
+  try {
+    const p = new URLSearchParams(location.search), q = p.get('quiz');
+    if (!q || !/^[a-z0-9]{1,8}$/i.test(q)) return null;
+    const s = parseInt(p.get('s'), 10);
+    return { seed: parseInt(q, 36), score: s >= 0 && s <= BQ_N ? s : null, by: (p.get('by') || '').slice(0, 18).trim() };
+  } catch(e){ return null; }
+}
+function showQuiz(ch){
+  BQS = { ch: ch || null, seed: ch ? ch.seed : Math.floor(Math.random() * 2e9) + 1 };
+  clearInterval(bqTick);
+  const by = ch && ch.by ? escH(ch.by) : 'A friend';
+  $('bqBody').innerHTML = `
+    ${ch && ch.score != null ? `<div class="bq-ch"><b>${by}</b> scored <b>${ch.score}/${BQ_N}</b>. Can you beat that?</div>` : ch ? `<div class="bq-ch"><b>${by}</b> has challenged you to these ${BQ_N} questions.</div>` : ''}
+    <p class="acnext">${BQ_N} questions · ${BQ_SECS} seconds each. Then send the same questions to your friends and see who knows the Book best.</p>
+    <button class="btn" id="bqGo">Start the quiz</button>
+    <button class="btn ghost" id="bqBack">Back</button>`;
+  $('bqGo').onclick = ()=>{ BQS.qs = quizFor(BQS.seed); BQS.i = 0; BQS.score = 0; bqQ(); };
+  $('bqBack').onclick = closeQuiz;
+  $('bq').classList.add('on'); $('bq').scrollTop = 0;
+}
+function closeQuiz(){ clearInterval(bqTick); $('bq').classList.remove('on'); }
+function bqQ(){
+  const q = BQS.qs[BQS.i];
+  $('bqBody').innerHTML = `<div class="qn">Question ${BQS.i + 1} of ${BQ_N} · Score ${BQS.score}</div>
+    <div class="bq-timer"><i id="bqBar"></i></div>
+    <p class="qq">${escH(q.q)}</p>
+    ${q.opts.map((o, j)=>`<button class="qo" data-j="${j}">${escH(o)}</button>`).join('')}
+    <p class="qf" id="bqF"></p>`;
+  $('bqBody').querySelectorAll('.qo').forEach(b=>b.onclick = ()=>bqAnswer(+b.dataset.j));
+  const t0 = Date.now(); clearInterval(bqTick);
+  bqTick = setInterval(()=>{
+    const left = Math.max(0, BQ_SECS - (Date.now() - t0) / 1000), bar = $('bqBar');
+    if (bar){ bar.style.width = (left / BQ_SECS * 100) + '%'; bar.classList.toggle('low', left < 5); }
+    if (left <= 0) bqAnswer(-1);
+  }, 100);
+}
+function bqAnswer(j){
+  clearInterval(bqTick);
+  const q = BQS.qs[BQS.i], ok = j === q.ans;
+  $('bqBody').querySelectorAll('.qo').forEach(b=>{ b.disabled = true; const n = +b.dataset.j; if (n === q.ans) b.classList.add('right'); else if (n === j) b.classList.add('wrong'); });
+  if (ok){ BQS.score++; Sound.play('grow'); } else Sound.play('news');
+  $('bqF').textContent = ok ? 'Correct!' : (j < 0 ? 'Time up! ' : 'Not quite. ') + `The answer is: ${q.opts[q.ans]}.`;
+  setTimeout(()=>{ BQS.i++; if (BQS.i < BQ_N) bqQ(); else bqDone(); }, ok ? 900 : 1700);
+}
+function bqLink(){
+  const name = (load('ministrylife_name') || ($('iName') && $('iName').value) || '').trim();
+  return `https://${GAME_URL}/?quiz=${BQS.seed.toString(36)}&s=${BQS.score}${name ? '&by=' + encodeURIComponent(name) : ''}`;
+}
+function bqShareText(){ return `📖 I scored ${BQS.score}/${BQ_N} on the Ministry Life Bible Quiz. Same ${BQ_N} questions, can you beat me? ${bqLink()}`; }
+function bqDone(){
+  const s = BQS.score, ch = BQS.ch, mine = myChurch();
+  Track.add('quiz', { n:s, k: ch ? 'challenge' : 'solo' }); Track.flush();
+  const st = stats(); st.bq = Math.max(st.bq || 0, s); saveStats(st);
+  if (s === BQ_N) award('quizmaster');
+  let vs = '';
+  if (ch && ch.score != null){
+    const by = escH(ch.by || 'Your friend');
+    vs = `<div class="bq-vs"><div><small>${by}</small><b>${ch.score}</b></div><div class="vs">vs</div><div><small>You</small><b>${s}</b></div></div>
+      <p class="bq-verdict">${s > ch.score ? '🏆 You win! Send it back and see if they can recover.' : s === ch.score ? '🤝 A draw! Iron sharpeneth iron.' : `${by} wins this round. Try a new set and challenge them back!`}</p>`;
+  }
+  $('bqBody').innerHTML = `
+    <div class="bq-score"><b>${s}<small>/${BQ_N}</small></b><span>${s >= 9 ? 'Bible scholar! 📜' : s >= 7 ? 'Well studied! 🙌' : s >= 4 ? 'Keep reading! 📖' : 'Time to open the Book 😅'}</span></div>
+    ${vs}
+    ${mine ? `<p class="acnext">⛪ +${s} points for ${escH(churchName(mine))} in the Church Cup</p>` : `<p class="acnext">Pick your church in the ⛪ Church Cup and your quiz scores earn it points.</p>`}
+    <button class="btn" id="bqWa">Challenge friends on WhatsApp</button>
+    <button class="btn ghost" id="bqShare">Share or copy the link</button>
+    <button class="btn ghost" id="bqAgain">New questions</button>
+    <button class="btn ghost" id="bqBack2">Back</button>`;
+  Sound.play(s >= 7 ? 'amen' : 'chime');
+  $('bqWa').onclick = ()=>{ Track.add('share', { k:'quiz_whatsapp' }); window.open('https://wa.me/?text=' + encodeURIComponent(bqShareText()), '_blank'); };
+  $('bqShare').onclick = async ()=>{
+    Track.add('share', { k:'quiz' }); const text = bqShareText();
+    if (navigator.share){ try { await navigator.share({ text }); return; } catch(e){ if (e && e.name === 'AbortError') return; } }
+    try { await navigator.clipboard.writeText(text); toast('Link copied. Paste it in your group chat.'); } catch(e){ window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); }
+  };
+  $('bqAgain').onclick = ()=>showQuiz(null);
+  $('bqBack2').onclick = closeQuiz;
+}
+
+/* ----- install to home screen (works offline after the first visit) ----- */
+let installEvt = null;
+const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) && !window.MSStream;
+function refreshInstall(){ const b = $('iInstall'); if (b) b.hidden = isStandalone() || !(installEvt || isIOS()); }
+addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); installEvt = e; refreshInstall(); });
+addEventListener('appinstalled', ()=>{ installEvt = null; refreshInstall(); Track.add('share', { k:'installed' }); });
+if ('serviceWorker' in navigator && location.protocol === 'https:') addEventListener('load', ()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+
 /* ================= STATE ================= */
 let G = null, busy = false;
 const setup = { path:'p', sex:'Brother' };
@@ -2031,6 +2326,8 @@ async function finish(key){
     award('first'); if (won) award('finished'); if (G.h >= 60) award('family');
     if ((G.legacy.schools || 0) >= 2) award('builder'); if ((G.legacy.outreach || 0) >= 4) award('outreach');
     if (PGL()) award('pidgin'); if (Object.keys(stats().callings).length >= 3) award('allcall'); }
+  { const ch = myChurch(), pts = journeyPts(G.stage);
+    $('eCup').textContent = ch ? `⛪ +${pts} points for ${churchName(ch)} in this week’s Church Cup ›` : `⛪ This journey is worth ${pts} Church Cup points. Pick your church ›`; }
   $('eKick').textContent = won ? 'Journey complete' : 'Your journey paused';
   $('eTitle').textContent = title; $('eDesc').textContent = desc; $('eLesson').textContent = 'Lesson: ' + lesson;
   $('end').classList.add('on'); $('end').scrollTop = 0;
@@ -2148,6 +2445,16 @@ function showHall(){
 }
 $('iHall').onclick = showHall;
 $('iAcad').onclick = showAcademy;
+$('iCup').onclick = showCup;
+$('iQuiz').onclick = ()=>showQuiz(null);
+$('cupBack').onclick = ()=>{ $('cup').classList.remove('on'); showIntro(); };
+$('cupSel').onchange = e=>{ const k = e.target.value; if (!k) return; setChurch(k); toast(`⛪ You’re now playing for ${churchName(k)}`); renderCup(); };
+$('cupWa').onclick = ()=>{ Track.add('share', { k:'cup_whatsapp' }); window.open('https://wa.me/?text=' + encodeURIComponent(cupShareText()), '_blank'); };
+$('eCup').onclick = ()=>{ $('end').classList.remove('on'); showCup(); };
+$('iInstall').onclick = async ()=>{
+  if (installEvt){ installEvt.prompt(); try { await installEvt.userChoice; } catch(e){} installEvt = null; refreshInstall(); return; }
+  toast('On iPhone: tap the Share button ⬆️, then “Add to Home Screen”.');
+};
 $('acBack').onclick = ()=>{ $('academy').classList.remove('on'); showIntro(); };
 $('lsBack').onclick = closeLesson;
 $('lsQuizBtn').onclick = startQuiz;
@@ -2760,6 +3067,7 @@ function showIntro(){
     $('iDailyNew').hidden = !!st.dailyDays[dailyToday().day]; }
   Sound.hum(false);
   { const n = doneCount(); $('iAcad').textContent = `🎓 Ministry Academy · ${n}/${ACADEMY.length}${rescuesFor(n) ? ` · ${rescuesFor(n)} rescue${rescuesFor(n) > 1 ? 's' : ''}` : ''}`; }
+  refreshInstall();
   $('iBest').textContent = bits.length ? `Your best: ${bits.join(', ')}.` : '';
   $('intro').classList.add('on'); $('intro').scrollTop = 0; document.body.classList.add('menu'); World.setActive(false);
 }
@@ -2776,6 +3084,15 @@ $('iCont').onclick = ()=>{
   const sv = load(SAVE); if (!sv) return;
   G = sv; if (!card()) G.cardId = nextCard().id; startPlaying();
 };
+
+/* ----- links: ?c=<church> joins a church, ?quiz=<seed>&s=<score>&by=<name> opens a challenge ----- */
+(function(){
+  try {
+    const c = new URLSearchParams(location.search).get('c');
+    if (c && churchName(c) && !myChurch()){ setChurch(c); setTimeout(()=>toast(`⛪ You’re playing for ${churchName(c)} in the Church Cup`), 1500); }
+  } catch(e){}
+  const ch = bqParams(); if (ch) showQuiz(ch);
+})();
 
 /* ----- opening gate: browsers only allow sound after a tap ----- */
 (function(){

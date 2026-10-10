@@ -7,6 +7,7 @@
 //   GET  /results?day=d20371          -> { day, L, R }
 //   POST /vote  { day, side, uid }    -> { day, L, R, dup? }
 //   POST /e     { uid, ev:[...] }     -> { ok }       (anonymous game events, no names)
+//   GET  /churches                    -> this week's Church Cup table { week, rows:[{k, pts, players}], last }
 // Admin endpoint (header  Authorization: Bearer <ADMIN_KEY>)
 //   GET  /admin/stats?days=30         -> dashboard data
 
@@ -22,7 +23,11 @@ const validDay = d => typeof d === 'string' && /^d\d{4,6}$/.test(d) && Math.abs(
 const validUid = u => typeof u === 'string' && /^[a-z0-9]{8,40}$/i.test(u);
 const str = (v, max) => (v === undefined || v === null) ? null : String(v).slice(0, max);
 const int = v => Number.isFinite(+v) ? Math.round(+v) : null;
-const EVENT_TYPES = new Set(['visit', 'start', 'end', 'badge', 'share', 'lesson']);
+const EVENT_TYPES = new Set(['visit', 'start', 'end', 'badge', 'share', 'lesson', 'church', 'quiz']);
+// keys must match CHURCHES in index.html
+const CHURCHES = new Set(['rccg', 'winners', 'deeper', 'mfm', 'christembassy', 'cac', 'anglican', 'catholic', 'methodist', 'baptist', 'ecwa', 'aog', 'foursquare', 'cands', 'celestial', 'hotr', 'otherpent', 'other']);
+const DAY_CAP = 80;   // most Church Cup points one player can earn in a day
+const weekStart = dn => dn - ((dn + 3) % 7);   // Monday (day 0 was a Thursday)
 const PATHS = new Set(['p', 'g', 'e']);
 
 let ready = false;
@@ -36,7 +41,35 @@ async function setup(env) {
     env.DB.prepare('CREATE TABLE IF NOT EXISTS players (uid TEXT PRIMARY KEY, first_day INTEGER NOT NULL, last_day INTEGER NOT NULL, days INTEGER NOT NULL)'),
     env.DB.prepare('CREATE INDEX IF NOT EXISTS pl_first ON players (first_day)')
   ]);
+  try { await env.DB.prepare('ALTER TABLE players ADD COLUMN church TEXT').run(); } catch (e) { /* already added */ }
   ready = true;
+}
+
+// Church Cup: points per player per day (capped), summed by the player's chosen church
+const CUP_SQL = `WITH pts AS (
+    SELECT uid, dn, SUM(CASE WHEN type = 'end' THEN 10 + 5 * MAX(0, MIN(5, COALESCE(x, 0)))
+                             WHEN type = 'lesson' AND n >= 2 THEN 15
+                             WHEN type = 'quiz' THEN MAX(0, MIN(10, COALESCE(n, 0)))
+                             ELSE 0 END) AS p
+      FROM events WHERE dn >= ?1 AND dn < ?2 AND type IN ('end', 'lesson', 'quiz') GROUP BY uid, dn
+    UNION ALL
+    SELECT uid, CAST(substr(day, 2) AS INTEGER) AS dn, 5 AS p FROM votes
+      WHERE CAST(substr(day, 2) AS INTEGER) >= ?1 AND CAST(substr(day, 2) AS INTEGER) < ?2
+  ), daily AS (SELECT uid, dn, MIN(${DAY_CAP}, SUM(p)) AS p FROM pts GROUP BY uid, dn)
+  SELECT pl.church AS k, SUM(d.p) AS pts, COUNT(DISTINCT d.uid) AS players
+    FROM daily d JOIN players pl ON pl.uid = d.uid
+   WHERE pl.church IS NOT NULL AND d.p > 0 GROUP BY pl.church ORDER BY pts DESC`;
+let cupCache = null;
+async function churchCup(env) {
+  const now = Date.now();
+  if (cupCache && now - cupCache.at < 60e3) return cupCache.body;
+  const ws = weekStart(todayIndex());
+  const [cur, prev] = await env.DB.batch([env.DB.prepare(CUP_SQL).bind(ws, ws + 7), env.DB.prepare(CUP_SQL).bind(ws - 7, ws)]);
+  const rows = (cur.results || []).filter(r => CHURCHES.has(r.k));
+  const last = (prev.results || []).filter(r => CHURCHES.has(r.k))[0] || null;
+  const body = { week: ws, rows, last };
+  cupCache = { at: now, body };
+  return body;
 }
 async function counts(env, day) {
   const { results } = await env.DB.prepare('SELECT side, COUNT(*) AS n FROM votes WHERE day = ? GROUP BY side').bind(day).all();
@@ -57,6 +90,11 @@ async function recordEvents(req, env) {
   for (const e of b.ev.slice(0, 25)) {
     if (!e || !EVENT_TYPES.has(e.type)) continue;
     if (e.type === 'visit') { if (visited) continue; visited = true; }
+    if (e.type === 'church') {
+      if (!CHURCHES.has(e.k)) continue;
+      stmts.push(env.DB.prepare('INSERT INTO players (uid, first_day, last_day, days, church) VALUES (?, ?, ?, 1, ?) ON CONFLICT(uid) DO UPDATE SET church = excluded.church')
+        .bind(b.uid, dn, dn, e.k));
+    }
     stmts.push(env.DB.prepare('INSERT INTO events (dn, ts, uid, type, path, lang, k, v, n, x, y, country, mobile) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
       .bind(dn, ts, b.uid, e.type, PATHS.has(e.path) ? e.path : null, e.lang === 'pg' ? 'pg' : (e.lang ? 'en' : null),
             str(e.k, 40), str(e.v, 6000), int(e.n), int(e.x), int(e.y), country, mobile));
@@ -109,7 +147,9 @@ async function adminStats(req, env) {
        FROM players p WHERE p.first_day >= ? GROUP BY p.first_day`, from),                                                     // 17 retention
     q("SELECT COUNT(DISTINCT uid) AS c FROM events WHERE type = 'visit' AND dn > ?", today - 7),                                // 18 weekly actives
     q("SELECT COUNT(DISTINCT uid) AS c FROM events WHERE type = 'visit' AND dn >= ?", from),                                    // 19 period actives
-    q("SELECT k, SUM(n = -1) AS opened, SUM(n = -2) AS mentor, SUM(n >= 2) AS passed, COUNT(DISTINCT CASE WHEN n >= 2 THEN uid END) AS learners FROM events WHERE type = 'lesson' AND dn >= ? GROUP BY k", from) // 20 academy
+    q("SELECT k, SUM(n = -1) AS opened, SUM(n = -2) AS mentor, SUM(n >= 2) AS passed, COUNT(DISTINCT CASE WHEN n >= 2 THEN uid END) AS learners FROM events WHERE type = 'lesson' AND dn >= ? GROUP BY k", from), // 20 academy
+    q('SELECT church AS k, COUNT(*) AS c FROM players WHERE church IS NOT NULL GROUP BY church ORDER BY c DESC'),               // 21 church members
+    q("SELECT COUNT(*) AS played, AVG(n) AS avg, SUM(k = 'challenge') AS challenges FROM events WHERE type = 'quiz' AND dn >= ?", from) // 22 bible quiz
   ]);
   const rows = i => (res[i] && res[i].results) || [];
   const choice = {};
@@ -124,7 +164,7 @@ async function adminStats(req, env) {
     averages: rows(6), lang: rows(7), device: rows(8), countries: rows(9), badges: rows(10), shares: rows(11),
     daily: rows(12), choices: choice, recent: rows(14),
     totals: { players: (rows(15)[0] || {}).c || 0, games: (rows(16)[0] || {}).c || 0, weekly: (rows(18)[0] || {}).c || 0, period: (rows(19)[0] || {}).c || 0 },
-    retention: rows(17), academy: rows(20)
+    retention: rows(17), academy: rows(20), members: rows(21), quiz: rows(22)[0] || {}, cup: await churchCup(env)
   });
 }
 
@@ -151,6 +191,7 @@ export default {
         return json(out);
       }
       if (url.pathname === '/e' && req.method === 'POST') return await recordEvents(req, env);
+      if (url.pathname === '/churches' && req.method === 'GET') return json(await churchCup(env));
       if (url.pathname === '/admin/stats' && req.method === 'GET') return await adminStats(req, env);
       return json({ ok: true, service: 'ministrylife-votes', today: 'd' + todayIndex() });
     } catch (e) {
