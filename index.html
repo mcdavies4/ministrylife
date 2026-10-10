@@ -121,6 +121,7 @@ body.menu #app{visibility:hidden}
 .screen.on{display:flex}
 #intro{background:radial-gradient(ellipse at 50% 28%,#5B1A9E 0%,#2B0B4F 38%,#14051F 82%)}
 .screen.dim{background:rgba(20,5,31,.97)}
+.screen.academy,.screen.lesson{background:#14051F}
 .screen .inner{margin:auto;width:100%;max-width:400px;text-align:center}
 .kicker{font-weight:800;font-size:14px;color:var(--gold);display:inline-block;margin-bottom:6px}
 .title{font-family:'Anton',Impact,sans-serif;font-size:clamp(58px,18vw,84px);line-height:.9;color:var(--paper);text-shadow:4px 4px 0 var(--purple),8px 8px 0 rgba(0,0,0,.35);letter-spacing:.01em}
@@ -165,7 +166,7 @@ body.menu #app{visibility:hidden}
 .daily-btn{position:relative;background:linear-gradient(90deg,#F2B705,#FFD95A)}
 .daily-btn .new{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:var(--red);color:#fff;font-family:'Archivo',sans-serif;font-weight:800;font-size:11px;padding:3px 7px;border-radius:3px;letter-spacing:.04em}
 .streak{font-size:14px;font-weight:800;color:var(--gold-hi);margin-top:12px}
-.daily .dT{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(34px,10vw,46px);line-height:1;color:var(--paper);margin:6px 0 16px}
+.daily .dT,.academy .dT,.lesson .dT{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(34px,10vw,46px);line-height:1;color:var(--paper);margin:6px 0 16px}
 .daily .plate{background:var(--paper);color:var(--ink);border-radius:6px;padding:22px 20px;position:relative;box-shadow:0 20px 40px rgba(0,0,0,.45)}
 .daily .plate::before{content:"";position:absolute;inset:8px;border:2px solid var(--gold);border-radius:3px;pointer-events:none}
 .daily .q{font-size:20px;line-height:1.4;font-weight:700;position:relative}
@@ -186,6 +187,47 @@ body.menu #app{visibility:hidden}
 .badges .bd .i{display:block;font-size:24px;margin-bottom:4px;filter:grayscale(1);opacity:.35}
 .badges .bd.got{background:rgba(242,183,5,.16);color:var(--gold-hi)}
 .badges .bd.got .i{filter:none;opacity:1}
+.acad-btn{background:transparent;border:2px solid var(--gold);color:var(--gold-hi);box-shadow:none;font-size:20px}
+.acsub{color:var(--paper);font-weight:700;margin-bottom:4px}
+.acnext{color:var(--lilac);font-size:14px;margin-bottom:16px}
+.ac-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left}
+.ac-item{display:flex;flex-direction:column;gap:4px;padding:14px 12px;border-radius:8px;border:2px solid rgba(242,183,5,.35);background:rgba(20,5,31,.6);color:var(--paper);text-align:left}
+.ac-item .ic{font-size:26px}
+.ac-item .tt{font-family:'Anton',Impact,sans-serif;font-size:18px;line-height:1.1}
+.ac-item .st{font-size:12px;color:var(--lilac);font-weight:700}
+.ac-item.done{border-color:var(--gold-hi);background:rgba(242,183,5,.14)}
+.ac-item.done .st{color:var(--gold-hi)}
+.lesson .principle{font-size:17px;line-height:1.5;font-weight:700;color:var(--gold-hi);margin-bottom:14px}
+.verse{background:var(--paper);color:var(--ink);border-left:6px solid var(--gold);border-radius:6px;padding:16px 18px;text-align:left;font-size:17px;line-height:1.55;font-style:italic;margin-bottom:16px}
+.verse cite{display:block;margin-top:8px;font-style:normal;font-weight:800;font-size:13px;color:#6B5A80}
+.ls-hero{background:rgba(255,255,255,.06);border:1px solid rgba(242,183,5,.25);border-radius:8px;padding:14px 16px;text-align:left;margin-bottom:10px}
+.ls-hero .yr{font-family:'Anton',Impact,sans-serif;color:var(--gold);font-size:14px;letter-spacing:.03em}
+.ls-hero h3{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:22px;color:var(--paper);margin:2px 0 6px}
+.ls-hero p{font-size:15px;line-height:1.5}
+.ls-hero .ls{color:var(--gold-hi);font-weight:800;margin-top:8px}
+.ls-hero .src{color:var(--lilac);font-size:12px;margin-top:6px;word-break:break-word}
+.reflect{background:rgba(242,183,5,.12);border-radius:8px;padding:14px 16px;text-align:left;margin:6px 0 12px}
+.reflect b{color:var(--gold-hi);font-size:13px;letter-spacing:.05em;text-transform:uppercase}
+.reflect p{font-size:16px;line-height:1.45;margin-top:4px}
+.quiz{text-align:left;margin-top:10px}
+.quiz .qn{color:var(--lilac);font-size:13px;font-weight:700}
+.quiz .qq{font-size:18px;font-weight:700;line-height:1.4;margin:6px 0 12px}
+.quiz .qo{display:block;width:100%;text-align:left;padding:13px 14px;margin-bottom:8px;border-radius:6px;border:2px solid rgba(242,183,5,.4);background:rgba(20,5,31,.6);color:var(--paper);font-weight:600;font-size:15px}
+.quiz .qo.right{border-color:#43A047;background:rgba(67,160,71,.25)}
+.quiz .qo.wrong{border-color:var(--red);background:rgba(199,54,43,.25)}
+.quiz .qf{min-height:1.4em;font-weight:700;color:var(--gold-hi)}
+.qres{background:rgba(255,255,255,.06);border-radius:8px;padding:14px 16px;margin-top:8px}
+.qres b{font-size:18px}
+.qres.pass b{color:var(--gold-hi)}
+.qres p{margin-top:6px;line-height:1.45}
+.cert img{width:100%;max-height:52vh;object-fit:contain;border-radius:4px;margin:14px 0 4px;box-shadow:0 18px 40px rgba(0,0,0,.5)}
+.mentor .plate{background:var(--paper);color:var(--ink);border-radius:6px;padding:24px 22px;text-align:left;position:relative;box-shadow:0 24px 48px rgba(0,0,0,.5)}
+.mentor .plate::before{content:"";position:absolute;inset:8px;border:2px solid var(--gold);border-radius:3px;pointer-events:none}
+.mentor .yr{font-family:'Anton',Impact,sans-serif;color:var(--red);font-size:16px;letter-spacing:.03em}
+.mentor h3{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:28px;line-height:1.05;color:var(--purple);margin:4px 0 10px}
+.mentor .story{font-size:16px;line-height:1.5;font-weight:600}
+.mentor .lesson{margin-top:12px;padding-top:10px;border-top:2px solid #E6D6AE;font-size:16px;font-weight:800;color:var(--purple)}
+.mentor .src{margin-top:8px;font-size:12px;color:#6B5A80}
 .hall .hallT{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(40px,12vw,56px);line-height:.95;color:var(--gold-hi);margin:6px 0 8px}
 .hall .hallSub{font-size:15px;color:var(--lilac);margin-bottom:16px}
 .hall .grp{font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);text-align:left;margin:18px 0 8px}
@@ -242,6 +284,7 @@ body.menu #app{visibility:hidden}
     <h1 class="title">Ministry<span class="l2">Life</span></h1>
     <p class="season-banner" id="iSeason" hidden></p>
     <button class="btn daily-btn" id="iDaily">📅 Today's Daily Card<span class="new" id="iDailyNew">NEW</span></button>
+    <button class="btn acad-btn" id="iAcad">🎓 Ministry Academy</button>
     <p class="streak" id="iStreak"></p>
     <p class="tagline">Start with a Bible study in your sitting room, a seat in the choir or a bag of tracts at the bus park. Build a ministry that outlives you, the way the heroes of faith did.</p>
     <div class="field">
@@ -324,6 +367,52 @@ body.menu #app{visibility:hidden}
       <div class="two"><button class="btn" id="dShare">Share result</button><button class="btn" id="dWa">WhatsApp</button></div>
     </div>
     <button class="btn ghost" id="dBack">Back</button>
+  </div>
+</section>
+
+<section class="screen dim academy" id="academy">
+  <div class="inner">
+    <div class="kicker">Learn ministry from heroes of faith</div>
+    <h2 class="dT">Ministry Academy</h2>
+    <p class="acsub" id="acSub"></p>
+    <p class="acnext" id="acNext"></p>
+    <p class="acnext">During play, mentors step in after key choices. A <b>mentor rescue</b> saves your journey once when a meter is about to run out.</p>
+    <div class="ac-list" id="acList"></div>
+    <p class="fine">Every story is a true milestone with its source shown. Scripture is quoted from the King James Version. Lessons focus on character and practice, for believers of every church tradition.</p>
+    <button class="btn ghost" id="acBack">Back</button>
+  </div>
+</section>
+
+<section class="screen dim lesson" id="lesson">
+  <div class="inner">
+    <div class="kicker" id="lsKick"></div>
+    <h2 class="dT" id="lsTitle"></h2>
+    <p class="principle" id="lsPrinciple"></p>
+    <blockquote class="verse" id="lsVerse"></blockquote>
+    <div id="lsHeroes"></div>
+    <div class="reflect"><b>Reflect</b><p id="lsReflect"></p></div>
+    <button class="btn" id="lsQuizBtn">Take the quiz</button>
+    <div class="quiz" id="lsQuiz" hidden></div>
+    <div class="cert" id="lsCert" hidden>
+      <img id="lsCertImg" alt="Your certificate">
+      <button class="btn" id="lsShare">Share certificate</button>
+    </div>
+    <button class="btn ghost" id="lsBack">Back</button>
+  </div>
+</section>
+
+<section class="screen dim mentor" id="mentor">
+  <div class="inner">
+    <div class="kicker">📖 Mentor moment</div>
+    <div class="plate">
+      <div class="yr" id="mnTheme"></div>
+      <h3 id="mnWho"></h3>
+      <p class="story" id="mnText"></p>
+      <p class="lesson" id="mnLesson"></p>
+      <p class="src" id="mnVerse"></p>
+    </div>
+    <button class="btn" id="mnOk">Continue the journey</button>
+    <button class="btn ghost" id="mnMore">Read the full lesson</button>
   </div>
 </section>
 
@@ -1224,7 +1313,9 @@ const BADGES = {
   daily5:    ['📅', 'Faithful voter', 'Answer five Daily Cards'],
   streak3:   ['🔥', 'On fire', 'Play three days in a row'],
   streak7:   ['⚡', 'Seven-day streak', 'Play seven days in a row'],
-  pidgin:    ['🗣️', 'Naija sabi', 'Play a journey in Pidgin']
+  pidgin:    ['🗣️', 'Naija sabi', 'Play a journey in Pidgin'],
+  student:   ['🎓', 'Student of ministry', 'Complete your first Academy lesson'],
+  scholar:   ['📜', 'Academy graduate', 'Complete all 12 Academy lessons']
 };
 const BADGE_ON_CHOICE = {
   'x_nepa:L':'nepa', 'p_pulpit:L':'pulpit', 'x_election:L':'pulpit', 'g_name:L':'name',
@@ -1299,6 +1390,281 @@ const Sound = (function(){
   };
 })();
 
+/* ================= MINISTRY ACADEMY ================= */
+/* Worldwide heroes: true milestones from public sources, written in our own words. */
+Object.assign(HERO_DB, {
+  muller:{who:'George Müller', yr:'Bristol, from 1836', text:"He began caring for orphans in Bristol, England, in 1836 and cared for more than 10,000 in his lifetime. He never asked anyone for money and never went into debt. One morning the children sat down to breakfast with no food in the house; after grace, a baker arrived with fresh bread, and a milkman whose cart had broken down outside gave them milk.", lesson:"Pray first, and trust God for provision.", src:'en.wikipedia.org/wiki/George_Müller'},
+  muller2:{who:'George Müller', yr:'Bristol, 1800s', text:"Every gift to his orphan homes was recorded, and the accounts were kept open to scrutiny. The five homes cost over £100,000 to build, yet he never went into debt and never asked anyone for money.", lesson:"Transparency protects the work God gives you.", src:'en.wikipedia.org/wiki/George_Müller'},
+  taylor:{who:'Hudson Taylor', yr:'China, 1854–1905', text:"He founded the China Inland Mission in 1865 to reach China's unreached inland provinces. The mission chose not to appeal for funds, relying on God alone, yet grew to more than 800 missionaries in China by 1910. Taylor wore Chinese dress to identify with the people he served.", lesson:"Depend on God, and become one with the people you serve.", src:'en.wikipedia.org/wiki/Hudson_Taylor'},
+  graham:{who:'Billy Graham and his team', yr:'1948', text:"In Modesto, California, Graham's team agreed four rules: depend on funds raised before meetings rather than offerings taken during them, never be alone with a woman other than their wife, work together with local churches, and give honest numbers instead of exaggerating crowds.", lesson:"Set your guardrails before temptation comes.", src:'en.wikipedia.org/wiki/Modesto_Manifesto'},
+  wesley:{who:'John Wesley', yr:'England, 1700s', text:"The societies he began from 1739 grew into the Methodist movement. He is reported to have ridden about 250,000 miles on horseback and preached more than 40,000 sermons, and he gave away around £30,000 in his lifetime, dying poor.", lesson:"Ministry is not a path to riches. Give generously and travel light.", src:'en.wikipedia.org/wiki/John_Wesley'},
+  tyndale:{who:'William Tyndale', yr:'1526–1536', text:"He translated the New Testament into English; the first full printed edition appeared in 1526. Copies were smuggled into England and burned by the authorities, and in 1536 he was executed near Brussels. Scholars estimate that most of the wording of the King James New Testament comes from his work.", lesson:"Put the Word into ordinary people's hands, whatever it costs.", src:'en.wikipedia.org/wiki/William_Tyndale'},
+  townsend:{who:'Cameron Townsend', yr:'1917–1942', text:"Selling Spanish Bibles in Guatemala from 1917, he saw that the Kaqchikel people could not read them. He spent about fourteen years learning their language to translate the Bible, then founded the Summer Institute of Linguistics in 1934 and Wycliffe Bible Translators in 1942.", lesson:"Meet people in their own language.", src:'en.wikipedia.org/wiki/William_Cameron_Townsend'},
+  teresa:{who:'Mother Teresa', yr:'Calcutta, 1950–1997', text:"In 1950 she founded the Missionaries of Charity in Calcutta to serve the poorest of the poor, and in 1952 she opened a free home for the dying. By her death in 1997 the order ran 610 missions in 123 countries. She received the Nobel Peace Prize in 1979.", lesson:"Greatness is measured by service to the least.", src:'en.wikipedia.org/wiki/Mother_Teresa'},
+  carey:{who:'William Carey', yr:'1792–1812', text:"A shoemaker who became a Baptist minister, he helped found the Baptist Missionary Society in 1792 and reached India in 1793, urging believers to 'expect great things from God; attempt great things for God'. In 1812 a fire destroyed years of translation work; printing resumed within six months.", lesson:"Expect great things, and keep going after setbacks.", src:'en.wikipedia.org/wiki/William_Carey_(missionary)'},
+  carmichael:{who:'Amy Carmichael', yr:'India, 55 years', text:"She served in India for 55 years. The Dohnavur Fellowship she founded in 1901 became a sanctuary for more than 1,000 children, beginning with a girl who had escaped temple service.", lesson:"Love protects the vulnerable.", src:'en.wikipedia.org/wiki/Amy_Carmichael'},
+  ramabai:{who:'Pandita Ramabai', yr:'India, 1878–1900s', text:"In 1878 she became the first woman awarded the titles Pandita and Sarasvati. She founded the Mukti Mission at Kedgaon for child widows and the destitute, toured villages by bullock cart in the 1896 famine to rescue women and children, and translated the Bible into Marathi from Hebrew and Greek.", lesson:"Compassion acts, and the Word belongs in every mother tongue.", src:'en.wikipedia.org/wiki/Pandita_Ramabai'},
+  mlk:{who:'Rev. Martin Luther King Jr.', yr:'1954–1968', text:"A Baptist pastor, first at Dexter Avenue Baptist Church in Montgomery, he led the 385-day Montgomery bus boycott from 1955 through nonviolent resistance. At 35 he received the 1964 Nobel Peace Prize.", lesson:"Pursue justice with love, not violence.", src:'en.wikipedia.org/wiki/Martin_Luther_King_Jr.'},
+  bonhoeffer:{who:'Dietrich Bonhoeffer', yr:'Germany, 1937–1945', text:"A German pastor, he helped found the Confessing Church against Nazi control and ran an underground seminary. In 1939 he left safety in America after about two weeks to share his people's hardship. He was arrested in 1943 and executed at Flossenbürg in April 1945.", lesson:"Discipleship is costly, and it is worth it.", src:'en.wikipedia.org/wiki/Dietrich_Bonhoeffer'},
+  luwum:{who:'Archbishop Janani Luwum', yr:'Uganda, 1974–1977', text:"As Archbishop of the Church of Uganda, he formally protested to Idi Amin over killings and disappearances. He was arrested on 16 February 1977 and died shortly afterwards. His statue stands among the twentieth-century martyrs at Westminster Abbey, and Uganda marks 16 February as a public holiday.", lesson:"Speak truth to power, even at great cost.", src:'en.wikipedia.org/wiki/Janani_Luwum'},
+  tenboom:{who:'Corrie ten Boom', yr:'Netherlands, 1940s', text:"Her family hid Jewish people behind a false wall in their Haarlem home; around 800 Jews are estimated to have been saved through her efforts. Arrested in 1944, she survived Ravensbrück, where her sister Betsie died. In 1946 she returned to Germany and forgave people who had worked at that camp.", lesson:"Forgiveness frees the one who forgives.", src:'en.wikipedia.org/wiki/Corrie_ten_Boom'},
+  crosby:{who:'Fanny Crosby', yr:'USA, 1820–1915', text:"Blind from infancy, she wrote more than 8,000 hymns, including 'Blessed Assurance' and 'To God Be the Glory'. Yet she saw her work in New York's rescue missions as her main calling.", lesson:"Your limitation is not God's limitation.", src:'en.wikipedia.org/wiki/Fanny_Crosby'},
+  dorsey:{who:'Thomas A. Dorsey', yr:'USA, 1932', text:"He played blues piano before turning fully to church music, and became known as the father of gospel music. In 1932, after his wife and newborn son died, he wrote 'Take My Hand, Precious Lord' out of his grief.", lesson:"Bring your pain to God; it can become a song that carries others.", src:'en.wikipedia.org/wiki/Thomas_A._Dorsey'},
+  seymour:{who:'William J. Seymour', yr:'Los Angeles, 1906', text:"The son of formerly enslaved parents and blind in one eye, he led the Azusa Street Revival from 1906. Black and white worshippers met at the same altar in a segregated era, and by 1907 missionaries from the revival had reached Africa, Asia and Europe.", lesson:"Revival breaks down walls between people.", src:'en.wikipedia.org/wiki/William_J._Seymour'}
+});
+
+const VERSES = {"answer": ["Isaiah 6:8", "Also I heard the voice of the Lord, saying, Whom shall I send, and who will go for us? Then said I, Here am I; send me."], "small": ["Zechariah 4:10", "For who hath despised the day of small things?"], "prayer": ["Philippians 4:6–7", "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God. And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus."], "word": ["Psalm 119:105", "Thy word is a lamp unto my feet, and a light unto my path."], "integrity": ["2 Corinthians 8:21", "Providing for honest things, not only in the sight of the Lord, but also in the sight of men."], "servant": ["Mark 10:43–44", "But so shall it not be among you: but whosoever will be great among you, shall be your minister: And whosoever of you will be the chiefest, shall be servant of all."], "missions": ["Matthew 28:19–20", "Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost: Teaching them to observe all things whatsoever I have commanded you: and, lo, I am with you alway, even unto the end of the world. Amen."], "compassion": ["Micah 6:8", "He hath shewed thee, O man, what is good; and what doth the LORD require of thee, but to do justly, and to love mercy, and to walk humbly with thy God?"], "suffering": ["Matthew 5:44", "But I say unto you, Love your enemies, bless them that curse you, do good to them that hate you, and pray for them which despitefully use you, and persecute you;"], "worship": ["Psalm 96:1–2", "O sing unto the LORD a new song: sing unto the LORD, all the earth. Sing unto the LORD, bless his name; shew forth his salvation from day to day."], "revival": ["Acts 2:46–47", "And they, continuing daily with one accord in the temple, and breaking bread from house to house, did eat their meat with gladness and singleness of heart, Praising God, and having favour with all the people. And the Lord added to the church daily such as should be saved."], "legacy": ["2 Timothy 2:2", "And the things that thou hast heard of me among many witnesses, the same commit thou to faithful men, who shall be able to teach others also."]};
+
+/* q: [question, [options], correct index] */
+const ACADEMY = [
+ {k:'answer', icon:'📣', title:'Answering the call', heroes:['crowther21','oyedepo81','panam20'],
+  principle:"God calls ordinary people from every background. What matters is obedience, not where you started.",
+  reflect:"What has God placed on your heart that you keep postponing?",
+  quiz:[["Before he became a bishop, what happened to Samuel Ajayi Crowther as a boy?",["He was captured and sold into slavery, then freed","He trained as a lawyer in London","He grew up in a pastor's home in Lagos"],0],
+        ["How old was David Oyedepo when he was called to full-time ministry?",["19","26","40"],1],
+        ["What did Panam Percy Paul give up to follow gospel music?",["A football career","The army career his father wanted","A place at medical school"],1]]},
+ {k:'small', icon:'🌱', title:'Small beginnings', heroes:['kumuyi73','idahosa68','bamiloye85'],
+  principle:"Great ministries usually start small. Faithfulness with a few comes before influence with many.",
+  reflect:"Who are the 'fifteen students' God has already given you to serve?",
+  quiz:[["How many students were in Kumuyi's first Bible study in 1973?",["5","15","150"],1],
+        ["How did Benson Idahosa begin before founding his church?",["With a TV programme","With village outreaches and a small prayer group","With a stadium crusade"],1],
+        ["Where was Mike Bamiloye's first drama staged in 1986?",["A national Christian teachers' conference","The National Theatre in Lagos","A television studio"],0]]},
+ {k:'prayer', icon:'🙏', title:'Prayer first', heroes:['muller','bassey17','taylor'],
+  principle:"Prayer is not the last resort; it is the foundation. Lasting ministries are built on their knees.",
+  reflect:"What would change if you prayed before every big decision this week?",
+  quiz:[["How did George Müller fund his orphan homes?",["He held fundraising dinners","He prayed and never asked anyone for money","He charged the children's families"],1],
+        ["What did Nathaniel Bassey start in 2017?",["A midnight praise challenge online","A Bible school","A record label"],0],
+        ["How did Hudson Taylor's China Inland Mission handle funding?",["Monthly appeals to churches","It chose not to appeal for funds, relying on God","Government grants"],1]]},
+ {k:'word', icon:'📖', title:'The Word for everyone', heroes:['tyndale','crowther64','townsend'],
+  principle:"God's Word changes lives when people can read it in their own language.",
+  reflect:"Who around you still can't access the Bible in a way they understand? How could you help?",
+  quiz:[["What did William Tyndale translate?",["The New Testament into English","The Bible into Yoruba","Hymns into Latin"],0],
+        ["Which Bible translation did Bishop Crowther oversee?",["Hausa","Igbo","Yoruba"],2],
+        ["Which organisation did Cameron Townsend found in 1942?",["The Gideons","Wycliffe Bible Translators","The Bible Society of Nigeria"],1]]},
+ {k:'integrity', icon:'⚖️', title:'Integrity with money', heroes:['graham','wesley','muller2'],
+  principle:"Money handled in the light builds trust. Set guardrails early and keep the books open.",
+  reflect:"What guardrail could you set today before temptation ever comes?",
+  quiz:[["In 1948, Billy Graham's team agreed to depend on…",["Offerings taken during meetings","Funds raised before the meetings","Personal donors only"],1],
+        ["How did John Wesley die, despite great influence?",["Very wealthy","Poor, having given most away","In debt to his church"],1],
+        ["How did George Müller keep trust with donors?",["He kept every gift recorded and the accounts open","He kept accounts secret to protect donors","He let each home manage its own cash"],0]]},
+ {k:'servant', icon:'🤲', title:'Servant leadership', heroes:['adeboye73','teresa','sinach15'],
+  principle:"In God's kingdom, the way up is down. Leaders serve first.",
+  reflect:"Where could you serve this week without anyone noticing?",
+  quiz:[["What role did Pastor Adeboye serve in before leading RCCG?",["Choir master","Interpreter of the founder's sermons","Church treasurer"],1],
+        ["Whom did Mother Teresa's Missionaries of Charity set out to serve?",["The poorest of the poor","University students","Church leaders"],0],
+        ["Where did Sinach serve for years before 'Way Maker' became famous?",["As a worship leader in her church","As a radio presenter","As a music teacher abroad"],0]]},
+ {k:'missions', icon:'🌍', title:'Going to the nations', heroes:['carey','slessor','capro75'],
+  principle:"The gospel is for every nation. God sends ordinary people, and he goes with them.",
+  reflect:"Is there a people group, near or far, God may be sending you to?",
+  quiz:[["What was William Carey's trade before ministry?",["Fisherman","Shoemaker","Teacher"],1],
+        ["Where in Nigeria did Mary Slessor serve?",["Calabar and Okoyong","Kano","Ibadan"],0],
+        ["Who started CAPRO in Zaria in 1975?",["A foreign mission board","Young NYSC corps members","A university professor"],1]]},
+ {k:'compassion', icon:'❤️', title:'Compassion and justice', heroes:['carmichael','ramabai','mlk'],
+  principle:"Faith shows itself in love for the vulnerable and courage for what is right.",
+  reflect:"Who in your community is overlooked? What is one practical thing you could do?",
+  quiz:[["How many children found sanctuary at Amy Carmichael's Dohnavur Fellowship?",["About 100","More than 1,000","About 50"],1],
+        ["What did Pandita Ramabai do in the 1896 famine?",["Toured villages to rescue women and children","Left India","Built a cathedral"],0],
+        ["How did Martin Luther King Jr. lead the Montgomery bus boycott?",["With armed protest","Through nonviolent resistance","Through a court case only"],1]]},
+ {k:'suffering', icon:'🕊️', title:'Faith under pressure', heroes:['bonhoeffer','luwum','tenboom'],
+  principle:"Following Jesus can cost everything. Love, courage and forgiveness still win.",
+  reflect:"Is there someone you need to forgive, as Corrie ten Boom did?",
+  quiz:[["Why did Bonhoeffer return to Germany from America in 1939?",["To share his people's hardship","To take a university job","To escape the war"],0],
+        ["What did Archbishop Luwum do about Idi Amin's abuses?",["Stayed silent","Formally protested the killings","Left Uganda"],1],
+        ["What did Corrie ten Boom do in 1946?",["Wrote her first novel","Returned to Germany and forgave camp workers","Moved to America"],1]]},
+ {k:'worship', icon:'🎶', title:'Worship and song', heroes:['crosby','dorsey','sinach20'],
+  principle:"Worship flows from real life, joy and pain alike. Songs written in devotion travel far.",
+  reflect:"What has God done for you that deserves a new song?",
+  quiz:[["How many hymns did Fanny Crosby write?",["About 80","More than 8,000","About 800"],1],
+        ["What led Thomas Dorsey to write 'Take My Hand, Precious Lord'?",["Winning an award","Grief after losing his wife and son","A church anniversary"],1],
+        ["Which award did 'Way Maker' win in 2020?",["GMA Dove Song of the Year","Grammy for Best Rap Song","Headies Album of the Year"],0]]},
+ {k:'revival', icon:'🔥', title:'Revival and growth', heroes:['seymour','adeboye190','caproNow'],
+  principle:"Real revival unites people and multiplies disciples, not just crowds.",
+  reflect:"What walls between people would revival break down in your church?",
+  quiz:[["What was remarkable about the Azusa Street meetings in 1906?",["Black and white worshippers met at the same altar","They were held in a stadium","They lasted one night"],0],
+        ["Roughly how many countries has the RCCG spread to?",["About 19","More than 190","About 50"],1],
+        ["How many missionaries does CAPRO now have?",["About 70","More than 700","About 7,000"],1]]},
+ {k:'legacy', icon:'🏛️', title:'Raising leaders', heroes:['idahosaBI','panam40','oyedepo99'],
+  principle:"A ministry's success is its successors. Train faithful people who will teach others.",
+  reflect:"Who are you training right now to do what you do?",
+  quiz:[["How many people has Idahosa's Bible institute graduated, according to its alumni?",["About 1,500","Over 15,000","About 150"],1],
+        ["What has Panam Percy Paul used his music organisation for?",["Educating younger musicians","Only selling his albums","Running concerts abroad"],0],
+        ["What did Bishop Oyedepo found in 2002?",["Covenant University","A TV station","A hospital"],0]]}
+];
+
+/* Decision cards that open a mentor moment from a matching theme */
+const CARD_THEME = {
+  p_altar:'prayer', p_fast:'prayer', g_prayer:'prayer', e_pray:'prayer', f_21:'prayer', g_midnight:'prayer', x_network:'prayer',
+  p_count:'integrity', p_nephew:'integrity', p_dirty:'integrity', p_pulpit:'integrity', p_books:'integrity', p_pledge:'integrity', g_streams:'integrity', g_brands:'integrity', e_betting:'integrity', e_edit:'integrity', e_permit:'integrity', e_reports:'integrity', x_election:'integrity', e_adverts:'integrity',
+  p_format:'word', p_pace:'word', g_scripture:'word', e_lang:'word', e_bible:'word', e_school:'word', p_class:'word',
+  p_widow:'servant', p_musa:'servant', p_quarrel:'servant', g_paid:'servant', g_ward:'servant', g_planted:'servant', g_6am:'servant',
+  p_north:'missions', p_abroad:'missions', e_send:'missions', e_bus:'missions', e_listen:'missions', x_japa:'missions',
+  p_cholera:'compassion', p_clinic:'compassion', e_food:'compassion', x_flood:'compassion', x_naira:'compassion', e_clinic:'compassion', p_invite:'compassion',
+  e_mock:'suffering', e_unsafe:'suffering', g_fallen:'suffering', p_release:'suffering',
+  g_name:'worship', g_write:'worship', g_highlife:'worship', g_nopreach:'worship', g_feature:'worship',
+  p_raise:'legacy', p_succ:'legacy', e_locals:'legacy', g_youthchoir:'legacy', g_school:'legacy', p_school:'legacy', g_mentee:'legacy', e_team:'legacy',
+  p_poly:'small', p_saturday:'small', g_record:'small', e_tracts:'small', p_hall:'small',
+  g_mum:'answer', p_promo:'answer', e_job:'answer',
+  e_crusade:'revival', p_branch:'revival', e_campus:'revival', p_long:'revival'
+};
+
+/* A mentor steps in when a meter is about to end the journey */
+const RESCUE = {
+  f0:  ['muller', 'Faith restored', "Like George Müller at the empty breakfast table, you prayed, and peace returned."],
+  h0:  ['tenboom', 'Family restored', "Like the ten Boom family, you held together under pressure. You made time for home."],
+  c0:  ['seymour', 'People returned', "As at Azusa Street, people came back when they felt welcome at the same altar."],
+  c100:['graham', 'Leaders steadied', "Like Billy Graham's team, you partnered with local churches and shared the load."],
+  o0:  ['muller2', 'Provision came', "Open books built trust. Partners stepped in, just as they did for Müller's homes."],
+  o100:['wesley', 'Money given away', "Like John Wesley, you gave the surplus away before it could corrupt the work."]
+};
+
+/* ================= ACADEMY LOGIC ================= */
+const ACAD = 'ministrylife_academy_v1';
+function acad(){ return Object.assign({ done:{}, read:{} }, load(ACAD) || {}); }
+function saveAcad(a){ store(ACAD, a); }
+const themeOf = k => ACADEMY.find(t=>t.k === k);
+const doneCount = () => Object.keys(acad().done).filter(k=>themeOf(k)).length;
+const rescuesFor = n => n >= 12 ? 2 : n >= 3 ? 1 : 0;   // tuned by simulation: rescues help, never guarantee a win
+const escH = s => String(s == null ? '' : s).replace(/[&<>"]/g, c=>({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+let lessonReturn = null, quizState = null, lessonKey = null;
+
+function showAcademy(){
+  const a = acad(), n = doneCount();
+  $('acSub').textContent = `${n} of ${ACADEMY.length} lessons completed · ${rescuesFor(n)} mentor rescue${rescuesFor(n) === 1 ? '' : 's'} per journey`;
+  $('acNext').textContent = n >= 12 ? 'You have completed every lesson. Well done!' : (()=>{ const need = (n < 3 ? 3 : 12) - n; return `Complete ${need} more lesson${need === 1 ? '' : 's'} to earn ${n < 3 ? 'your first mentor rescue' : 'a second mentor rescue (graduation)'}.`; })();
+  $('acList').innerHTML = ACADEMY.map(t=>`<button class="ac-item ${a.done[t.k] ? 'done' : ''}" data-k="${t.k}"><span class="ic">${t.icon}</span><span class="tt">${escH(t.title)}</span><span class="st">${a.done[t.k] ? '✓ Completed' : a.read[t.k] ? 'In progress' : 'Start'}</span></button>`).join('');
+  $('acList').querySelectorAll('.ac-item').forEach(b=>b.onclick = ()=>openLesson(b.dataset.k, 'academy'));
+  $('academy').classList.add('on'); $('academy').scrollTop = 0;
+}
+function openLesson(k, from){
+  const t = themeOf(k); if (!t) return;
+  lessonReturn = from; lessonKey = k;
+  const a = acad(); a.read[k] = 1; saveAcad(a);
+  t.heroes.forEach(id=>addToHall(id));
+  const v = VERSES[k];
+  $('lsKick').textContent = `${t.icon} Ministry Academy · Lesson ${ACADEMY.indexOf(t) + 1} of ${ACADEMY.length}`;
+  $('lsTitle').textContent = t.title;
+  $('lsPrinciple').textContent = t.principle;
+  $('lsVerse').innerHTML = `“${escH(v[1])}”<cite>${escH(v[0])} (KJV)</cite>`;
+  $('lsHeroes').innerHTML = t.heroes.map(id=>{ const h = HERO_DB[id]; return `<article class="ls-hero"><div class="yr">${escH(h.yr)}</div><h3>${escH(h.who)}</h3><p>${escH(h.text)}</p><p class="ls">${escH(h.lesson)}</p><p class="src">Source: ${escH(h.src)}</p></article>`; }).join('');
+  $('lsReflect').textContent = t.reflect;
+  $('lsQuiz').hidden = true; $('lsQuizBtn').hidden = false; $('lsCert').hidden = true;
+  $('lsQuizBtn').textContent = a.done[k] ? 'Retake the quiz' : 'Take the quiz';
+  $('lesson').classList.add('on'); $('lesson').scrollTop = 0;
+  Track.add('lesson', { k, n:-1 });
+}
+function closeLesson(){
+  $('lesson').classList.remove('on');
+  if (lessonReturn === 'academy') showAcademy();
+  if (lessonReturn === 'game' && lessonDone){ const d = lessonDone; lessonDone = null; d(); }
+  lessonReturn = null;
+}
+function startQuiz(){
+  const t = themeOf(quizKey()); quizState = { k:t.k, i:0, score:0 };
+  $('lsQuizBtn').hidden = true; $('lsQuiz').hidden = false; $('lsCert').hidden = true;
+  renderQ(); $('lsQuiz').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+function quizKey(){ return lessonKey; }
+function renderQ(){
+  const t = themeOf(quizState.k), q = t.quiz[quizState.i];
+  $('lsQuiz').innerHTML = `<div class="qn">Question ${quizState.i + 1} of ${t.quiz.length}</div><p class="qq">${escH(q[0])}</p>` +
+    q[1].map((o, j)=>`<button class="qo" data-j="${j}">${escH(o)}</button>`).join('') + `<p class="qf" id="qf"></p>`;
+  $('lsQuiz').querySelectorAll('.qo').forEach(b=>b.onclick = ()=>answerQ(+b.dataset.j));
+}
+function answerQ(j){
+  const t = themeOf(quizState.k), q = t.quiz[quizState.i], ok = j === q[2];
+  $('lsQuiz').querySelectorAll('.qo').forEach(b=>{ b.disabled = true; const n = +b.dataset.j; if (n === q[2]) b.classList.add('right'); else if (n === j) b.classList.add('wrong'); });
+  if (ok){ quizState.score++; Sound.play('grow'); } else Sound.play('news');
+  $('qf').textContent = ok ? 'Correct!' : `Not quite. The answer is: ${q[1][q[2]]}.`;
+  setTimeout(()=>{
+    quizState.i++;
+    if (quizState.i < t.quiz.length) renderQ(); else finishQuiz();
+  }, ok ? 900 : 1700);
+}
+function finishQuiz(){
+  const { k, score } = quizState, t = themeOf(k), total = t.quiz.length, pass = score >= 2;
+  const a = acad(), before = doneCount();
+  if (pass){ a.done[k] = Math.max(a.done[k] || 0, score); saveAcad(a); }
+  Track.add('lesson', { k, n:score });
+  const after = doneCount(), gained = rescuesFor(after) > rescuesFor(before);
+  $('lsQuiz').innerHTML = pass
+    ? `<div class="qres pass"><b>${score} of ${total}: lesson completed ✓</b><p>${gained ? `🎓 You've earned a new mentor rescue! You now get ${rescuesFor(after)} per journey.` : `${after} of ${ACADEMY.length} lessons complete.`}</p></div>`
+    : `<div class="qres"><b>${score} of ${total}</b><p>You need 2 correct to complete this lesson. Read the stories again and retry.</p><button class="btn ghost" id="qRetry">Try again</button></div>`;
+  if (!pass){ $('qRetry').onclick = startQuiz; Sound.play('sad'); return; }
+  Sound.play('amen');
+  if (after >= ACADEMY.length) award('scholar');
+  else if (after >= 1) award('student');
+  showCert(k);
+}
+function showCert(k){
+  const t = themeOf(k), name = (load('ministrylife_name') || ($('iName') && $('iName').value) || '').trim() || 'A faithful learner';
+  const cv = drawCert(t, name);
+  $('lsCertImg').src = cv.toDataURL('image/png'); $('lsCert').hidden = false;
+  window._cert = { cv, t };
+}
+function drawCert(t, name){
+  const W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const x = cv.getContext('2d');
+  const bg = x.createRadialGradient(W/2, 400, 60, W/2, 400, 1100); bg.addColorStop(0, '#5B1A9E'); bg.addColorStop(.45, '#2B0B4F'); bg.addColorStop(1, '#14051F');
+  x.fillStyle = bg; x.fillRect(0, 0, W, H);
+  const px = 70, py = 70, pw = W - 140, ph = H - 140;
+  x.fillStyle = '#FBF3DF'; x.fillRect(px, py, pw, ph);
+  x.strokeStyle = '#F2B705'; x.lineWidth = 6; x.strokeRect(px + 20, py + 20, pw - 40, ph - 40);
+  x.lineWidth = 2; x.strokeRect(px + 34, py + 34, pw - 68, ph - 68);
+  x.textAlign = 'center';
+  x.fillStyle = '#2B0B4F'; x.font = '42px Anton, Impact, sans-serif'; x.fillText('MINISTRY LIFE ACADEMY', W/2, 205);
+  x.fillStyle = '#C7362B'; x.font = '700 30px Archivo, sans-serif'; x.fillText('Certificate of completion', W/2, 260);
+  x.fillStyle = '#6B5A80'; x.font = '600 28px Archivo, sans-serif'; x.fillText('This certifies that', W/2, 360);
+  x.fillStyle = '#1A0B2E'; x.font = '72px Anton, Impact, sans-serif'; x.fillText(name.slice(0, 26), W/2, 450);
+  x.fillStyle = '#6B5A80'; x.font = '600 28px Archivo, sans-serif'; x.fillText('has completed the lesson', W/2, 520);
+  x.font = '96px sans-serif'; x.fillText(t.icon, W/2, 650);
+  x.fillStyle = '#2B0B4F'; x.font = '68px Anton, Impact, sans-serif'; x.fillText(t.title.toUpperCase(), W/2, 750);
+  x.fillStyle = '#1A0B2E'; x.font = 'italic 600 30px Archivo, sans-serif'; wrap(x, t.principle, W/2, 830, pw - 180, 42, 3);
+  const v = VERSES[t.k];
+  x.fillStyle = '#6B5A80'; x.font = '600 26px Archivo, sans-serif'; x.fillText(`${v[0]} (KJV)`, W/2, 990);
+  x.fillStyle = '#6B5A80'; x.font = '600 24px Archivo, sans-serif';
+  wrap(x, 'Learning from: ' + t.heroes.map(id=>HERO_DB[id].who).join(' · '), W/2, 1040, pw - 160, 32, 2);
+  x.fillText(new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }), W/2, 1112);
+  x.fillStyle = '#2B0B4F'; x.fillRect(px + 34, py + ph - 150, pw - 68, 116);
+  x.fillStyle = '#FFD95A'; x.font = '40px Anton, Impact, sans-serif'; x.fillText('MINISTRY LIFE', W/2, py + ph - 95);
+  x.fillStyle = '#FBF3DF'; x.font = '600 24px Archivo, sans-serif'; x.fillText(`Learn ministry from heroes of faith · ${GAME_URL}`, W/2, py + ph - 55);
+  return cv;
+}
+
+/* ----- mentor moments during play ----- */
+function maybeMentor(c){
+  const k = CARD_THEME[c.id]; if (!k || !G) return null;
+  if ((G.turn - (G.lastMentor == null ? -99 : G.lastMentor)) < 5) return null;
+  if (Math.random() > .7) return null;
+  G.lastMentor = G.turn;
+  return k;
+}
+function showMentor(k, done){
+  const t = themeOf(k), id = t.heroes[Math.floor(Math.random() * t.heroes.length)], h = HERO_DB[id], v = VERSES[k];
+  const first = h.text.split(/(?<=\.)\s/)[0];
+  $('mnTheme').textContent = `${t.icon} ${t.title}`;
+  $('mnWho').textContent = h.who;
+  $('mnText').textContent = first;
+  $('mnLesson').textContent = h.lesson;
+  $('mnVerse').textContent = `${v[0]} (KJV)`;
+  addToHall(id);
+  $('mentor').classList.add('on'); $('mnOk').focus();
+  Sound.play('chime'); Track.add('lesson', { k, n:-2 });
+  $('mnOk').onclick = ()=>{ $('mentor').classList.remove('on'); done && done(); };
+  $('mnMore').onclick = ()=>{ $('mentor').classList.remove('on'); openLesson(k, 'game'); lessonDone = done; };
+}
+let lessonDone = null;
+
+/* ----- mentor rescues ----- */
+function tryRescue(end){
+  if (!G || !G.rescues || !RESCUE[end]) return false;
+  const [id, title, msg] = RESCUE[end];
+  ({ f0:()=>G.f = 15, h0:()=>G.h = 15, c0:()=>G.c = 15, c100:()=>G.c = 85, o0:()=>G.o = 15, o100:()=>G.o = 85 })[end]();
+  G.rescues--; G.rescued = (G.rescued || 0) + 1;
+  addToHall(id);
+  setTimeout(()=>{ toast(`🎓 Mentor rescue: ${title}. ${msg}`); Sound.play('promo'); }, 350);
+  return true;
+}
+
 /* ================= STATE ================= */
 let G = null, busy = false;
 const setup = { path:'p', sex:'Brother' };
@@ -1319,7 +1685,7 @@ const card = () => deckOf().find(c=>c.id===G.cardId);
 function newGame(name, ministry, path, sex){
   G = { name, ministry, path, sex, f:55, c:50, o:50, h:60, members:PATHS[path].start, week:1, turn:0, stage:0,
         tags:{F:0,W:0,S:0,E:0,B:0}, legacy:{leaders:0,outreach:0,schools:0,songs:path==='g'?1:0,trained:0},
-        heroes:0, heroIds:[], fx:{}, log:[], used:{}, recent:[], cardId:null };
+        heroes:0, heroIds:[], fx:{}, log:[], used:{}, recent:[], cardId:null, rescues:rescuesFor(doneCount()), lastMentor:null };
   Track.add('start', { path, lang:LANG, k:SEASON || '' });
   G.cardId = nextCard().id;
   const st = stats();
@@ -1374,7 +1740,7 @@ function renderMeters(){
 function renderStatus(){
   const st = cfg().stages[G.stage];
   $('sWho').textContent = `${titleOf(G.stage)} ${G.name}`;
-  $('sWhere').textContent = `${st.name} · ${G.ministry}`;
+  $('sWhere').textContent = `${st.name} · ${G.ministry}${G.rescues ? ` · 🎓 ${G.rescues}` : ''}`;
   $('sMembers').textContent = fmt(G.members);
   $('sUnit').textContent = cfg().unit;
 }
@@ -1427,7 +1793,8 @@ function apply(side){
   Object.keys(G.legacy).forEach(k=>{ if (ex[k]) G.legacy[k] += ex[k]; });
   G.used[c.id] = 1; G.recent.push(c.id); if (G.recent.length > 10) G.recent.shift();
 
-  const end = checkEnd(); if (end) return finish(end);
+  let end = checkEnd(); if (end && tryRescue(end)) end = checkEnd(); if (end) return finish(end);
+  const mentorK = maybeMentor(c);
   G.turn++;
   let queue = [];
   if (G.turn % 3 === 0){
@@ -1436,6 +1803,7 @@ function apply(side){
     if (r === 'promo') queue = ['promo','hero'];
     else if (G.heroes === 0) queue = ['hero'];
   }
+  if (mentorK) queue.push('mentor:' + mentorK);
   G.cardId = nextCard().id; save();
   if (queue.length){ render(false); runQueue(queue); } else render(true);
 }
@@ -1451,7 +1819,7 @@ function sunday(){
   if (d > 0) Sound.play('grow');
   G.week++;
   if (G.members <= 0){ finish('c0'); return 'end'; }
-  const end = checkEnd(); if (end){ finish(end); return 'end'; }
+  let end = checkEnd(); if (end && tryRescue(end)) end = checkEnd(); if (end){ finish(end); return 'end'; }
   if (d > 0) World.burst(Math.min(24, 8 + Math.round(Math.log2(d + 1)) * 2));
   const ns = stageFor(G.members);
   if (ns > G.stage){
@@ -1473,6 +1841,8 @@ function runQueue(q){
     $('pOk').onclick = ()=>{ $('promo').classList.remove('on'); runQueue(q); };
   } else if (next === 'hero'){
     if (!showHero(()=>runQueue(q))) runQueue(q);
+  } else if (next.startsWith('mentor:')){
+    showMentor(next.slice(7), ()=>runQueue(q));
   }
 }
 function showHero(done){
@@ -1617,11 +1987,30 @@ function showHall(){
       else html += `<div class="h lock"><b>🔒 Locked</b><p>Grow your ministry as ${k==='p'?'a pastor':k==='g'?'a gospel minister':'an evangelist'} to unlock this story.</p></div>`;
     });
   });
+  const world = Object.keys(HERO_DB).filter(id=>!shown.has(id));
+  html += `<div class="grp">From around the world · Ministry Academy</div>`;
+  world.forEach(id=>{ const h = HERO_DB[id];
+    if (seen.includes(id)) html += `<div class="h"><span class="y">${h.yr}</span><b>${h.who}</b><p>${h.text}</p><p class="ls">${h.lesson}</p><p class="sr">Source: ${h.src}</p></div>`;
+    else html += `<div class="h lock"><b>🔒 Locked</b><p>Open the Ministry Academy to meet this hero of faith.</p></div>`; });
   $('hallList').innerHTML = html;
   $('hallSub').textContent = `${seen.filter(id=>HERO_DB[id]).length} of ${ALL_HEROES.length} stories unlocked. Replays reveal new heroes.`;
   $('hall').classList.add('on'); $('hall').scrollTop = 0; $('hallClose').focus({preventScroll:true});
 }
 $('iHall').onclick = showHall;
+$('iAcad').onclick = showAcademy;
+$('acBack').onclick = ()=>{ $('academy').classList.remove('on'); showIntro(); };
+$('lsBack').onclick = closeLesson;
+$('lsQuizBtn').onclick = startQuiz;
+$('lsShare').onclick = async ()=>{
+  const c = window._cert; if (!c) return;
+  Track.add('share', { k:'certificate' });
+  const blob = await new Promise(r=>c.cv.toBlob(r, 'image/png'));
+  const file = new File([blob], 'ministry-life-certificate.png', { type:'image/png' });
+  const text = `I completed "${c.t.title}" in the Ministry Life Academy, learning from ${c.t.heroes.map(id=>HERO_DB[id].who).join(', ')}. https://${GAME_URL}`;
+  try { if (navigator.canShare && navigator.canShare({ files:[file] })){ await navigator.share({ files:[file], text }); return; } } catch(e){ if (e.name === 'AbortError') return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
+  toast('Certificate saved.');
+};
 function updateMute(){ $('mute').textContent = Sound.on ? '🔊' : '🔇'; }
 $('mute').onclick = (e)=>{ e.stopPropagation(); Sound.toggle(); updateMute(); if (Sound.on && G) Sound.hum(true); };
 updateMute();
@@ -2220,14 +2609,16 @@ function showIntro(){
     $('iStreak').textContent = live && st.streak > 0 ? `🔥 ${st.streak}-day streak${st.best > st.streak ? ` · best ${st.best}` : ''}` : '';
     $('iDailyNew').hidden = !!st.dailyDays[dailyToday().day]; }
   Sound.hum(false);
+  { const n = doneCount(); $('iAcad').textContent = `🎓 Ministry Academy · ${n}/${ACADEMY.length}${rescuesFor(n) ? ` · ${rescuesFor(n)} rescue${rescuesFor(n) > 1 ? 's' : ''}` : ''}`; }
   $('iBest').textContent = bits.length ? `Your best: ${bits.join(', ')}.` : '';
   $('intro').classList.add('on'); $('intro').scrollTop = 0; document.body.classList.add('menu'); World.setActive(false);
 }
 function startPlaying(){ markActive(); Sound.hum(true); buildMeters(); if (SEASON){ const si = SEASON_INFO[SEASON]; $('seasonChip').hidden = false; $('seasonChip').textContent = si.icon + ' ' + si.name; } $('intro').classList.remove('on'); document.body.classList.remove('menu'); World.setActive(true); render(true); }
 $('iStart').onclick = ()=>{
-  const name = $('iName').value.trim() || 'Emeka';
+  const name = $('iName').value.trim() || 'Emeka'; store('ministrylife_name', name);
   const min = $('iMin').value.trim() || NAMES[setup.path]();
   newGame(name, min, setup.path, setup.sex); save(); startPlaying();
+  if (G.rescues) setTimeout(()=>toast(`🎓 Ministry Academy: ${G.rescues} mentor rescue${G.rescues > 1 ? 's' : ''} ready for this journey`), 5800);
   if (G._blessed) setTimeout(()=>toast(PGL() ? '🙏 Daily blessing: +5 Faith' : '🙏 Daily blessing: +5 Faith from today\'s Daily Card'), 3200);
   setTimeout(()=>toast(PGL() ? UI_PG['start' + setup.path.toUpperCase()] : ({p:'Eight people in your sitting room. It begins.', g:'Fifty people heard you sing on Sunday. It begins.', e:'A bus park, a bag of tracts and a burning heart. It begins.'})[setup.path]), 400);
 };

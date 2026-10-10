@@ -22,7 +22,7 @@ const validDay = d => typeof d === 'string' && /^d\d{4,6}$/.test(d) && Math.abs(
 const validUid = u => typeof u === 'string' && /^[a-z0-9]{8,40}$/i.test(u);
 const str = (v, max) => (v === undefined || v === null) ? null : String(v).slice(0, max);
 const int = v => Number.isFinite(+v) ? Math.round(+v) : null;
-const EVENT_TYPES = new Set(['visit', 'start', 'end', 'badge', 'share']);
+const EVENT_TYPES = new Set(['visit', 'start', 'end', 'badge', 'share', 'lesson']);
 const PATHS = new Set(['p', 'g', 'e']);
 
 let ready = false;
@@ -108,7 +108,8 @@ async function adminStats(req, env) {
         SUM(EXISTS (SELECT 1 FROM events e WHERE e.uid = p.uid AND e.type = 'visit' AND e.dn BETWEEN p.first_day + 7 AND p.first_day + 13)) AS r7
        FROM players p WHERE p.first_day >= ? GROUP BY p.first_day`, from),                                                     // 17 retention
     q("SELECT COUNT(DISTINCT uid) AS c FROM events WHERE type = 'visit' AND dn > ?", today - 7),                                // 18 weekly actives
-    q("SELECT COUNT(DISTINCT uid) AS c FROM events WHERE type = 'visit' AND dn >= ?", from)                                     // 19 period actives
+    q("SELECT COUNT(DISTINCT uid) AS c FROM events WHERE type = 'visit' AND dn >= ?", from),                                    // 19 period actives
+    q("SELECT k, SUM(n = -1) AS opened, SUM(n = -2) AS mentor, SUM(n >= 2) AS passed, COUNT(DISTINCT CASE WHEN n >= 2 THEN uid END) AS learners FROM events WHERE type = 'lesson' AND dn >= ? GROUP BY k", from) // 20 academy
   ]);
   const rows = i => (res[i] && res[i].results) || [];
   const choice = {};
@@ -123,7 +124,7 @@ async function adminStats(req, env) {
     averages: rows(6), lang: rows(7), device: rows(8), countries: rows(9), badges: rows(10), shares: rows(11),
     daily: rows(12), choices: choice, recent: rows(14),
     totals: { players: (rows(15)[0] || {}).c || 0, games: (rows(16)[0] || {}).c || 0, weekly: (rows(18)[0] || {}).c || 0, period: (rows(19)[0] || {}).c || 0 },
-    retention: rows(17)
+    retention: rows(17), academy: rows(20)
   });
 }
 
