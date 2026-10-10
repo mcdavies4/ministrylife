@@ -3,10 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ministry Life: from sitting room to camp ground</title>
-<meta name="description" content="Build a Nigerian mega-ministry from plastic chairs in Ikorodu to a camp ground on the expressway. Every choice has a price.">
-<meta property="og:title" content="Ministry Life">
-<meta property="og:description" content="From plastic chairs in Ikorodu to a camp ground on the expressway. How far can your ministry go?">
+<title>Ministry Life: answer the call</title>
+<meta name="description" content="Answer the call. Plant a church, lead worship or reach the nations, and learn from the true stories of Nigeria's heroes of faith.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ministrylife.pages.dev/">
+<meta property="og:site_name" content="Ministry Life">
+<meta property="og:title" content="Ministry Life: answer the call">
+<meta property="og:description" content="Plant a church, lead worship or reach the nations. Every choice shapes your faith, flock, finances and family. Inspired by the true stories of Nigeria's heroes of faith.">
+<meta property="og:image" content="https://ministrylife.pages.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ministry Life: a swipe-card game about building a ministry">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ministry Life: answer the call">
+<meta name="twitter:description" content="Plant a church, lead worship or reach the nations. Inspired by the true stories of Nigeria's heroes of faith.">
+<meta name="twitter:image" content="https://ministrylife.pages.dev/og.png">
+<meta name="twitter:creator" content="@zubidavies">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232B0B4F'/%3E%3Cpath d='M27 8h10v14h14v10H37v24H27V32H13V22h14z' fill='%23FFD95A'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#2B0B4F">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +29,7 @@
 <style>
 :root{
   --purple:#2B0B4F; --night:#14051F; --gold:#F2B705; --gold-hi:#FFD95A;
-  --red:#D7261E; --paper:#FBF3DF; --ink:#1A0B2E; --lilac:#B8A3D9;
+  --red:#C7362B; --paper:#FBF3DF; --ink:#1A0B2E; --lilac:#B8A3D9;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -27,10 +42,9 @@ input{user-select:text;-webkit-user-select:text}
 button{font-family:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--gold-hi);outline-offset:3px}
 
-/* crusade-poster backdrop */
 .bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(ellipse at 50% 28%,#5B1A9E 0%,var(--purple) 38%,var(--night) 82%)}
 .bg::before{content:"";position:absolute;left:50%;top:28%;width:240vmax;height:240vmax;transform:translate(-50%,-50%);
-  background:repeating-conic-gradient(from 0deg,rgba(242,183,5,.075) 0deg 5deg,transparent 5deg 15deg);animation:spin 160s linear infinite}
+  background:repeating-conic-gradient(from 0deg,rgba(242,183,5,.07) 0deg 5deg,transparent 5deg 15deg);animation:spin 180s linear infinite}
 @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 @media (max-height:620px){#app{height:auto}}
 @media (prefers-reduced-motion:reduce){.bg::before{animation:none}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
@@ -38,9 +52,8 @@ button{font-family:inherit;cursor:pointer}
 body.menu #app{visibility:hidden}
 #app{min-height:100%;height:100%;max-width:460px;margin:0 auto;display:flex;flex-direction:column;padding:10px 16px 8px}
 
-/* meters */
 .meters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:6px 0 4px}
-.meter{display:flex;flex-direction:column;align-items:center;gap:5px;position:relative}
+.meter{display:flex;flex-direction:column;align-items:center;gap:5px}
 .meter .top{display:flex;align-items:center;gap:6px;height:24px}
 .meter .ic{font-size:21px;line-height:1}
 .meter .dot{width:0;height:0;border-radius:50%;background:var(--gold-hi);transition:all .15s ease;box-shadow:0 0 8px var(--gold)}
@@ -51,15 +64,13 @@ body.menu #app{visibility:hidden}
 @keyframes pulse{50%{opacity:.45}}
 .meter .nm{font-size:11px;font-weight:600;color:var(--lilac)}
 
-/* status */
 .status{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:10px 2px 6px;border-bottom:1px solid rgba(242,183,5,.25)}
 .status .who{font-family:'Anton',Impact,sans-serif;font-size:19px;letter-spacing:.01em;color:var(--gold-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.status .where{font-size:12px;color:var(--lilac)}
+.status .where{font-size:12px;color:var(--lilac);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .status .count{text-align:right;flex-shrink:0}
 .status .count b{font-family:'Anton',Impact,sans-serif;font-size:22px;font-weight:400;color:var(--paper);display:block;line-height:1}
 .status .count span{font-size:11px;color:var(--lilac)}
 
-/* card */
 .deck{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:340px;padding:12px 0}
 .card{width:100%;max-width:360px;height:100%;max-height:440px;background:var(--paper);color:var(--ink);border-radius:6px;position:relative;
   display:flex;flex-direction:column;padding:22px 22px 20px;touch-action:none;cursor:grab;z-index:2;
@@ -67,7 +78,7 @@ body.menu #app{visibility:hidden}
 .card::before{content:"";position:absolute;inset:8px;border:2px solid var(--purple);border-radius:3px;pointer-events:none;opacity:.85}
 .card.ghost{position:absolute;z-index:1;transform:translateY(12px) scale(.94);opacity:.35;pointer-events:none;box-shadow:none}
 .card.enter{transform:translateY(30px) scale(.96);opacity:0}
-.card .week{align-self:flex-start;background:var(--red);color:#fff;font-family:'Anton',Impact,sans-serif;font-size:14px;letter-spacing:.04em;padding:4px 10px;border-radius:2px;transform:rotate(-2deg)}
+.card .week{align-self:flex-start;background:var(--purple);color:var(--gold-hi);font-family:'Anton',Impact,sans-serif;font-size:14px;letter-spacing:.04em;padding:4px 10px;border-radius:2px}
 .card .who{display:flex;align-items:center;gap:14px;margin:18px 0 14px}
 .card .av{width:62px;height:62px;border-radius:50%;background:var(--purple);border:3px solid var(--gold);display:grid;place-items:center;font-size:32px;flex-shrink:0}
 .card .nm{font-family:'Anton',Impact,sans-serif;font-size:24px;line-height:1.05;color:var(--purple)}
@@ -79,53 +90,80 @@ body.menu #app{visibility:hidden}
 .card .lean.on{opacity:1}
 .card.dragging{transition:none;cursor:grabbing}
 
-/* choices */
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 0 6px}
-.choices button{font-size:14px;font-weight:600;line-height:1.28;padding:12px 12px;border-radius:4px;border:2px solid var(--gold);background:rgba(20,5,31,.72);color:var(--paper);min-height:68px;text-align:left;transition:background .15s,transform .1s}
+.choices button{font-size:14px;font-weight:600;line-height:1.28;padding:12px;border-radius:4px;border:2px solid var(--gold);background:rgba(20,5,31,.72);color:var(--paper);min-height:68px;text-align:left;transition:background .15s,transform .1s}
 .choices button.r{text-align:right}
 .choices button:active{transform:scale(.97)}
 .choices button:hover{background:rgba(242,183,5,.16)}
 .choices button .arr{display:block;font-size:12px;color:var(--gold);margin-bottom:3px;font-weight:800}
 .hint{text-align:center;font-size:11px;color:var(--lilac);opacity:.75;padding-bottom:2px}
 
-/* toast */
 .toast{position:absolute;left:50%;bottom:34px;transform:translate(-50%,12px);background:var(--gold);color:var(--ink);
-  font-weight:800;font-size:14px;padding:10px 16px;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:all .3s;width:max-content;max-width:min(320px,80%);text-align:center;z-index:30;pointer-events:none}
+  font-weight:800;font-size:14px;padding:10px 16px;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;transition:all .3s;width:max-content;max-width:min(320px,80%);text-align:center;z-index:15;pointer-events:none}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
-/* full screens */
 .screen{position:fixed;inset:0;display:none;overflow-y:auto;z-index:20;padding:24px 20px;
   padding-top:calc(24px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
 .screen.on{display:flex}
 #intro{background:radial-gradient(ellipse at 50% 28%,#5B1A9E 0%,#2B0B4F 38%,#14051F 82%)}
-.screen.dim{background:rgba(20,5,31,.94)}
+.screen.dim{background:rgba(20,5,31,.97)}
 .screen .inner{margin:auto;width:100%;max-width:400px;text-align:center}
-.kicker{font-weight:800;font-size:14px;color:var(--gold);transform:rotate(-2deg);display:inline-block;margin-bottom:6px}
-.title{font-family:'Anton',Impact,sans-serif;font-size:clamp(58px,18vw,84px);line-height:.9;color:var(--paper);text-shadow:4px 4px 0 var(--red),8px 8px 0 rgba(0,0,0,.35);letter-spacing:.01em}
+.kicker{font-weight:800;font-size:14px;color:var(--gold);display:inline-block;margin-bottom:6px}
+.title{font-family:'Anton',Impact,sans-serif;font-size:clamp(58px,18vw,84px);line-height:.9;color:var(--paper);text-shadow:4px 4px 0 var(--purple),8px 8px 0 rgba(0,0,0,.35);letter-spacing:.01em}
 .title .l2{display:block;color:var(--gold-hi)}
-.tagline{font-size:16px;line-height:1.45;color:var(--paper);margin:18px auto 22px;max-width:30ch}
+.tagline{font-size:16px;line-height:1.45;color:var(--paper);margin:18px auto 22px;max-width:32ch}
 .field{text-align:left;margin-bottom:14px}
-.field label{display:block;font-size:13px;font-weight:600;color:var(--lilac);margin-bottom:6px}
+.field>label,.field .lbl{display:block;font-size:13px;font-weight:600;color:var(--lilac);margin-bottom:6px}
 .field .row{display:flex;gap:8px}
 .field input{flex:1;width:100%;font:600 16px 'Archivo',sans-serif;padding:13px 14px;border-radius:4px;border:2px solid rgba(242,183,5,.5);background:rgba(20,5,31,.7);color:var(--paper)}
 .field input:focus{border-color:var(--gold-hi);outline:none}
 .dice{width:52px;font-size:22px;border-radius:4px;border:2px solid rgba(242,183,5,.5);background:rgba(20,5,31,.7)}
-.btn{display:block;width:100%;font-family:'Anton',Impact,sans-serif;font-size:22px;letter-spacing:.03em;padding:15px;border:none;border-radius:4px;background:var(--red);color:#fff;box-shadow:0 5px 0 #8E140E;margin-top:8px;transition:transform .08s,box-shadow .08s}
-.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #8E140E}
-.btn.gold{background:var(--gold);color:var(--ink);box-shadow:0 5px 0 #A07800}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{border:2px solid rgba(242,183,5,.4);background:rgba(20,5,31,.6);color:var(--paper);border-radius:4px;padding:11px;font-weight:600;font-size:15px}
+.seg button[aria-pressed="true"]{border-color:var(--gold-hi);background:rgba(242,183,5,.18);color:var(--gold-hi)}
+.calls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.calls button{border:2px solid rgba(242,183,5,.4);background:rgba(20,5,31,.6);color:var(--paper);border-radius:6px;padding:12px 6px;text-align:center}
+.calls button .e{font-size:30px;display:block;margin-bottom:6px}
+.calls button b{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:17px;line-height:1.1;display:block;letter-spacing:.01em}
+.calls button small{display:block;font-size:12px;color:var(--lilac);margin-top:3px;line-height:1.3}
+.calls button[aria-pressed="true"]{border-color:var(--gold-hi);background:rgba(242,183,5,.16)}
+.calls button[aria-pressed="true"] b{color:var(--gold-hi)}
+.btn{display:block;width:100%;font-family:'Anton',Impact,sans-serif;font-size:22px;letter-spacing:.03em;padding:15px;border:none;border-radius:4px;background:var(--gold);color:var(--ink);box-shadow:0 5px 0 #A07800;margin-top:8px;transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #A07800}
 .btn.ghost{background:transparent;border:2px solid var(--gold);color:var(--gold-hi);box-shadow:none;font-size:18px;padding:12px}
 .how{font-size:14px;line-height:1.5;color:var(--lilac);margin-top:22px;text-align:left;background:rgba(20,5,31,.55);padding:14px 16px;border-left:3px solid var(--gold)}
 .how strong{color:var(--paper)}
-.fine{font-size:12px;color:var(--lilac);opacity:.75;margin-top:14px;line-height:1.45}
+.fine{font-size:12px;color:var(--lilac);opacity:.8;margin-top:14px;line-height:1.45}
 
-.promo .big{font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,12vw,58px);line-height:.95;color:var(--gold-hi);text-shadow:3px 3px 0 var(--red);margin:10px 0 14px}
+.promo .big{font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,12vw,58px);line-height:.95;color:var(--gold-hi);margin:10px 0 14px}
 .promo p{font-size:17px;line-height:1.5;margin-bottom:22px}
 
-.end h2{font-family:'Anton',Impact,sans-serif;font-size:clamp(38px,11vw,52px);line-height:.95;color:var(--paper);text-shadow:3px 3px 0 var(--red);margin:8px 0 12px}
-.end .desc{font-size:16px;line-height:1.5;margin-bottom:18px}
+.hero .plate{background:var(--paper);color:var(--ink);border-radius:6px;padding:26px 22px;text-align:left;position:relative;box-shadow:0 24px 48px rgba(0,0,0,.5)}
+.hero .plate::before{content:"";position:absolute;inset:8px;border:2px solid var(--gold);border-radius:3px;pointer-events:none}
+.hero .yr{font-family:'Anton',Impact,sans-serif;color:var(--red);font-size:18px;letter-spacing:.03em}
+.hero h3{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:30px;line-height:1.05;color:var(--purple);margin:4px 0 12px}
+.hero .story{font-size:17px;line-height:1.5;font-weight:600}
+.hero .lesson{margin-top:14px;padding-top:12px;border-top:2px solid #E6D6AE;font-size:16px;line-height:1.45;color:var(--purple);font-weight:800}
+.hero .src{margin-top:12px;font-size:12px;color:#6B5A80;word-break:break-word}
+
+.hall .hallT{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(40px,12vw,56px);line-height:.95;color:var(--gold-hi);margin:6px 0 8px}
+.hall .hallSub{font-size:15px;color:var(--lilac);margin-bottom:16px}
+.hall .grp{font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);text-align:left;margin:18px 0 8px}
+.hall .h{background:var(--paper);color:var(--ink);border-radius:6px;padding:14px 16px;text-align:left;margin-bottom:10px;border-left:5px solid var(--gold)}
+.hall .h .y{font-family:'Anton',Impact,sans-serif;color:var(--red);font-size:14px;letter-spacing:.03em}
+.hall .h b{display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:21px;color:var(--purple);margin:2px 0 6px;line-height:1.1}
+.hall .h p{font-size:14px;line-height:1.45;font-weight:600}
+.hall .h .ls{color:var(--purple);font-weight:800;margin-top:6px}
+.hall .h .sr{font-size:11px;color:#6B5A80;margin-top:6px;word-break:break-word}
+.hall .h.lock{background:#241038;color:var(--lilac);border-left-color:rgba(255,255,255,.2)}
+.hall .h.lock b{color:var(--lilac)}
+.end h2{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(38px,11vw,52px);line-height:.95;color:var(--paper);margin:8px 0 12px}
+.end .desc{font-size:16px;line-height:1.5;margin-bottom:12px}
+.end .lessonbox{background:rgba(242,183,5,.14);border-left:3px solid var(--gold);text-align:left;padding:12px 14px;font-weight:600;font-size:15px;line-height:1.45;margin-bottom:18px;color:var(--gold-hi)}
 .end img{width:100%;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.5);margin-bottom:16px;display:block}
 .end .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .end .two .btn{font-size:17px;padding:13px}
+.end .again{background:transparent;border:2px solid var(--gold);color:var(--gold-hi);box-shadow:none;font-size:18px}
 </style>
 </head>
 <body class="menu">
@@ -135,18 +173,18 @@ body.menu #app{visibility:hidden}
   <div class="meters" id="meters"></div>
   <div class="status">
     <div style="min-width:0">
-      <div class="who" id="sWho">Brother Emeka</div>
-      <div class="where" id="sWhere">House fellowship</div>
+      <div class="who" id="sWho"></div>
+      <div class="where" id="sWhere"></div>
     </div>
-    <div class="count"><b id="sMembers">8</b><span>members</span></div>
+    <div class="count"><b id="sMembers">0</b><span id="sUnit">members</span></div>
   </div>
   <div class="deck" id="deck">
     <div class="card ghost" aria-hidden="true"></div>
     <div class="toast" id="toast" role="status"></div>
     <article class="card" id="card" tabindex="0" aria-label="Current decision">
       <div class="lean" id="lean"></div>
-      <div class="week" id="cWeek">Sunday 1</div>
-      <div class="who"><div class="av" id="cAv">👩🏾</div><div><div class="nm" id="cName"></div><div class="rl" id="cRole"></div></div></div>
+      <div class="week" id="cWeek"></div>
+      <div class="who"><div class="av" id="cAv"></div><div><div class="nm" id="cName"></div><div class="rl" id="cRole"></div></div></div>
       <p class="tx" id="cText"></p>
     </article>
   </div>
@@ -154,326 +192,581 @@ body.menu #app{visibility:hidden}
     <button id="bL"><span class="arr">◀ Swipe left</span><span id="bLt"></span></button>
     <button id="bR" class="r"><span class="arr">Swipe right ▶</span><span id="bRt"></span></button>
   </div>
-  <div class="hint">Too little or too much of anything ends your ministry.</div>
+  <div class="hint">Keep all four in balance. Faith and family must never run dry.</div>
 </main>
 
-
-<!-- intro -->
 <section class="screen on" id="intro">
   <div class="inner">
-    <div class="kicker">The Lord has called you!</div>
+    <div class="kicker">Answer the call</div>
     <h1 class="title">Ministry<span class="l2">Life</span></h1>
-    <p class="tagline">Start with twelve plastic chairs in your sitting room in Ikorodu. End with a camp ground on the expressway. Or in the blogs.</p>
+    <p class="tagline">Start with a Bible study in your sitting room, a seat in the choir or a bag of tracts at the bus park. Build a ministry that outlives you, the way the heroes of faith did.</p>
+    <div class="field">
+      <span class="lbl">Your calling</span>
+      <div class="calls" role="group" aria-label="Choose your calling">
+        <button id="callP" aria-pressed="true"><span class="e">⛪</span><b>Pastor</b><small>Plant and grow a church</small></button>
+        <button id="callG" aria-pressed="false"><span class="e">🎤</span><b>Gospel minister</b><small>Write, sing, lead worship</small></button>
+        <button id="callE" aria-pressed="false"><span class="e">🌍</span><b>Evangelist</b><small>Reach the streets and the nations</small></button>
+      </div>
+    </div>
     <div class="field">
       <label for="iName">Your name</label>
       <div class="row"><input id="iName" maxlength="18" value="Emeka" autocomplete="off"></div>
     </div>
     <div class="field">
-      <label for="iMin">Name your ministry</label>
-      <div class="row"><input id="iMin" maxlength="48" autocomplete="off"><button class="dice" id="iDice" aria-label="Generate a ministry name">🎲</button></div>
+      <span class="lbl">You are a</span>
+      <div class="seg" role="group" aria-label="Brother or sister">
+        <button id="gB" aria-pressed="true">Brother</button>
+        <button id="gS" aria-pressed="false">Sister</button>
+      </div>
     </div>
-    <button class="btn" id="iStart">Start the ministry</button>
-    <button class="btn ghost" id="iCont" style="display:none">Continue where you stopped</button>
-    <div class="how"><strong>How to play.</strong> Swipe each card left or right, or tap a button. Every Sunday your choices move four things: <strong>Flock 🐑</strong>, <strong>Purse 💰</strong>, <strong>Anointing 🔥</strong> and <strong>Gist 📢</strong>. Let any one hit empty or full and it's over. Grow your members to climb from house fellowship to global ministry.</div>
+    <div class="field">
+      <label for="iMin" id="iMinLbl">Name your church</label>
+      <div class="row"><input id="iMin" maxlength="48" autocomplete="off"><button class="dice" id="iDice" aria-label="Suggest a name">🎲</button></div>
+    </div>
+    <button class="btn" id="iStart">Begin the journey</button>
+    <button class="btn ghost" id="iCont" style="display:none">Continue your journey</button>
+    <button class="btn ghost" id="iHall">🏛️ Hall of Faith</button>
+    <div class="how"><strong>How to play.</strong> Swipe each card left or right, or tap a button. Every choice moves four things: <strong>Faith 🙏</strong>, <strong>Flock 👥</strong> (your people), <strong>Finances 💰</strong> and <strong>Family 🏠</strong>. If faith or family runs dry, or your flock or finances hit zero or grow beyond what you can steward, the journey pauses with a lesson. As you grow you'll unlock <strong>Heroes of Faith</strong>: true milestones from the lives of Nigerian ministers, gospel artists and missionaries. Collect them all in the <strong>Hall of Faith</strong>.</div>
     <p class="fine" id="iBest"></p>
-    <p class="fine">Satire. Every pastor, church and event in this game is fictional. We laugh at the hustle, not the faith.</p>
+    <p class="fine">Your journey is fictional. Every Hero of Faith card is a true milestone from public sources, with the source shown.</p>
   </div>
 </section>
 
-<!-- promotion -->
 <section class="screen dim promo" id="promo">
   <div class="inner">
-    <div class="kicker">Promotion!</div>
+    <div class="kicker">A new season</div>
     <div class="big" id="pTitle"></div>
     <p id="pText"></p>
-    <button class="btn gold" id="pOk">Hallelujah</button>
+    <button class="btn" id="pOk">Continue</button>
   </div>
 </section>
 
-<!-- ending -->
+<section class="screen dim hero" id="hero">
+  <div class="inner">
+    <div class="kicker">Hero of Faith unlocked</div>
+    <div class="plate">
+      <div class="yr" id="hYr"></div>
+      <h3 id="hWho"></h3>
+      <p class="story" id="hText"></p>
+      <p class="lesson" id="hLesson"></p>
+      <p class="src" id="hSrc"></p>
+    </div>
+    <button class="btn" id="hOk">Continue the journey</button>
+  </div>
+</section>
+
+<section class="screen dim hall" id="hall">
+  <div class="inner">
+    <div class="kicker">True stories, real sources</div>
+    <h2 class="hallT">Hall of Faith</h2>
+    <p class="hallSub" id="hallSub"></p>
+    <div id="hallList"></div>
+    <button class="btn" id="hallClose">Back</button>
+  </div>
+</section>
+
 <section class="screen dim end" id="end">
   <div class="inner">
-    <div class="kicker" id="eKick">Ministry closed</div>
+    <div class="kicker" id="eKick"></div>
     <h2 id="eTitle"></h2>
     <p class="desc" id="eDesc"></p>
-    <img id="eImg" alt="Your Sunday bulletin share card">
+    <div class="lessonbox" id="eLesson"></div>
+    <img id="eImg" alt="Your ministry journey share card">
     <div class="two">
-      <button class="btn gold" id="eShare">Share card</button>
-      <button class="btn gold" id="eWa">WhatsApp</button>
+      <button class="btn" id="eShare">Share card</button>
+      <button class="btn" id="eWa">WhatsApp</button>
     </div>
-    <button class="btn" id="eAgain">Start a new ministry</button>
+    <button class="btn again" id="eAgain">Start a new journey</button>
   </div>
 </section>
 
 <script>
-/* ============ DATA ============ */
-const METERS = { c:['🐑','Flock'], o:['💰','Purse'], a:['🔥','Anointing'], g:['📢','Gist'] };
-const MK = ['c','o','a','g'];
+/* ================= DATA ================= */
+const MK = ['f','c','o','h'];
+const ICONS = { f:'🙏', c:'👥', o:'💰', h:'🏠' };
+const LABELS = { p:{f:'Faith',c:'Flock',o:'Finances',h:'Family'}, g:{f:'Faith',c:'Listeners',o:'Finances',h:'Family'}, e:{f:'Faith',c:'Reach',o:'Finances',h:'Family'} };
 
-const STAGES = [
-  { min:0,     name:'House fellowship',   place:'your sitting room in Ikorodu',                       title:'Brother' },
-  { min:40,    name:'Classroom parish',   place:'a rented Primary 4 classroom every Sunday',          title:'Pastor' },
-  { min:250,   name:'Warehouse cathedral',place:'a converted warehouse in Ojota with a real generator', title:'Senior Pastor' },
-  { min:1500,  name:'Mega auditorium',    place:'a 5,000-seater in Lekki with LED screens',           title:'Bishop' },
-  { min:8000,  name:'Camp ground',        place:'300 hectares on the Lagos–Ibadan Expressway',         title:'Archbishop' },
-  { min:40000, name:'Global ministry',    place:'branches from Houston to Peckham',                    title:'Apostle-General' }
-];
+const PATHS = {
+  p: { unit:'members', week:'Sunday', start:8, k:1, drain:1,
+       stages:[
+        {min:0,     name:'Bible study group',   place:'You meet in your sitting room.',                                 title:null},
+        {min:30,    name:'House fellowship',    place:'You now meet in a rented hall every Sunday.',                        title:'Pastor'},
+        {min:200,   name:'Growing church',      place:'The church now has its own building.',                          title:'Senior Pastor'},
+        {min:1200,  name:'Regional church',     place:'A large auditorium, with branches across the state.', title:'Bishop'},
+        {min:6000,  name:'Camp & institutions', place:'A camp ground, with schools and a clinic.',           title:'General Overseer'},
+        {min:30000, name:'Global mission',      place:'Parishes on five continents.',                       title:'General Overseer'}
+       ]},
+  g: { unit:'listeners', week:'Week', start:50, k:4, drain:1.5,
+       stages:[
+        {min:0,      name:'Choir member',          place:'You sing in the church choir.',               title:'Chorister'},
+        {min:200,    name:'Lead worshipper',       place:'You now lead worship every Sunday.',         title:'Worship Leader'},
+        {min:1200,   name:'First single',          place:'Your first single is on radio and streaming playlists.',        title:'Minister'},
+        {min:7000,   name:'Debut album',           place:'Your debut album fills concert halls across Nigeria.',         title:'Minister'},
+        {min:36000,  name:'National tours',        place:'You now minister in stadiums and on national TV.',             title:'Minister'},
+        {min:180000, name:'Songs for the nations', place:'Churches worldwide sing your songs.', title:'Minister'}
+       ]},
+  e: { unit:'lives reached', week:'Week', start:20, k:2, drain:0.8,
+       stages:[
+        {min:0,     name:'Street evangelist', place:'You share the gospel at bus parks and markets.',               title:null},
+        {min:100,   name:'Campus outreach',   place:'You now lead outreaches on campuses across the city.',          title:'Evangelist'},
+        {min:500,   name:'City crusades',     place:'Your open-air crusades fill school fields and town squares.',   title:'Evangelist'},
+        {min:2500,  name:'Mission field',     place:'You have moved to an unreached region to live among the people.', title:'Missionary'},
+        {min:12000, name:'Missions agency',   place:'You now train and send missionaries from your own agency.',    title:'Missions Director'},
+        {min:60000, name:'To the nations',    place:'Missionaries you trained serve across Africa and beyond.',     title:'Missions Director'}
+       ]}
+};
 
 const P = {
-  wife:['👩🏾','Pastor (Mrs) Ada','Your wife'],
-  mama:['👵🏾','Mama Ijeoma','Chief intercessor'],
-  femi:['📱','Brother Femi','Media department'],
-  tunde:['🧮','Deacon Tunde','Church treasurer'],
-  nkechi:['🎤','Sister Nkechi','Choir mistress'],
-  kelvin:['🧢','Pastor Kelvin','Youth pastor'],
-  chief:['🎩','Chief Okoro','Politician and "pillar of the church"'],
-  landlord:['🏠','Baba Landlord','Landlord'],
-  blogger:['🗞️','TattleNaija','Gossip blog'],
-  rival:['🔥','Prophet Ogbonge','Ogbonge Fire Tabernacle'],
-  usher:['🧤','Usher Chinedu','Head usher'],
-  member:['🙋🏾‍♀️','Sister Blessing','Member'],
-  bro:['🙋🏾‍♂️','Brother Sunday','Member'],
-  widow:['👵🏽','Mama Bisi','Widow, faithful tither'],
+  mentor:['👴🏾','Pastor Emmanuel','Your spiritual father'],
+  spouse:['💍','Your spouse','Home'],
+  child:['🧒🏾','Your child','Home'],
+  elder:['🧓🏾','Deaconess Grace','Church elder'],
+  treas:['🧮','Brother Tayo','Finance team'],
+  youth:['🎓','Chidinma','Youth leader'],
+  member:['🙋🏾‍♂️','Brother Musa','Member'],
+  widow:['👵🏾','Mama Ronke','Member'],
+  keeper:['🧹','Sister Funke','Sanctuary keeper'],
+  boss:['💼','Your manager','Day job'],
+  donor:['💼','Chief Okafor','Businessman'],
+  community:['🏘️','The Baale','Community head'],
   gov:['🏛️','Government','Official letter'],
-  broker:['✈️','Mr. Bankole','"Aviation consultant"'],
-  star:['🎧','Lil Zeal','Afrobeats star'],
-  area:['💪🏾','Area Boys','The local "landlords"'],
-  press:['🎙️','Journalists','Press conference'],
-  media:['🎥','Foreign documentary crew','International broadcaster'],
-  elder:['🧓🏾','Board of Elders','Church leadership'],
-  bank:['🏦','Your old bank','HR department']
+  media:['📺','Media house','Broadcast'],
+  missions:['🌍','Missions team','Outreach'],
+  hall:['🏢','Event centre owner','Landlord'],
+  mum:['👩🏾‍🦳','Your mother','Family'],
+  pastorG:['⛪','Pastor Femi','Your pastor'],
+  uncle:['🎺','Uncle Bayo','Veteran gospel minister'],
+  producer:['🎛️','Tobi','Music producer'],
+  band:['🎸','The band','Musicians'],
+  label:['🏢','Record label','Music business'],
+  promoter:['🎟️','Event promoter','Concerts'],
+  manager:['🗂️','Kemi','Your manager'],
+  star:['🎧','Afrobeats star','Secular artist'],
+  fan:['💌','A listener','Message'],
+  singer:['🎙️','Young singer','Aspiring minister'],
+  ayo:['🙋🏾‍♂️','Brother Ayo','Evangelism partner'],
+  passer:['📱','A passer-by','Bus park'],
+  printer:['🖨️','The printer','Tracts and flyers'],
+  volunteer:['🎥','Media volunteer','Outreach team'],
+  hauwa:['🗣️','Hauwa','Translator'],
+  amaka:['🩺','Dr. Amaka','Medical volunteer'],
+  vhead:['🧓🏿','The village head','Community leader'],
+  security:['🛡️','Security advisers','Local leaders']
 };
 
-/* Choice: [label, effects, tag, extra]. Tags: P prosperity, H holiness, S showman, K kingmaker, D shepherd.
-   extra: { set:flag, jets:n, scandal:1, r:'reaction toast' } */
-const CARDS = [
- // ---- Stage 0: house fellowship ----
- {id:'drums',s:0,mx:1,p:'wife',t:"Darling, fifteen people in our sitting room is too much. The neighbours are complaining about the drums.",
-  L:['Reduce the drums','c-5 a+5','H'],R:['Drums are spiritual warfare!','c+10 g+5 o-5','S',{r:'The neighbour called the CDA chairman.'}]},
- {id:'vision',s:0,p:'mama',t:"Pastor, I saw a vision last night. You will be bigger than all of them. Bigger than all the big men of God.",
-  L:['Keep it between us','a+10','D'],R:['Announce it on Sunday','c+10 g+10 a-5','S']},
- {id:'socials',s:0,p:'femi',t:"Sir, let me open Instagram, TikTok and a WhatsApp broadcast for the ministry. Na there the people dey.",
-  L:['Social media is worldly','a+5 g-10','H'],R:['Open everything','g+15 c+5 a-5','S']},
- {id:'bowls',s:0,mx:2,p:'tunde',t:"Pastor, we are collecting offering in Mummy's plastic bowls. It is not giving ministry.",
-  L:['The bowls are fine','a+5 o-5','D'],R:['Buy velvet offering bags','o+10 a-5','P']},
- {id:'areaboys',s:0,mx:2,p:'area',t:"Oga Pastor, this na our area. Una dey make noise every Sunday. Our own must enter before next week.",
-  L:['Pray for their souls','a+10 c-10','H',{r:'They came back with six more boys.'}],R:['Settle them with ₦20k','o-10 c+5']},
- {id:'fast',s:0,p:'mama',t:"Pastor, the Lord laid it on my heart: 21 days dry fasting for the whole church.",
-  L:['Seven days is enough','c+5 a-5','D'],R:['21 days, everybody!','a+15 c-10','H',{r:'Brother Sunday fainted on day four.'}]},
- {id:'bankjob',s:0,mx:1,p:'bank',t:"Your old bank called. They want you back as Relationship Manager. Good salary, official car.",
-  L:['Take it, pastor on weekends','o+15 a-10 c-5'],R:['I cannot serve two masters','a+10 o-10','D']},
- {id:'rent',s:0,mx:1,p:'landlord',t:"Pastor, this church inside my house — rent don increase 40%. And your members dey park for my gate.",
-  L:['Pay the increase','o-15 c+5'],R:['Move to a school classroom','c-10 o+5 a+5']},
- {id:'youthvibe',s:0,p:'kelvin',t:"The youths want a worship night. Lights off, phone torches up, Afrobeats-style praise.",
-  L:['Hymns only','a+5 c-10','H'],R:['Let them vibe','c+10 g+5 a-5','S']},
- {id:'daddy',s:0,mx:1,p:'wife',t:"Members are calling Pastor Kelvin 'Daddy'. Meanwhile they still call you 'Brother'.",
-  L:["Titles don't matter",'a+5','D'],R:['From today, call me Daddy','c+5 g+5 a-5','S']},
- {id:'village',s:0,p:'member',t:"Pastor, my village people are after me. Since 2015 nothing I touch works.",
-  L:['Pray with her privately','a+5 c+5','D'],R:['Deliverance at the altar, live','c+10 g+10 a-5','S']},
- {id:'prayer',s:0,p:'mama',t:"Pastor, prayer meeting attendance is dropping. Only me and the cleaner came on Tuesday.",
-  L:['Cut it to 30 minutes','c+10 a-5'],R:['Friday night vigils','a+10 c-5','H']},
- {id:'widow',s:0,p:'widow',t:"Pastor, my son was sent home for school fees. I have paid my tithe faithfully for six years.",
-  L:['Church welfare pays it','o-10 a+10 c+5','D'],R:['Sow a seed and expect','o+5 a-10 c-5','P']},
+/* Choice: [label, effects, virtue, legacy]. Virtues: F prayer, W word, S servant, E soul-winner, B builder. */
+const CARDS_P = [
+ // stage 0
+ {id:'p_altar',s:0,p:'mentor',t:"Before you gather people, gather yourself. Will you give the first hour of every day to prayer and the Word?",
+  L:['Mornings are for the hustle','o+10 f-10'],R:["The first hour is God's",'f+15 o-5','F']},
+ {id:'p_saturday',s:0,p:'member',t:"Three of my colleagues want to join the Bible study, but they can only come on Saturday mornings.",
+  L:['Keep Tuesday evenings','c-5 h+5'],R:['Move it to Saturdays','c+10 h-10','E']},
+ {id:'p_talk',s:0,p:'spouse',t:"You're at the office all day and at fellowship every evening. When do we actually talk?",
+  L:['The ministry needs me now','c+5 h-15'],R:['Friday nights are ours','h+15 c-5']},
+ {id:'p_promo',s:0,mx:1,p:'boss',t:"There's a promotion for you, but it comes with weekend travel.",
+  L:['Take the promotion','o+15 c-10'],R:['Decline for now','c+10 o-10','F']},
+ {id:'p_musa',s:0,p:'member',t:"I lost my job last month. I'm ashamed to ask, but my family hasn't eaten well this week.",
+  L:['Pray with him and encourage him','f+5 c-5'],R:['Share from your own salary','o-10 c+10','S']},
+ {id:'p_pace',s:0,mx:2,p:'elder',t:"We study one chapter a week. Some say it's too slow, others say it's too fast.",
+  L:['Go deep, slowly','f+10 c-5','W'],R:['Cover more ground','c+10 f-5']},
+ {id:'p_noise',s:0,mx:1,p:'community',t:"Your neighbours ask if the fellowship can keep the singing down after 9pm.",
+  L:['Respect them, end by 9','c+5 f-5'],R:['Move to a school classroom','o-10 c+10']},
+ {id:'p_class',s:0,p:'mentor',t:"You're teaching others, but who is teaching you? Join my Thursday leaders' class.",
+  L:['No time right now','c+5 f-10'],R:["I'll be there",'f+10 h-5','W']},
+ {id:'p_poly',s:0,mx:2,p:'youth',t:"Can we start an outreach to the students at the polytechnic?",
+  L:['Build the core first','f+5 c-5'],R:["Let's go",'c+15 o-5 h-5','E',{outreach:1}]},
 
- // ---- Stage 1: classroom parish ----
- {id:'viral',s:1,p:'femi',t:"Sir! TattleNaija posted your sermon clip. 200k views. The comments are… spicy.",
-  L:['Ignore it','g+10 c+5'],R:['Reply them from the pulpit','g+20 c+5 a-5','S']},
- {id:'chief',s:1,once:1,p:'chief',t:"Pastor, I will sponsor your generator and new keyboard. Small thing: tell the church God has chosen me for councillor.",
-  L:["No politics in God's house",'a+10 o-10','H'],R:['Chief, the Lord has spoken','o+20 g+10 a-10','K',{set:'chief'}]},
- {id:'chief2',s:1,once:1,req:'chief',p:'chief',t:"I won! Thanksgiving service next Sunday. Also, you will lead my rally for the next election.",
-  L:['Thanksgiving only','a+5 o+5'],R:['Lead the rally','o+15 g+15 a-10 c-5','K']},
- {id:'tithe',s:1,p:'tunde',t:"Only 30% of members pay tithe. The rest are 'still praying about it'.",
-  L:['Preach on grace','c+10 o-10','D'],R:['Malachi 3 series, four weeks','o+15 c-10','P']},
- {id:'choir',s:1,p:'nkechi',t:"Pastor, the choir needs uniforms. Aso-ebi, gele, everything. ₦1.2 million.",
-  L:['White shirts will do','o+5 c-5'],R:['Aso-ebi for the choir','o-15 c+10 g+5','S']},
- {id:'gen',s:1,mx:3,p:'usher',t:"NEPA took light in the middle of your sermon and the generator has no diesel.",
-  L:['Preach in the dark like Paul','a+10 c-5','D'],R:['Special diesel offering','o+10 c-5 a-5','P']},
- {id:'visa',s:1,once:1,p:'member',t:"Pastor! I got my UK visa after you prayed for me. I want to testify!",
-  L:['Let her testify','c+5 a+5'],R:['Launch a "Japa Anointing" service','c+15 o+10 a-10 g+10','P',{r:'240 people registered. Three have passports.'}]},
- {id:'rivalcold',s:1,p:'rival',t:"On Facebook Live: 'That small church in Ikorodu is cold. No fire at all!'",
-  L:['Bless him and move on','a+10 g-5','D'],R:["'Some fire is strange fire'",'g+15 c+5 a-5','S']},
- {id:'singles',s:1,p:'member',t:"Pastor, the singles want a Marriage Breakthrough programme. Some of us have been waiting since 2015.",
-  L:['Teach on contentment','a+5 c-5','H'],R:['Breakthrough service + anointed handkerchief','c+15 o+10 a-5','P']},
- {id:'oil',s:1,p:'tunde',t:"We can sell branded anointing oil. ₦5,000 a bottle. Olive oil from the supermarket is ₦1,800.",
-  L:['Oil is free in this house','a+10 o-5','D'],R:['Print the labels','o+20 a-10 g+5','P']},
- {id:'yahoo',s:1,once:1,p:'tunde',t:"A young man just paid ₦5m offering in cash. He drives a Benz. Nobody knows his job.",
-  L:['Return the money','a+15 o-15','H'],R:['God sanctifies the seed','o+20 a-10 g+5','P',{set:'yahoo'}]},
- {id:'yahoo2',s:1,once:1,req:'yahoo',p:'blogger',t:"BREAKING: Church that collected ₦5m from wanted fraudster refuses to comment.",
-  L:['Refund it publicly','a+10 o-15 g+10'],R:["'We don't judge sinners'",'g+20 a-10 c-5','P',{scandal:1}]},
- {id:'proprietor',s:1,mx:2,p:'landlord',t:"The school proprietor wants double rent for Sundays. And stop leaving chairs in Primary 4.",
-  L:['Pay double','o-15 c+5'],R:['Lease a warehouse on credit','o-20 c+15 g+5']},
- {id:'counsel',s:1,p:'bro',t:"Pastor, my wife and I are fighting. She says it's my mother. I say it's her village people.",
-  L:['Proper counselling, three sessions','a+10 c+5','D'],R:["'It's a spirit of division!'",'c+5 a-5 g+5','S']},
- {id:'tiktok',s:1,p:'femi',t:"New TikTok trend: pastors doing dance challenges. Prophet Ogbonge got five million views.",
-  L:['Absolutely not','a+5 g-5','H'],R:['Do the challenge','g+20 c+5 a-10','S']},
- {id:'buses',s:1,p:'usher',t:"Members want church buses. Many are trekking from the junction in the sun.",
-  L:['Start a carpool ministry','c-5 o+5','D'],R:['Five branded buses','o-15 c+10 g+5']},
+ // stage 1
+ {id:'p_count',s:1,p:'treas',t:"Offerings are growing. Who should count the money and sign for it?",
+  L:["I'll handle it myself",'o+5 c-10'],R:['Two counters, everything recorded','c+10 o-5','S']},
+ {id:'p_hall',s:1,mx:2,p:'hall',t:"I'll rent you my hall every Sunday. ₦150,000 a month.",
+  L:['Stay in the sitting room','h-10 o+5'],R:['Rent the hall','o-15 c+15','B']},
+ {id:'p_account',s:1,once:1,p:'mentor',t:"Many will start churches this year. Few will be accountable. Will you submit to a council of senior ministers?",
+  L:['God speaks to me directly','c-5 f-5'],R:["Yes, I'll be accountable",'f+10 c+5','S']},
+ {id:'p_choir',s:1,p:'elder',t:"A sister wants to join the choir, but she has only attended for two weeks.",
+  L:['Let her serve straight away','c+10 f-5'],R:['Disciple her first','f+5 c-5','W']},
+ {id:'p_nephew',s:1,once:1,p:'donor',t:"I'll pay your hall rent for a full year. Just make my nephew an assistant pastor.",
+  L:["Positions aren't for sale",'f+10 o-10'],R:['Accept the gift','o+20 c-10 f-10']},
+ {id:'p_long',s:1,p:'youth',t:"The young people say services are too long. Some are slipping away to other churches.",
+  L:['Keep the full service','f+5 c-10'],R:['Tighten the programme','c+10 f-5']},
+ {id:'p_baby',s:1,once:1,p:'spouse',t:"Our first baby is due next month. Can someone else lead the vigil that week?",
+  L:["I'll still lead it",'c+5 h-15'],R:['Raise someone to cover','h+15 c-5','S',{leaders:1}]},
+ {id:'p_format',s:1,p:'member',t:"A visitor says we should drop Bible study for a talk-show format to attract young people.",
+  L:['Keep teaching the Word','f+10 c-5','W'],R:['Try a Q&A night','c+10 f-5']},
+ {id:'p_cholera',s:1,once:1,p:'community',t:"There's a cholera scare in the area. Can the church help the community?",
+  L:["We'll pray for the community",'f+5 c-5'],R:['Run a clean-water drive','o-10 c+15','E',{outreach:1}]},
+ {id:'p_gen',s:1,mx:3,p:'treas',t:"We've saved ₦400,000. Do we buy a generator now or keep saving for land?",
+  L:['Generator now','c+10 o-10'],R:['Keep saving for land','o+10 c-5','B']},
 
- // ---- Stage 2: warehouse cathedral ----
- {id:'celeb',s:2,once:1,p:'star',t:"I want to join your church, Daddy. I'll need a front-row seat and to perform 'sometimes'.",
-  L:['No special seats here','a+10 c-5','D'],R:['VIP row + concert Sunday','c+15 g+15 a-10','S']},
- {id:'tax',s:2,p:'gov',t:"State revenue service: your church school, bookshop and event hall must now pay tax.",
-  L:['Render unto Caesar','o-15 a+10','D'],R:['Touch not my anointed!','g+15 o+5 a-5 c+5']},
- {id:'crusade',s:2,p:'kelvin',t:"Let's do a mega crusade at the stadium! Lights, smoke machines, gospel artistes.",
-  L:['Small market outreach','c+5 a+5','D'],R:['Full crusade','c+20 o-15 g+10','S']},
- {id:'staged',s:2,once:1,p:'femi',t:"Sir, there's a 'testimony consultant'. He brings people who walk after prayer. ₦50k per miracle.",
-  L:['Throw him out','a+10','H'],R:['Just this once…','c+20 a-15 g+10','S',{set:'staged'}]},
- {id:'staged2',s:2,once:1,req:'staged',p:'blogger',t:"EXPOSED: Lame man healed at your church spotted playing five-a-side in Surulere.",
-  L:['Deny everything','g+20 c-10 a-5','',{scandal:1}],R:['Confess and apologise','a+15 c-15 g+10','H',{scandal:1}]},
- {id:'election',s:2,once:1,p:'press',t:"Pastor, who will win the presidential election? The nation is waiting.",
-  L:['God is not a politician','a+5 g-5','H'],R:['"I see a man in a blue cap…"','g+25 a-10','K',{set:'prophecy'}]},
- {id:'election2',s:2,once:1,req:'prophecy',p:'press',t:"Your candidate lost. Badly. Twitter has screenshots of your prophecy.",
-  L:['"God changed His mind"','g+15 a-10 c-5'],R:['"It was rigged in the spirit realm"','g+20 c+5 a-5','K',{scandal:1}]},
- {id:'wedding',s:2,p:'wife',t:"Our daughter is getting married. The members are expecting the wedding of the year.",
-  L:['Simple church wedding','a+5 o+5','D'],R:['Owambe for 3,000 guests','g+15 o-15 c+5','S']},
- {id:'buildfund',s:2,p:'tunde',t:"The building fund is ₦300m short. The roofers are threatening to remove the zinc.",
-  L:['Build slowly, as God provides','c+5 o-5','D'],R:['₦1m seed = your name on a pew','o+20 c-10','P']},
- {id:'pos',s:2,p:'usher',t:"Two ushers fought over who counts the offering. One of them has a new iPhone.",
-  L:['Count the offering publicly','a+10 o-5','D'],R:['POS terminals at the altar','o+15 g+5 a-5','P']},
- {id:'lexus',s:2,mx:3,p:'elder',t:"Members want to buy you a Lexus for your birthday. The contribution list is already on WhatsApp.",
-  L:["Give it to the widows' fund",'a+15 g+5 o-5','D'],R:['Receive it with joy','o+5 g+10 a-5','P']},
- {id:'womenconf',s:2,p:'wife',t:"I want my own women's conference. 'Daughters of Destiny'. Separate budget.",
-  L:['Not this year','c-5 o+5'],R:['Go for it','c+10 o-5 g+5']},
- {id:'wrongprophecy',s:2,p:'member',t:"Pastor, you prophesied my business would explode. It did. The warehouse caught fire.",
-  L:['Apologise and help her','a+5 c+5 o-5','D'],R:['Your faith was too small','c-10 g+5 a-5']},
- {id:'livestream',s:2,p:'femi',t:"Let's put the livestream behind a paywall. ₦2,000 a month. Diaspora members will pay.",
-  L:['Free for everybody','c+10 o-5','D'],R:['Paywall it','o+15 c-10','P']},
- {id:'moneyrain',s:2,p:'usher',t:"A big man is spraying dollars at the altar during praise. People are dancing around him.",
-  L:['Stop him','a+10 o-5','H'],R:['Dance along','g+20 o+10 a-10','S']},
- {id:'escort',s:2,p:'chief',t:"Pastor, a man of your level needs police escort. Siren, convoy, the works.",
-  L:['Jesus is my escort','a+5','D'],R:['Sirens on!','g+10 c-5 o-5','S']},
- {id:'trousers',s:2,p:'usher',t:"We sent home four sisters for wearing trousers. One was a first-timer.",
-  L:['Relax the dress code','c+10 a-5','D'],R:['Holiness is beauty','a+10 c-10','H']},
- {id:'spirithusband',s:2,p:'member',t:"Pastor, my spirit husband is scattering my relationships. Every man runs after the second date.",
-  L:['Counselling first','a+5','D'],R:['Deliverance session tonight','c+10 g+5 a-5','S']},
- {id:'foreignprophet',s:2,p:'kelvin',t:"A famous prophet from Accra wants to minister here. Fee: $20,000 plus business class.",
-  L:['We have our own fire','a+5 o+5'],R:['Book him','c+15 o-15 g+10','S']},
- {id:'girlfriend',s:2,p:'blogger',t:"Rumour: a certain G.O. has a 'special friend' in Abuja. No evidence, but the gist is moving fast.",
-  L:['Ignore it','g+15 c-5'],R:['Couple photoshoot with Mrs Ada','g+10 a+5 o-5']},
- {id:'tithedebate',s:2,p:'rival',t:"Hear me: tithe is Old Testament! My members don't pay it. #FreeFromTithe is trending.",
-  L:['Stay silent','a+5'],R:['Clap back with twelve scriptures','g+20 o+5 a-5','P']},
+ // stage 2
+ {id:'p_raise',s:2,p:'mentor',t:"The work is now bigger than one person. Who are you raising?",
+  L:["I'll keep leading everything",'c+5 h-10 f-5'],R:['Start a leadership class','f+5 c+10 o-5','S',{leaders:3}]},
+ {id:'p_pledge',s:2,p:'treas',t:"Members are pledging to the building fund. Some are promising more than they can afford.",
+  L:['Accept every pledge','o+20 c-10'],R:['Give as you are able','c+10 o-5','S']},
+ {id:'p_register',s:2,once:1,p:'gov',t:"Churches must now register properly and file annual accounts.",
+  L:['Delay it','o+5 c-10'],R:['Register and get audited','o-10 c+10','S']},
+ {id:'p_quarrel',s:2,p:'elder',t:"Two workers are in a bitter quarrel and half the choir has taken sides.",
+  L:['Let them sort it out','c-10 h+5'],R:['Mediate personally','c+10 h-10','S']},
+ {id:'p_tv',s:2,p:'media',t:"We'll give you a weekly TV slot for your teaching. ₦2 million a quarter.",
+  L:['Too expensive for now','o+5 c-5'],R:['Take the slot','o-15 c+15','E']},
+ {id:'p_branch',s:2,p:'youth',t:"Five families travel an hour each Sunday. Should we plant a branch in their town?",
+  L:['Not yet','c-5 o+5'],R:['Plant the branch','c+15 o-10','E',{leaders:1}]},
+ {id:'p_prize',s:2,p:'child',t:"You missed my school prize-giving again.",
+  L:['The ministry needs me','c+5 h-15'],R:['Block out family time','h+15 c-5']},
+ {id:'p_widow',s:2,p:'widow',t:"My husband passed last week. Pastor, will you come to the house?",
+  L:['Send an associate pastor','c-5 h+5'],R:['Visit her yourself','c+10 h-5','S']},
+ {id:'p_fast',s:2,p:'mentor',t:"A new year is coming. Will you lead the church into 21 days of prayer and fasting?",
+  L:['Keep the normal programme','c+5 f-5'],R:['21 days of prayer','f+15 c-5 h-5','F']},
+ {id:'p_dirty',s:2,p:'donor',t:"I want to make a large donation to the building. Pay no attention to what people say about my business.",
+  L:['Decline politely','f+10 o-10'],R:["Accept it, it's for God",'o+20 f-10 c-5']},
+ {id:'p_canopy',s:2,p:'keeper',t:"The church is packed. People are standing outside in the sun.",
+  L:['Add a second service','c+15 h-10'],R:['Build a canopy','o-10 c+10','B']},
 
- // ---- Stage 3: mega auditorium ----
- {id:'jet',s:3,p:'broker',t:"A Gulfstream is available, sir. For the gospel. Only $15m. You can pay small small.",
-  L:['Fly commercial','a+10 g+5','D'],R:['Buy the jet','o-20 g+20','P',{jets:1}]},
- {id:'university',s:3,once:1,p:'tunde',t:"Let's build our own university. Members' children will pay ₦4m a year.",
-  L:['Keep fees affordable','a+10 o-5','D'],R:['Premium fees','o+20 c-10 g+5','P']},
- {id:'outbreak',s:3,once:1,p:'gov',t:"Ministry of Health: virus outbreak. All gatherings above 50 people are banned.",
-  L:['Obey, go online','c-10 a+5','D'],R:['"No virus can enter here!"','c+10 g+20 a-10','S',{scandal:1}]},
- {id:'audio',s:3,p:'femi',t:"Sir, an audio of you shouting at a junior pastor has leaked. 1.2 million listens.",
-  L:['Apologise on Instagram','a+5 g+10 c-5'],R:['"It\'s AI-generated"','g+15 a-10','',{scandal:1}]},
- {id:'breakaway',s:3,once:1,p:'kelvin',t:"Daddy, I feel led to start my own ministry. About 300 members want to come with me.",
-  L:['Bless and release him','a+15 c-10','D'],R:['Curse him from the pulpit','c+5 g+20 a-10','',{scandal:1}]},
- {id:'governor',s:3,p:'chief',t:"The Governor wants to be ordained a Deacon in your church. Live broadcast.",
-  L:['Refuse','a+10 o-10','H'],R:['Ordain him','o+15 g+15 a-10','K']},
- {id:'birthday',s:3,p:'elder',t:"Daddy's birthday is coming. The members want a 'Day of Honour' with compulsory gifts.",
-  L:['Visit an orphanage instead','a+10 g+5','D'],R:['Day of Honour!','o+15 g+10 a-5','P']},
- {id:'estate',s:3,p:'tunde',t:"We can sell plots in 'New Canaan Estate'. Land near the church doubles in price after you pray.",
-  L:['Not our business','a+5'],R:['Start selling plots','o+20 g+10 a-5','P']},
- {id:'japatithe',s:3,p:'bro',t:"Pastor, those of us abroad: tithe in pounds or naira? Gross or net?",
-  L:['Give as you are able','c+10','D'],R:['Pounds. Gross.','o+20 c-5 g+5','P']},
- {id:'slap',s:3,p:'blogger',t:"VIDEO: Deliverance session gets physical. A man was slapped 'in the spirit'. Three million views.",
-  L:['Apologise and pay his bills','a+5 g+10 o-5'],R:['"It was the Holy Ghost"','g+20 c-5 a-10','S',{scandal:1}]},
- {id:'book',s:3,p:'femi',t:"Your autobiography is ready! 'From Plastic Chairs to Glory'. ₦50,000 a copy?",
-  L:['Free PDF for everyone','c+10 a+5 o-5','D'],R:['Compulsory for all workers','o+15 c-5','P']},
- {id:'deacon',s:3,once:1,p:'elder',t:"Deacon Tunde cannot account for ₦8m from the building fund.",
-  L:['Report it to the police','a+10 g+10 o-5','H'],R:['Settle it quietly','o+5 a-10','',{set:'coverup'}]},
- {id:'coverup',s:3,once:1,req:'coverup',p:'blogger',t:"Insiders say a megachurch covered up a ₦8m fraud by its treasurer. We have the WhatsApp chats.",
-  L:['Publish a full audit','a+10 g+10 o-10','D'],R:["'Enemies of progress'",'g+20 a-10 c-5','',{scandal:1}]},
+ // stage 3
+ {id:'p_land',s:3,once:1,p:'treas',t:"We can buy 50 hectares outside the city for a camp ground. It will take every naira we have.",
+  L:['Wait three years','o+10 c-5'],R:['Buy the land','o-20 c+15','B']},
+ {id:'p_school',s:3,once:1,p:'mentor',t:"Start a school. Teach the next generation, not just on Sundays.",
+  L:['Church first, schools later','f+5 o+5'],R:['Open a primary school','o-15 c+15','B',{schools:1}]},
+ {id:'p_pulpit',s:3,p:'gov',t:"A politician offers the church a land allocation if you endorse his campaign from the pulpit.",
+  L:['The pulpit is not for sale','f+10 o-10'],R:['Accept the land','o+20 f-15 c-10']},
+ {id:'p_release',s:3,p:'elder',t:"A senior pastor feels called to start his own ministry. He's asking for your blessing.",
+  L:['Ask him to stay','c+5 f-5'],R:['Release him with a blessing','f+10 c-10','S',{leaders:1}]},
+ {id:'p_north',s:3,p:'missions',t:"A team is ready to serve rural communities in the north. They need full support.",
+  L:['Support them partly','o-5 c+5'],R:['Fully fund the mission','o-15 c+10 f+5','E',{outreach:1}]},
+ {id:'p_books',s:3,p:'media',t:"A national newspaper is profiling you. They'll ask about the church's finances.",
+  L:['Decline the interview','c-5 o+5'],R:['Open the books','c+10 o-5','S']},
+ {id:'p_rest',s:3,p:'spouse',t:"You haven't had a real holiday in seven years. The doctor says you must rest.",
+  L:["I'll rest in heaven",'c+5 h-15 f-5'],R:['Take two weeks off','h+15 c-5']},
+ {id:'p_skills',s:3,p:'youth',t:"Our graduates can't find jobs. Can the church help?",
+  L:['Pray for job openings','f+5 c-5'],R:['Start skills training','o-10 c+15','B',{outreach:1}]},
+ {id:'p_clinic',s:3,p:'member',t:"The hospital nearby turns away patients who can't pay.",
+  L:['Leave it to government','o+5 c-5'],R:['Set up a welfare fund','o-15 c+10 f+5','S',{outreach:1}]},
 
- // ---- Stage 4: camp ground ----
- {id:'campcity',s:4,p:'elder',t:"The camp ground needs roads, a bank, a police post and a hospital.",
-  L:['Partner with government','o-10 g+5','K'],R:['Build everything ourselves','o-20 c+15 g+10']},
- {id:'jet2',s:4,p:'broker',t:"Prophet Ogbonge just bought two jets. There's a bigger one available. It has a bedroom.",
-  L:["We don't compete",'a+10','D'],R:['Buy the bigger one','o-25 g+20','P',{jets:1}]},
- {id:'branches',s:4,p:'kelvin',t:"Diaspora members want branches in Houston, Toronto, Dublin and Peckham.",
-  L:['Train pastors first','a+5 c+5','D'],R:['Open twelve branches this year','c+15 o-15 g+10']},
- {id:'documentary',s:4,once:1,p:'media',t:"We're making a documentary on Nigerian megachurches. Will you sit for an interview?",
-  L:['Grant the interview','a+5 g+20'],R:['Sue them before it airs','g+15 o-10','',{scandal:1}]},
- {id:'succession',s:4,p:'elder',t:"Daddy, when the time comes, who succeeds you?",
-  L:['The most qualified pastor','a+15 c+5','D'],R:['My son, obviously','g+15 a-10 c-5']},
- {id:'convention',s:4,p:'gov',t:"Your annual convention drew a million people. The expressway was jammed for three days.",
-  L:['Stagger the sessions','c-5 a+5','D'],R:['Close the expressway','c+15 g+20','K']}
+ // stage 4
+ {id:'p_succ',s:4,once:1,p:'mentor',t:"You've built much. Now, who will carry it after you?",
+  L:["There's still time",'c+5 f-5'],R:['Put a succession plan in place','f+10 c+5','S',{leaders:3}]},
+ {id:'p_uni',s:4,once:1,p:'treas',t:"There's a proposal for a Christian university. The fees will decide who it serves.",
+  L:['Premium fees fund growth','o+15 c-10'],R:['Scholarships for the poor','o-15 c+15','B',{schools:1}]},
+ {id:'p_abroad',s:4,p:'missions',t:"Members abroad are asking for parishes in London, Houston and Johannesburg.",
+  L:['Focus on Nigeria for now','f+5 c-5'],R:['Send trained pastors abroad','c+15 o-10','E',{leaders:2}]},
+ {id:'p_convention',s:4,p:'gov',t:"Your convention will draw a million people. The expressway will be gridlocked.",
+  L:['Scale it down','c-5 o+5'],R:['Plan it with the authorities','o-10 c+15','S']},
+ {id:'p_kids',s:4,p:'spouse',t:"Our children are grown. Will you groom them to lead, or let them find their own calling?",
+  L:['Groom them to succeed me','h+5 c-10'],R:['Let them hear God themselves','h+10 f+5 c-5']},
+ {id:'p_doc',s:4,p:'media',t:"A documentary crew wants a year of full access to the ministry.",
+  L:['Keep our privacy','h+10 c-5'],R:['Let the world see','c+15 h-10','E']},
+ {id:'p_board',s:4,p:'elder',t:"Some say you should step back from the daily running of things. Others say the church still needs you.",
+  L:['Stay hands-on','c+5 h-10 f-5'],R:['Delegate to the board','f+5 h+10 c-5','S',{leaders:2}]}
 ];
 
+const CARDS_G = [
+ // stage 0
+ {id:'g_rehearse',s:0,mx:1,p:'pastorG',t:"Choir rehearsal is on Thursday nights, and you keep missing it because of work.",
+  L:['Work pays the bills','o+10 f-5 c-5'],R:['Make rehearsal a priority','f+5 c+5 o-5','S']},
+ {id:'g_practice',s:0,p:'uncle',t:"Talent opens doors, but character and practice keep you inside. Will you practise two hours a day?",
+  L:["I'm talented enough",'c+5 f-5'],R:['Two hours daily','c+10 h-10','W']},
+ {id:'g_mum',s:0,once:1,p:'mum',t:"Music? You studied engineering. Get a proper job.",
+  L:['Get the job, sing on Sundays','o+15 c-5 h+5'],R:['Follow the call','c+10 o-10 h-10','F']},
+ {id:'g_highlife',s:0,p:'band',t:"The keyboardist wants to try a highlife arrangement of an old hymn.",
+  L:['Keep it traditional','f+5 c-5'],R:['Try it','c+10 f-5','W']},
+ {id:'g_testimony',s:0,p:'fan',t:"After service, a woman tells you your solo made her feel God hadn't forgotten her.",
+  L:['Thank God quietly','f+10 c-5','F'],R:['Ask her to share it online','c+10 f-5']},
+ {id:'g_6am',s:0,p:'pastorG',t:"We need someone to lead worship at the 6am service.",
+  L:["I'm not a morning person",'h+5 c-5'],R:["I'll do it",'c+10 h-5 f+5','S']},
+ {id:'g_record',s:0,once:1,p:'producer',t:"I can record your first song for ₦300,000. That's a friends' price.",
+  L:['Save up first','o+5 c-5'],R:['Record it now','o-15 c+15','',{songs:1}]},
+ {id:'g_write',s:0,p:'uncle',t:"Write what God is teaching you, not what's trending.",
+  L:["Write what's trending",'c+10 f-10'],R:['Write from devotion','f+10 c-5','W',{songs:1}]},
+
+ // stage 1
+ {id:'g_master',s:1,once:1,p:'producer',t:"Your song is finished. Who owns the master recording?",
+  L:['A handshake is enough','c+5 o-10'],R:['Sign a fair written agreement','o+10 c-5','B']},
+ {id:'g_video',s:1,p:'fan',t:"Your single is on thousands of phones! Will there be a music video?",
+  L:['Keep it simple','o+5 c-5'],R:['Shoot a video','o-15 c+15']},
+ {id:'g_planted',s:1,p:'pastorG',t:"Other churches invite you every weekend. Your home church misses you.",
+  L:['Accept the invitations','c+15 f-5 h-10'],R:['Stay planted at home','f+10 c-5','S']},
+ {id:'g_nopreach',s:1,p:'promoter',t:"Perform at my concert for ₦500,000. One condition: no talking about Jesus between songs.",
+  L:['Decline','f+10 o-10'],R:['Take the booking','o+15 f-10']},
+ {id:'g_paid',s:1,p:'band',t:"We haven't been paid for the last three gigs.",
+  L:['Pay them later','o+10 c-10'],R:['Pay them first, from your fee','o-15 c+10','S']},
+ {id:'g_road',s:1,p:'spouse',t:"You're on the road every weekend. The kids keep asking where you are.",
+  L:['This is the season','c+10 h-15'],R:['Limit trips to two a month','h+15 c-5']},
+ {id:'g_youthchoir',s:1,p:'uncle',t:"Will you lead the youth choir? Teach them what I taught you.",
+  L:["I'm too busy recording",'c+5 f-5'],R:['Train the youth choir','f+5 c+5 h-5','S',{trained:5}]},
+ {id:'g_feature',s:1,p:'star',t:"Let's collaborate. The song is about money and nightlife, and you'd sing the hook.",
+  L:['Not that song','f+10 c-5'],R:['Do the feature','c+20 f-15']},
+ {id:'g_scripture',s:1,p:'fan',t:"I love your new song, but one line misquotes a scripture.",
+  L:["It's just art",'c+5 f-5'],R:['Check with your pastor and fix it','f+10 c-5','W']},
+
+ // stage 2
+ {id:'g_deal',s:2,once:1,p:'label',t:"Five-album deal with a big advance. We control your image and your content.",
+  L:['Sign it','o+20 c+10 f-15'],R:['Stay independent','o-10 f+10','B']},
+ {id:'g_twelve',s:2,once:1,p:'producer',t:"The album needs 12 songs. You have 8 strong ones.",
+  L:['Rush four more','c+5 f-10',null,{songs:12}],R:['Release the eight good ones','f+5 o-5','W',{songs:8}]},
+ {id:'g_fee',s:2,p:'manager',t:"Streams are up. Should we raise your ministration fee?",
+  L:['Raise it','o+15 c-10'],R:['Keep it affordable for small churches','c+10 o-5','S']},
+ {id:'g_prayer',s:2,p:'uncle',t:"Fame is loud. Is your prayer life still loud?",
+  L:["I'm fine",'c+5 f-10'],R:['Return to early-morning prayer','f+15 c-5','F']},
+ {id:'g_ward',s:2,p:'fan',t:"A children's hospital ward asks if you'll come and sing. There's no fee.",
+  L:['My schedule is full','o+5 c-5'],R:['Go and sing','c+10 o-5 f+5','S',{outreach:1}]},
+ {id:'g_judge',s:2,p:'promoter',t:"A TV talent show wants you as a judge for the whole season.",
+  L:['Stay focused on ministry','f+5 o-5'],R:['Be a judge','c+15 h-10 o+5']},
+ {id:'g_anniv',s:2,p:'spouse',t:"Our anniversary falls on the night of your biggest concert.",
+  L:['Keep the concert','c+10 h-15'],R:['Move the concert','h+15 o-10 c-5']},
+ {id:'g_fallen',s:2,p:'band',t:"One of our band members has fallen into sin publicly. Fans are asking questions.",
+  L:['Hide it, protect the brand','c+5 f-10'],R:['Address it with grace, restore him','f+10 c-5','S']},
+ {id:'g_streams',s:2,p:'manager',t:"We could buy streams to chart higher this month.",
+  L:['Buy them','c+15 f-15 o-5'],R:['Grow it honestly','f+10 c-5']},
+
+ // stage 3
+ {id:'g_tour',s:3,p:'promoter',t:"A 12-city national tour. It means three months away from home.",
+  L:['Do six cities','c+10 h-5'],R:['All twelve','c+20 h-15 o+5','E']},
+ {id:'g_midnight',s:3,once:1,p:'uncle',t:"Start a midnight worship hour online. No stage, no lights, just worship.",
+  L:['Too risky','c-5 h+5'],R:['Go live at midnight','c+15 f+10 h-10','F']},
+ {id:'g_name',s:3,once:1,p:'label',t:"An international label is interested, but wants 'Jesus' taken out of the lyrics for wider radio play.",
+  L:['Keep the Name','f+15 o-10'],R:['Remove it','c+15 o+15 f-20']},
+ {id:'g_mentee',s:3,p:'singer',t:"I send you new songs every week. Could you give me feedback?",
+  L:['Ignore the messages','h+5 c-5'],R:['Mentor her','f+5 h-5 c+5','S',{trained:1}]},
+ {id:'g_piracy',s:3,p:'manager',t:"Pirated copies of your album are being sold in markets across the country.",
+  L:['Let it go, the message spreads','c+10 o-15'],R:['Enforce your copyright','o+10 c-5','B']},
+ {id:'g_voice',s:3,p:'spouse',t:"You're exhausted and your voice is cracking. Please rest.",
+  L:['Push through','c+5 h-10 f-5'],R:['Take a month off','h+15 c-5 o-5']},
+ {id:'g_fundraise',s:3,p:'pastorG',t:"Our church is building a new auditorium. Will you do a fundraising concert?",
+  L:["I'm fully booked",'o+10 f-5'],R:['Give the proceeds','o-10 f+10 c+5','S']},
+ {id:'g_awards',s:3,p:'star',t:"Perform at our awards show on national TV. Sing whatever you want.",
+  L:['Not my audience','f+5 c-5'],R:['Sing about Jesus there','c+15 f+5 h-5','E']},
+
+ // stage 4
+ {id:'g_school',s:4,once:1,p:'uncle',t:"Start a school of music ministry. Raise the next generation.",
+  L:['Later','o+5 c-5'],R:['Open the school','o-15 c+10 f+5','B',{trained:20}]},
+ {id:'g_cover',s:4,once:1,p:'manager',t:"Your song is being covered worldwide. The lawyers say we could charge everyone.",
+  L:['Charge every church','o+20 c-10'],R:['Free for churches, licensed for business','c+15 o-5','S']},
+ {id:'g_london',s:4,p:'promoter',t:"A stadium concert in London, with a very large fee.",
+  L:['Decline','o-5 h+5'],R:['Accept','c+15 o+10 h-10']},
+ {id:'g_home',s:4,p:'spouse',t:"The children want you home during their school years.",
+  L:['Keep touring','c+10 h-15'],R:['Base the ministry at home','h+15 c-5']},
+ {id:'g_villages',s:4,p:'missions',t:"Come and lead worship in rural villages. No stage, no cameras.",
+  L:["It's not cost-effective",'o+5 f-5'],R:['Go','f+15 c+5 o-10','E',{outreach:1}]},
+ {id:'g_brands',s:4,p:'manager',t:"Brand deals have come in from soft drinks, telecoms and a betting company.",
+  L:['Take them all','o+20 f-15 c-5'],R:['Only brands that fit your values','o+5 f+5 c-5']},
+ {id:'g_family',s:4,p:'fan',t:"Your song carried our family through a long hospital stay. Will you come to our thanksgiving?",
+  L:['Send a video message','h+5 c-5'],R:['Attend in person','c+10 h-5','S']},
+ {id:'g_songbook',s:4,p:'uncle',t:"Your songs will outlive your tours. What's your plan for them?",
+  L:['Keep performing','c+5 f-5'],R:['Publish a songbook for churches','c+10 o-5','B',{songs:5}]}
+];
+
+const CARDS_E = [
+ // stage 0
+ {id:'e_bus',s:0,mx:2,p:'ayo',t:"Let's preach at the bus park at rush hour. It's loud, but thousands of people pass through.",
+  L:['Hand out tracts quietly','c+5 o-5'],R:['Preach at rush hour','c+10 h-10','E']},
+ {id:'e_follow',s:0,p:'mentor',t:"Reaching people is only the start. Who follows up the ones who respond?",
+  L:['God will keep them','c+5 f-5'],R:['Start follow-up Bible studies','c+10 h-5','W']},
+ {id:'e_job',s:0,mx:1,p:'boss',t:"You keep leaving work early for outreaches. One more warning and you're out.",
+  L:['Keep the job steady','o+10 c-10'],R:['The outreach comes first','c+10 o-15','E']},
+ {id:'e_mock',s:0,p:'passer',t:"Someone filmed you preaching and is mocking you online. The video is spreading.",
+  L:['Stop street preaching for a while','h+5 c-10'],R:['Bless him and keep going','f+10 c+5 h-5','F']},
+ {id:'e_pray',s:0,p:'mentor',t:"Evangelism without prayer is just noise. Will you pray for an hour before every outreach?",
+  L:['No time for that','c+5 f-10'],R:['Pray first, always','f+15 c-5','F']},
+ {id:'e_sat',s:0,p:'spouse',t:"Every Saturday is outreach now. Saturdays used to be ours.",
+  L:['People are waiting','c+10 h-15'],R:['Alternate Saturdays','h+15 c-5']},
+ {id:'e_wards',s:0,p:'ayo',t:"The general hospital allows visitors on Sunday afternoons. Shall we go and pray with patients?",
+  L:['Stick to the streets','c+5 f-5'],R:['Visit the wards','f+5 c+5 h-5','S',{outreach:1}]},
+ {id:'e_tracts',s:0,p:'printer',t:"Printing 10,000 tracts will cost ₦250,000.",
+  L:['Print 1,000 for now','o-5 c+5'],R:['Print all 10,000','o-15 c+10']},
+
+ // stage 1
+ {id:'e_campus',s:1,p:'youth',t:"Students at the university want a weekly fellowship that you lead.",
+  L:['Monthly is enough','c+5 f-5'],R:['Weekly fellowship','c+15 h-5 o-5','W',{leaders:2}]},
+ {id:'e_team',s:1,once:1,p:'ayo',t:"We need a proper team: musicians, counsellors and ushers.",
+  L:['Keep it just the two of us','o+5 c-5'],R:['Recruit and train a team','c+10 o-5 h-5','S',{leaders:3}]},
+ {id:'e_church',s:1,once:1,p:'pastorG',t:"Your converts need a church home. Will you start your own, or send them to local churches?",
+  L:['Start my own church','c+10 f-5 o+5'],R:['Send them to local churches','f+10 c-5','S']},
+ {id:'e_drama',s:1,p:'youth',t:"Let's use drama and music at outreaches. Young people respond to stories.",
+  L:['Preaching only','f+5 c-5'],R:['Add drama and music','c+15 o-10']},
+ {id:'e_food',s:1,p:'community',t:"Many people here are hungry. A sermon won't fill their stomachs.",
+  L:['Preach first, food later','f+5 c-5'],R:['Food and the gospel together','o-15 c+15','S',{outreach:1}]},
+ {id:'e_edit',s:1,p:'volunteer',t:"Let's edit the outreach videos so the crowd looks bigger than it was.",
+  L:['Post the edited video','c+10 f-15'],R:['Only honest numbers','f+10 c-5']},
+ {id:'e_van',s:1,p:'treas',t:"The outreach van needs repairs. ₦600,000.",
+  L:['Take a loan','o+10 h-10'],R:['Use buses for now','c-10 o+5']},
+ {id:'e_school',s:1,once:1,p:'mentor',t:"Go to Bible school for a year. Your zeal needs depth.",
+  L:["The harvest can't wait",'c+10 f-10'],R:['Enrol for a year','f+15 c-10 o-5','W']},
+
+ // stage 2
+ {id:'e_crusade',s:2,p:'ayo',t:"A three-day crusade on the stadium field. It will cost ₦8 million.",
+  L:['Smaller street rallies','c+5 o+5'],R:['Book the stadium','c+20 o-20','E',{outreach:1}]},
+ {id:'e_permit',s:2,p:'gov',t:"Your crusade permit is pending. An official hints that 'something small' would speed it up.",
+  L:['Pay him','o-5 c+10 f-15'],R:['Wait for due process','f+10 c-5']},
+ {id:'e_adverts',s:2,p:'media',t:"Crowds come for miracles. Should the crusade posters promise healing?",
+  L:['Promise miracles','c+15 f-10'],R:['Promise prayer, preach Jesus','f+10 c-5','W']},
+ {id:'e_counsel',s:2,p:'ayo',t:"Hundreds responded last night, and we only have twelve counsellors.",
+  L:['Pray for them as a group','c+5 f-5'],R:['Train 100 counsellors','c+10 o-5 h-5','S',{leaders:5}]},
+ {id:'e_pastors',s:2,p:'pastorG',t:"Local pastors feel bypassed by your crusades. They're wary of you.",
+  L:['Do it without them','c+10 f-5'],R:['Invite them to partner','f+5 c+5 o-5','S']},
+ {id:'e_away',s:2,p:'child',t:"You've been away for three crusades in a row.",
+  L:['This is the season','c+10 h-15'],R:['Bring the family along','h+15 o-5 c-5']},
+ {id:'e_betting',s:2,p:'donor',t:"A betting company wants to sponsor your next crusade.",
+  L:['Accept the sponsorship','o+20 f-15 c-5'],R:['Decline politely','f+10 o-10']},
+ {id:'e_radio',s:2,p:'media',t:"A radio station offers you a nightly gospel slot.",
+  L:['Stay on the streets','c-5 o+5'],R:['Take the slot','c+15 o-10','E']},
+
+ // stage 3
+ {id:'e_lang',s:3,once:1,p:'hauwa',t:"To truly reach this region, you need to learn the language. It will take two years.",
+  L:['Use interpreters','c+5 f-5'],R:['Learn the language','f+10 c+10 h-5','W']},
+ {id:'e_clinic',s:3,once:1,p:'amaka',t:"The nearest clinic is 40 km away. Shall we open one here?",
+  L:['Focus on preaching','f+5 c-5'],R:['Open a clinic','o-15 c+15','B',{schools:1}]},
+ {id:'e_village_school',s:3,once:1,p:'vhead',t:"Our children have no school.",
+  L:['Pray for a government school','f+5 c-5'],R:['Start a community school','o-15 c+15','B',{schools:1}]},
+ {id:'e_unsafe',s:3,p:'security',t:"The area has become unsafe. Local leaders advise your team to relocate for a season.",
+  L:['Stay put','c+10 h-10 f+5'],R:['Relocate for a season','h+10 c-10']},
+ {id:'e_listen',s:3,p:'vhead',t:"If you want to be heard here, first understand our ways.",
+  L:['Preach against them openly','c-10 f+5'],R:['Listen first, then speak','c+10 h-5','S']},
+ {id:'e_locals',s:3,p:'mentor',t:"Train local believers to lead. You won't be here forever.",
+  L:["They aren't ready yet",'c+5 h-10'],R:['Train local leaders','c+10 o-5','S',{leaders:5}]},
+ {id:'e_kids',s:3,p:'spouse',t:"Life out here is hard on the children. They miss their friends and their old school.",
+  L:['God called us here','c+5 h-15'],R:['Home-school and visit family often','h+15 o-10 c-5']},
+ {id:'e_support',s:3,p:'treas',t:"Support from churches back home has dropped by half.",
+  L:['Cut the programmes','c-10 o+10'],R:['Tour churches to share the story','o+15 h-5','E']},
+
+ // stage 4
+ {id:'e_send',s:4,p:'ayo',t:"Forty trained missionaries are ready. Where do we send them?",
+  L:['Only within Nigeria','c+5 o+5'],R:['Across West Africa','c+15 o-15','E',{leaders:20}]},
+ {id:'e_care',s:4,p:'mentor',t:"Your missionaries are burning out. Who cares for the carers?",
+  L:['They signed up for hardship','c+5 f-10'],R:['Start a missionary care programme','o-10 f+5 c+5','S']},
+ {id:'e_reports',s:4,p:'treas',t:"Partners want a detailed report on how every naira is spent.",
+  L:['Too much paperwork','o-10 h+5'],R:['Publish full accounts','o+10 h-5','S']},
+ {id:'e_bible',s:4,once:1,p:'hauwa',t:"This language still has no Bible. Shall we fund a translation team?",
+  L:['Too long and too costly','o+10 f-5'],R:['Fund the translation','o-15 f+10 c+10','W']},
+ {id:'e_succ',s:4,once:1,p:'elder',t:"You're the face of the agency. What happens when you're gone?",
+  L:['God will provide','c+5 f-5'],R:['Appoint and train a successor board','f+5 h+5 c-5','S',{leaders:3}]},
+ {id:'e_keynote',s:4,p:'media',t:"A global missions conference invites you to give the keynote in Cape Town.",
+  L:['Stay in the field','f+5 c-5'],R:['Go and recruit','c+10 o+5 h-5','E']},
+ {id:'e_home',s:4,p:'spouse',t:"We've given twenty years to the field. Is it time to train others from home?",
+  L:['One more term','c+10 h-15'],R:['Lead from home','h+15 c-5']}
+];
+
+/* Heroes of Faith: true milestones from public sources, written in our own words.
+   Each slot unlocks at a stage; where a slot has alternatives, replays show heroes you haven't met yet. */
+const HERO_DB = {
+  kumuyi73:{who:'Pastor W. F. Kumuyi', yr:'1973', text:"While lecturing in mathematics at the University of Lagos, he began a Bible study with 15 students. It became Deeper Life Bible Church in 1982.", lesson:"Small beginnings, taught faithfully, can grow into something great.", src:'en.wikipedia.org/wiki/William_Kumuyi'},
+  dlhq:{who:'Deeper Life Bible Church', yr:'2005–2018', text:"Its new headquarters in Gbagada, Lagos, was a project begun in 2005 and commissioned in 2018.", lesson:"Patient building outlasts quick wins.", src:'businessday.ng · en.wikipedia.org/wiki/Deeper_Life_Bible_Church'},
+  idahosa68:{who:'Archbishop Benson Idahosa', yr:'1968', text:"He started with village-to-village outreaches and a small prayer group. In October 1968 he formally inaugurated the Church of God Mission in Benin City.", lesson:"Start where you are, with what you have.", src:'en.wikipedia.org/wiki/Benson_Idahosa'},
+  idahosaBI:{who:'Archbishop Benson Idahosa', yr:'Since 1968', text:"The All Nations for Christ Bible Institute he founded has graduated over 15,000 people, according to its alumni association.", lesson:"Train others to go further than you.", src:'dailytrust.com'},
+  oyedepo81:{who:'Bishop David Oyedepo', yr:'1981', text:"Called to full-time ministry at 26 in May 1981, he began with a weekly fellowship meeting before planting his first church in Kaduna.", lesson:"A clear call, pursued step by step, builds lasting work.", src:'faithtabernacle.org.ng/about'},
+  oyedepo99:{who:'Bishop David Oyedepo', yr:'1999–2002', text:"The 50,000-seat Faith Tabernacle in Ota was dedicated in September 1999. In 2002 he founded Covenant University.", lesson:"Build institutions that serve people beyond Sunday.", src:'faithtabernacle.org.ng/about'},
+  adeboye73:{who:'Pastor E. A. Adeboye', yr:'1973–1981', text:"A mathematics lecturer, he joined the Redeemed Christian Church of God in 1973 and served as interpreter of the founder's Yoruba sermons. Ordained in 1975, he became General Overseer in 1981.", lesson:"Faithful service comes before leadership.", src:'en.wikipedia.org/wiki/Redeemed_Christian_Church_of_God'},
+  adeboye190:{who:'Pastor E. A. Adeboye', yr:'1981–today', text:"From around 40 parishes when he became General Overseer in 1981, the RCCG has spread to more than 190 countries.", lesson:"A legacy is measured by the people who carry it on.", src:'thecable.ng · en.wikipedia.org/wiki/Redeemed_Christian_Church_of_God'},
+
+  panam20:{who:'Panam Percy Paul', yr:'Late 1970s', text:"He began his music career at 20, while still a student at Kaduna Polytechnic. Choosing gospel music over the army career his father wanted came at a real personal cost.", lesson:"Count the cost, then answer the call.", src:'en.wikipedia.org/wiki/Panam_Percy_Paul · congregationalsong.org'},
+  panam40:{who:'Panam Percy Paul', yr:'Four decades', text:"Over a career spanning more than 40 years, he has used his own music organisation to help educate younger musicians.", lesson:"Raise the next generation of worshippers.", src:'en.wikipedia.org/wiki/Panam_Percy_Paul'},
+  tope7:{who:'Tope Alabi', yr:'Childhood', text:"She joined her local church choir at the age of seven.", lesson:"Faithfulness in the choir stand is where many callings begin.", src:'en.wikipedia.org/wiki/Tope_Alabi'},
+  tope2000:{who:'Tope Alabi', yr:'2000', text:"Her debut album, 'Ore ti o Common' (Uncommon Favour), established her as one of Nigeria's leading gospel artists.", lesson:"Your first offering doesn't need to be perfect, just faithful.", src:'en.wikipedia.org/wiki/Tope_Alabi'},
+  tope350:{who:'Tope Alabi', yr:'Since the 1990s', text:"Starting with a theatre group in the 1990s, she went on to compose more than 350 soundtracks for Yoruba-language films.", lesson:"Take the message into every room you're given.", src:'en.wikipedia.org/wiki/Tope_Alabi'},
+  bassey_tpt:{who:'Nathaniel Bassey', yr:'Early years', text:"His music began in church. He played trumpet with an orchestra for two years before his worship ministry grew.", lesson:"Excellence in your craft opens doors for your calling.", src:'en.wikipedia.org/wiki/Nathaniel_Bassey'},
+  bassey17:{who:'Nathaniel Bassey', yr:'2017', text:"On 31 May 2017 he announced a 30-day midnight praise challenge on Instagram. At its peak, around 68,000 people joined the livestream.", lesson:"Use new tools to carry an old message.", src:'cnn.com (15 June 2017)'},
+  sinach15:{who:'Sinach', yr:'2015', text:"A long-serving worship leader in her church, she released 'Way Maker' as a single on 30 December 2015.", lesson:"Stay planted where you serve.", src:'en.wikipedia.org/wiki/Way_Maker · businessday.ng'},
+  sinach20:{who:'Sinach', yr:'2020', text:"'Way Maker' won Song of the Year at the 2020 GMA Dove Awards, and Sinach became the first African to top Billboard's Christian songwriters chart.", lesson:"A song written in worship can travel further than any tour.", src:'en.wikipedia.org/wiki/Way_Maker · thisdaylive.com'},
+  bamiloye85:{who:'Mike Bamiloye', yr:'1985–1986', text:"He founded the Mount Zion drama ministry on 5 August 1985. Its first drama, 'Hell in Conference', was staged in 1986 at a national Christian teachers' conference in Ilesa.", lesson:"Every gift, including stories, can carry the gospel.", src:'en.wikipedia.org/wiki/Mike_Bamiloye'},
+
+  crowther21:{who:'Bishop Samuel Ajayi Crowther', yr:'1821–1825', text:"Captured and sold into slavery at about 12 in 1821, he was freed by a Royal Navy ship, resettled in Sierra Leone and baptised in 1825.", lesson:"No beginning is too broken for God's calling.", src:'en.wikipedia.org/wiki/Samuel_Ajayi_Crowther'},
+  crowther64:{who:'Bishop Samuel Ajayi Crowther', yr:'1864', text:"Consecrated at Canterbury Cathedral in 1864 as the first African Anglican bishop of West Africa, he led missions along the Niger and oversaw the translation of the Bible into Yoruba.", lesson:"Give people the Word in their own language.", src:'en.wikipedia.org/wiki/Samuel_Ajayi_Crowther'},
+  capro75:{who:'Calvary Ministries (CAPRO)', yr:'1975', text:"Young National Youth Service Corps members in Zaria began a short-term outreach in 1975. It became CAPRO, Nigeria's first non-denominational indigenous mission agency.", lesson:"Ordinary young people can start a missions movement.", src:'dejiokegbile.com'},
+  caproNow:{who:'Calvary Ministries (CAPRO)', yr:'Today', text:"CAPRO has grown into an international missions agency with over 700 missionaries from 26 countries, serving in 35 countries.", lesson:"Missions multiply when you send others.", src:'dejiokegbile.com'},
+  slessor:{who:'Mary Slessor', yr:'1876–1888', text:"A Dundee mill worker from the age of 11, she arrived in Calabar in 1876. In 1888 she moved inland to Okoyong, and she became known for rescuing abandoned twins.", lesson:"Go where others won't, and protect the vulnerable.", src:'en.wikipedia.org/wiki/Mary_Slessor'}
+};
+const SLOTS = {
+  p:[['kumuyi73'],['idahosa68'],['oyedepo81'],['adeboye73'],['oyedepo99','dlhq'],['adeboye190','idahosaBI']],
+  g:[['panam20','tope7'],['bassey_tpt','bamiloye85'],['sinach15','tope2000'],['bassey17'],['sinach20','tope350'],['panam40']],
+  e:[['crowther21'],['capro75'],['slessor','idahosa68'],['idahosaBI'],['crowther64'],['caproNow']]
+};
+
 const ENDINGS = {
-  c0:  ['Empty hall', ()=>`One Sunday it was just you, Pastor (Mrs) Ada and the drummer. The drummer was owed three months' salary.`],
-  c100:['Seven breakaways', ()=>`The flock got too big to shepherd. Seven assistant pastors left on the same Sunday to start their own ministries. With your members.`],
-  o0:  ['Padlock on the gate', g=>`The landlord padlocked the hall and the generator man carried his generator. ${g.ministry} now meets on WhatsApp.`],
-  o100:['Invitation from EFCC', ()=>`Too much money, not enough receipts. Some gentlemen from the anti-graft agency would like to discuss the building fund.`],
-  a0:  ['The grace has lifted', ()=>`Members started whispering that the anointing had left. By Easter they were all at Ogbonge Fire Tabernacle.`],
-  a100:['Walking on the lagoon', ()=>`You announced you would walk on Lagos Lagoon, live. Four million people watched. Marine police fished you out near Third Mainland Bridge.`],
-  g0:  ['Nobody knows you', ()=>`No blog posts, no viral clips, no crowd. You updated your LinkedIn to "Open to work".`],
-  g100:['Trending for the wrong reasons', g=>`#${acr(g.ministry)}Scandal trended for nine days. Even your mother called to ask what is going on.`],
-  win: ['Apostle-General of the nations', g=>`From plastic chairs in Ikorodu to branches in Houston and Peckham. ${g.ministry} is now a global brand.`]
+  f0:  ['Running on empty', ()=>`You kept serving but stopped praying. One morning there was nothing left to give.`, 'Every lasting ministry is built on a private altar.'],
+  h0:  ['Lost at home', ()=>`You gained the crowd but lost your home, and the ministry could not hold together without it.`, 'Your first ministry is your family.'],
+  c0:  ['The doors closed', g=>({p:`The people drifted away one by one, until ${g.ministry} could no longer meet.`, g:`The invitations stopped and the music went quiet.`, e:`The crowds stopped coming and the doors stopped opening.`})[g.path], 'People need a shepherd who stays close to them.'],
+  c100:['Spread too thin', ()=>`The work grew faster than you could disciple it. Your leaders burned out and the cracks began to show.`, 'Raise leaders before you raise crowds.'],
+  o0:  ['The bills won', g=>({p:`You couldn't keep the lights on or the rent paid, and ${g.ministry} had to close its doors.`, g:`You couldn't pay the band or fund the next project, and the ministry stalled.`, e:`You couldn't fund the next outreach, and the team scattered.`})[g.path], 'Vision needs provision, planning and wise stewardship.'],
+  o100:['Money became the message', ()=>`Money piled up faster than accountability. People began to question your motives, and trust collapsed.`, 'Transparency protects the work God gives you.'],
+  win: ['Well done, good and faithful', g=>({p:`From a Bible study in your sitting room to a global mission. ${g.ministry} now serves people on five continents.`, g:`From the choir stand to the nations. Churches around the world now sing your songs.`, e:`From a bus park with a handful of tracts to the nations. Missionaries you trained now serve across Africa and beyond.`})[g.path], 'Faithful in little, faithful in much.']
 };
 
+const CALLING = { p:'Pastor', g:'Gospel minister', e:'Evangelist' };
 const TYPES = {
-  P:['The Prosperity Prophet','More account numbers than Bible verses.'],
-  H:['The Holiness Hardliner','No trousers, no earrings, no nonsense.'],
-  S:['The Showman','Smoke machines, slow-mo entrances, miracles in 4K.'],
-  K:['The Kingmaker','Governors queue for your blessing.'],
-  D:['The Shepherd','Quietly feeding the flock. A rare breed.']
+  F:['The Intercessor','Prayer was your foundation.'],
+  W:['The Teacher','You built everything on the Word.'],
+  S:['The Servant Leader','You led by serving others.'],
+  E:['The Soul Winner','You carried the message beyond the walls.'],
+  B:['The Builder','You built what will outlive you.']
 };
 
-const NAME_A = ['Mountain of','Fountain of','Overflowing','Unstoppable','Double Portion','Commanding','Living','Open Heaven','Sure Banker','Mighty','Kingdom','Dominion','Everlasting','Pentecostal'];
-const NAME_B = ['Fire','Grace','Glory','Favour','Miracles','Restoration','Abundance','Power','Testimonies','Breakthrough','Victory'];
-const NAME_C = ['Ministries','Chapel International','Assembly Worldwide','Tabernacle','Bible Church','Gospel Mission','Church of God Global','Revival Centre'];
+const NAMES = {
+  p:()=>`${pick(['Living','Abundant','Everlasting','Rising','Gracious','Faithful','Overcomers'])} ${pick(['Word','Grace','Faith','Hope','Light','Life','Mercy','Truth'])} ${pick(['Chapel','Assembly','Bible Church','Fellowship','Tabernacle','Ministries'])}`,
+  g:()=>`${pick(['Voices of','Sound of','Songs of','Echoes of','Hearts of'])} ${pick(['Praise','Zion','Grace','Glory','Revival','Hope','Worship'])}`,
+  e:()=>`${pick(['Harvest','Great Commission','Gospel','Lighthouse','Reach the Nations','Good News','Fishers of Men'])} ${pick(['Outreach','Mission','Evangelistic Ministry','Missions'])}`
+};
 
-/* ============ HELPERS ============ */
+/* ================= HELPERS ================= */
 const $ = id => document.getElementById(id);
 const pick = a => a[Math.floor(Math.random()*a.length)];
 const clamp = v => Math.max(0, Math.min(100, v));
 const fmt = n => n.toLocaleString('en-GB');
-const acr = s => s.split(/\s+/).filter(w=>w && !/^(of|the|and)$/i.test(w)).map(w=>w[0].toUpperCase()).join('');
-const genName = () => `${pick(NAME_A)} ${pick(NAME_B)} ${pick(NAME_C)}`;
 function parseFx(s){ const o={}; (s||'').split(/\s+/).filter(Boolean).forEach(t=>{ o[t[0]] = parseInt(t.slice(1),10); }); return o; }
 function store(k,v){ try{ v===undefined ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 function load(k){ try{ const v=localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
-const GAME_URL = (location.protocol.startsWith('http') && !/claude|usercontent|localhost|127\.0/.test(location.host)) ? location.host : 'ministry-life.pages.dev';
+const GAME_URL = (location.protocol.startsWith('http') && !/claude|usercontent|localhost|127\.0/.test(location.host)) ? location.host : 'ministrylife.pages.dev';
 
-/* ============ STATE ============ */
+/* ================= STATE ================= */
 let G = null, busy = false;
-const SAVE = 'ministrylife_save_v1', BEST = 'ministrylife_best_v1';
+const setup = { path:'p', sex:'Brother' };
+const SAVE = 'ministrylife_save_v2', BEST = 'ministrylife_best_v2';
+const deckOf = () => ({p:CARDS_P, g:CARDS_G, e:CARDS_E})[G.path];
+const HALL = 'ministrylife_hall_v1';
+const hallIds = () => load(HALL) || [];
+function addToHall(id){ const h = hallIds(); if (!h.includes(id)){ h.push(id); store(HALL, h); } }
+const ALL_HEROES = Object.keys(HERO_DB);
+const cfg = () => PATHS[G.path];
+const card = () => deckOf().find(c=>c.id===G.cardId);
 
-function newGame(name, ministry){
-  G = { name, ministry, c:50, o:50, a:50, g:30, members:8, week:1, turn:0, stage:0, jets:0, scandals:0,
-        tags:{P:0,H:0,S:0,K:0,D:0}, flags:{}, used:{}, recent:[], cardId:null };
+function newGame(name, ministry, path, sex){
+  G = { name, ministry, path, sex, f:55, c:50, o:50, h:60, members:PATHS[path].start, week:1, turn:0, stage:0,
+        tags:{F:0,W:0,S:0,E:0,B:0}, legacy:{leaders:0,outreach:0,schools:0,songs:path==='g'?1:0,trained:0},
+        heroes:0, heroIds:[], used:{}, recent:[], cardId:null };
   G.cardId = nextCard().id;
 }
-const card = () => CARDS.find(c=>c.id===G.cardId);
-
 function eligible(c){
   if (c.s > G.stage) return false;
   if (c.mx != null && G.stage > c.mx) return false;
-  if (c.req && !G.flags[c.req]) return false;
   if (c.once && G.used[c.id]) return false;
   if (G.recent.includes(c.id)) return false;
   return true;
 }
 function nextCard(){
-  let pool = CARDS.filter(eligible);
-  if (!pool.length){ G.recent = []; pool = CARDS.filter(eligible); }
-  const follow = pool.filter(c=>c.req);
-  if (follow.length && Math.random() < 0.6) return pick(follow);
-  const weighted = [];
-  pool.forEach(c=>{
-    let w = c.s === G.stage ? 4 : 1;
-    if (!G.used[c.id]) w *= 2;
-    for (let i=0;i<w;i++) weighted.push(c);
-  });
-  return pick(weighted);
+  let pool = deckOf().filter(eligible);
+  if (!pool.length){ G.recent = []; pool = deckOf().filter(eligible); }
+  const w = [];
+  pool.forEach(c=>{ let n = c.s === G.stage ? 4 : 1; if (!G.used[c.id]) n *= 2; for (let i=0;i<n;i++) w.push(c); });
+  return pick(w);
 }
-function stageFor(m){ let s=0; STAGES.forEach((st,i)=>{ if(m>=st.min) s=i; }); return s; }
-function checkEnd(){ for (const k of MK){ if (G[k] <= 0) return k+'0'; if (G[k] >= 100) return k+'100'; } return null; }
+function stageFor(m){ let s=0; cfg().stages.forEach((st,i)=>{ if (m >= st.min) s = i; }); return s; }
+function titleOf(stage){ return cfg().stages[stage].title || G.sex; }
+function checkEnd(){
+  if (G.f <= 0) return 'f0';
+  if (G.h <= 0) return 'h0';
+  if (G.c <= 0) return 'c0';
+  if (G.c >= 100) return 'c100';
+  if (G.o <= 0) return 'o0';
+  if (G.o >= 100) return 'o100';
+  return null;
+}
 
-/* ============ RENDER ============ */
+/* ================= RENDER ================= */
 function buildMeters(){
+  const L = LABELS[G ? G.path : 'p'];
   $('meters').innerHTML = MK.map(k=>`
     <div class="meter" id="m_${k}">
-      <div class="top"><span class="ic" aria-hidden="true">${METERS[k][0]}</span><span class="dot"></span></div>
-      <div class="bar" role="meter" aria-label="${METERS[k][1]}" aria-valuemin="0" aria-valuemax="100"><div class="fill"></div></div>
-      <div class="nm">${METERS[k][1]}</div>
+      <div class="top"><span class="ic" aria-hidden="true">${ICONS[k]}</span><span class="dot"></span></div>
+      <div class="bar" role="meter" aria-label="${L[k]}" aria-valuemin="0" aria-valuemax="100"><div class="fill"></div></div>
+      <div class="nm">${L[k]}</div>
     </div>`).join('');
 }
 function renderMeters(){
@@ -481,23 +774,24 @@ function renderMeters(){
     const el = $('m_'+k), v = G[k];
     el.querySelector('.fill').style.width = v+'%';
     el.querySelector('.bar').setAttribute('aria-valuenow', v);
-    el.classList.toggle('danger', v<=15 || v>=85);
+    const twoSided = (k==='c' || k==='o');
+    el.classList.toggle('danger', v <= 15 || (twoSided && v >= 85));
   });
 }
 function renderStatus(){
-  const st = STAGES[G.stage];
-  $('sWho').textContent = `${st.title} ${G.name}`;
-  $('sWhere').textContent = st.name;
+  const st = cfg().stages[G.stage];
+  $('sWho').textContent = `${titleOf(G.stage)} ${G.name}`;
+  $('sWhere').textContent = `${st.name} · ${G.ministry}`;
   $('sMembers').textContent = fmt(G.members);
+  $('sUnit').textContent = cfg().unit;
 }
 function renderCard(enter){
   const c = card(), p = P[c.p];
-  $('cWeek').textContent = `Sunday ${G.week}`;
+  $('cWeek').textContent = `${cfg().week} ${G.week}`;
   $('cAv').textContent = p[0]; $('cName').textContent = p[1]; $('cRole').textContent = p[2];
   $('cText').textContent = c.t;
   $('bLt').textContent = c.L[0]; $('bRt').textContent = c.R[0];
-  const el = $('card');
-  el.style.transform = ''; el.style.opacity = '';
+  const el = $('card'); el.style.transform=''; el.style.opacity='';
   setLean(null);
   if (enter){ el.classList.add('enter'); requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.remove('enter'))); }
 }
@@ -505,114 +799,116 @@ function render(enter){ renderMeters(); renderStatus(); renderCard(enter); }
 
 function setLean(side){
   const lean = $('lean');
-  MK.forEach(k=>{ $('m_'+k).querySelector('.dot').className='dot'; });
-  if (!side){ lean.classList.remove('on'); return; }
+  MK.forEach(k=>{ const m=$('m_'+k); if (m) m.querySelector('.dot').className = 'dot'; });
+  if (!side || !G){ lean.classList.remove('on'); return; }
   const ch = card()[side];
-  lean.textContent = ch[0];
-  lean.className = 'lean on ' + side;
-  const fx = parseFx(ch[1]);
-  Object.entries(fx).forEach(([k,v])=>{ $('m_'+k).querySelector('.dot').className = 'dot ' + (Math.abs(v)>=15 ? 'lg' : 'sm'); });
+  lean.textContent = ch[0]; lean.className = 'lean on ' + side;
+  Object.entries(parseFx(ch[1])).forEach(([k,v])=>{ if (v) $('m_'+k).querySelector('.dot').className = 'dot ' + (Math.abs(v)>=15 ? 'lg' : 'sm'); });
 }
-
 let toastT;
 function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'), 2600); }
 
-/* ============ GAME FLOW ============ */
+/* ================= FLOW ================= */
 function choose(side){
   if (busy || !G) return;
   busy = true;
-  const el = $('card');
-  el.classList.remove('dragging');
+  const el = $('card'); el.classList.remove('dragging');
   el.style.transform = `translateX(${side==='R'?'':'-'}140%) rotate(${side==='R'?18:-18}deg)`;
   el.style.opacity = '0';
   setTimeout(()=>{ apply(side); busy=false; }, 260);
 }
-
 function apply(side){
   const c = card(), ch = c[side], fx = parseFx(ch[1]), ex = ch[3] || {};
   MK.forEach(k=>{ if (fx[k]) G[k] = clamp(G[k] + fx[k]); });
   if (ch[2]) G.tags[ch[2]]++;
-  if (ex.set) G.flags[ex.set] = 1;
-  if (c.req) delete G.flags[c.req];
-  if (ex.jets) G.jets += ex.jets;
-  if (ex.scandal) G.scandals++;
-  G.used[c.id] = 1;
-  G.recent.push(c.id); if (G.recent.length > 10) G.recent.shift();
-  if (ex.r) toast(ex.r);
+  Object.keys(G.legacy).forEach(k=>{ if (ex[k]) G.legacy[k] += ex[k]; });
+  G.used[c.id] = 1; G.recent.push(c.id); if (G.recent.length > 10) G.recent.shift();
 
-  let end = checkEnd();
-  if (end) return finish(end);
-
+  const end = checkEnd(); if (end) return finish(end);
   G.turn++;
+  let queue = [];
   if (G.turn % 3 === 0){
-    const res = sunday();
-    if (res === 'end') return;
-    if (res === 'promo'){ G.cardId = nextCard().id; save(); render(false); return showPromo(); }
+    const r = sunday();
+    if (r === 'end') return;
+    if (r === 'promo') queue = ['promo','hero'];
+    else if (G.heroes === 0) queue = ['hero'];
   }
-  G.cardId = nextCard().id;
-  save();
-  render(true);
+  G.cardId = nextCard().id; save();
+  if (queue.length){ render(false); runQueue(queue); } else render(true);
 }
-
 function sunday(){
-  // growth, then weekly drift: flock settles, anointing needs upkeep, bills scale with size, gist fades
-  const d = Math.round(G.members * (G.c - 40) / 60 + (G.g - 20) / 5 + 4);
+  const k = cfg().k;
+  const d = Math.round(G.members * (G.c - 40) / 60 + k * (4 + (G.f - 50) / 10));
   G.members = Math.max(0, G.members + d);
+  G.f = clamp(G.f - 5);
+  G.h = clamp(G.h - 4);
   G.c = clamp(G.c - Math.round((G.c - 50) / 6));
-  G.a = clamp(G.a - 4);
-  G.o = clamp(G.o + Math.round((G.c - 50) / 12) - 1 - G.stage);
-  G.g = clamp(G.g - 6);
-  toast(`Sunday ${G.week}: ${d>=0?'+':''}${fmt(d)} members`);
+  G.o = clamp(G.o + Math.round((G.c - 50) / 12) - Math.round(cfg().drain * (1 + G.stage)));
+  toast(`${cfg().week} ${G.week}: ${d>=0?'+':''}${fmt(d)} ${cfg().unit}`);
   G.week++;
   if (G.members <= 0){ finish('c0'); return 'end'; }
   const end = checkEnd(); if (end){ finish(end); return 'end'; }
   const ns = stageFor(G.members);
   if (ns > G.stage){
     G.stage = ns;
-    if (ns === STAGES.length - 1){ finish('win'); return 'end'; }
+    if (ns === cfg().stages.length - 1){ finish('win'); return 'end'; }
     return 'promo';
   }
   return 'ok';
 }
-
-function showPromo(){
-  const st = STAGES[G.stage];
-  $('pTitle').textContent = `${st.title} ${G.name}`;
-  $('pText').textContent = `${fmt(G.members)} members. ${G.ministry} has moved to ${st.place}. Bigger stage, bigger wahala.`;
-  $('promo').classList.add('on');
-  $('pOk').focus();
+function runQueue(q){
+  const next = q.shift();
+  if (!next){ renderCard(true); return; }
+  if (next === 'promo'){
+    const st = cfg().stages[G.stage];
+    $('pTitle').textContent = `${titleOf(G.stage)} ${G.name}`;
+    $('pText').textContent = `${st.name}. ${st.place} ${fmt(G.members)} ${cfg().unit} and growing.`;
+    $('promo').classList.add('on'); $('pOk').focus();
+    $('pOk').onclick = ()=>{ $('promo').classList.remove('on'); runQueue(q); };
+  } else if (next === 'hero'){
+    if (!showHero(()=>runQueue(q))) runQueue(q);
+  }
 }
-$('pOk').onclick = ()=>{ $('promo').classList.remove('on'); renderCard(true); };
-
+function showHero(done){
+  const slots = SLOTS[G.path];
+  if (G.heroes >= slots.length) return false;
+  const opts = slots[G.heroes], seen = hallIds();
+  const fresh = opts.filter(id=>!seen.includes(id) && !(G.heroIds||[]).includes(id));
+  const id = fresh.length ? fresh[0] : pick(opts);
+  const h = HERO_DB[id];
+  G.heroes++; (G.heroIds = G.heroIds || []).push(id); addToHall(id); save();
+  $('hYr').textContent = h.yr; $('hWho').textContent = h.who; $('hText').textContent = h.text;
+  $('hLesson').textContent = h.lesson; $('hSrc').textContent = 'Source: ' + h.src;
+  $('hero').classList.add('on'); $('hOk').focus();
+  $('hOk').onclick = ()=>{ $('hero').classList.remove('on'); if (done) done(); };
+  return true;
+}
 function save(){ store(SAVE, G); }
 
-function pastorType(){
-  const t = G.tags; let best='D', max=-1;
-  ['P','S','K','H','D'].forEach(k=>{ if (t[k] > max){ max=t[k]; best=k; } });
+function ministerType(){
+  let best='S', max=-1;
+  ['F','W','E','B','S'].forEach(k=>{ if (G.tags[k] > max){ max=G.tags[k]; best=k; } });
   return TYPES[best];
 }
-
 async function finish(key){
   const won = key === 'win';
-  const [title, fn] = ENDINGS[key];
-  const desc = fn(G);
-  const type = pastorType();
+  if (won){ SLOTS[G.path].slice(G.heroes).forEach(o=>{ const id = o.find(x=>!hallIds().includes(x)) || o[0]; addToHall(id); }); G.heroes = SLOTS[G.path].length; }
+  const [title, fn, lesson] = ENDINGS[key];
+  const desc = fn(G), type = ministerType();
   store(SAVE, undefined);
-  const best = load(BEST) || 0;
-  if (G.members > best) store(BEST, G.members);
-
+  const best = load(BEST) || {};
+  if (!best[G.path] || G.members > best[G.path]){ best[G.path] = G.members; store(BEST, best); }
   renderMeters(); renderStatus();
-  $('eKick').textContent = won ? 'Glory!' : `${G.ministry} has closed`;
-  $('eTitle').textContent = title;
-  $('eDesc').textContent = desc;
+  $('eKick').textContent = won ? 'Journey complete' : 'Your journey paused';
+  $('eTitle').textContent = title; $('eDesc').textContent = desc; $('eLesson').textContent = 'Lesson: ' + lesson;
   $('end').classList.add('on');
   try { await document.fonts.ready; } catch(e){}
-  const cv = drawBulletin(title, desc, type, won);
+  const cv = drawCard(title, lesson, type, won);
   $('eImg').src = cv.toDataURL('image/png');
-  window._bulletin = { cv, title, type };
+  window._card = { cv, title, type };
 }
 
-/* ============ SHARE CARD ============ */
+/* ================= SHARE CARD ================= */
 function wrap(ctx, text, x, y, maxW, lh, maxLines){
   const words = text.split(' '); let line='', lines=[];
   words.forEach(w=>{ const t = line ? line+' '+w : w; if (ctx.measureText(t).width > maxW && line){ lines.push(line); line=w; } else line=t; });
@@ -621,7 +917,7 @@ function wrap(ctx, text, x, y, maxW, lh, maxLines){
   lines.forEach((l,i)=>ctx.fillText(l, x, y + i*lh));
   return lines.length;
 }
-function drawBulletin(title, desc, type, won){
+function drawCard(title, lesson, type, won){
   const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
   const x = cv.getContext('2d');
   const bg = x.createRadialGradient(W/2, 380, 60, W/2, 380, 1100);
@@ -631,71 +927,94 @@ function drawBulletin(title, desc, type, won){
   for (let i=0;i<24;i++){ x.rotate(Math.PI*2/24); x.beginPath(); x.moveTo(0,0); x.lineTo(-40,-1600); x.lineTo(40,-1600); x.closePath(); x.fill(); }
   x.restore();
 
-  // paper bulletin
   const px=70, py=70, pw=W-140, ph=H-140;
   x.fillStyle='#FBF3DF'; x.fillRect(px,py,pw,ph);
-  x.strokeStyle='#2B0B4F'; x.lineWidth=5; x.strokeRect(px+18,py+18,pw-36,ph-36);
+  x.strokeStyle='#F2B705'; x.lineWidth=5; x.strokeRect(px+18,py+18,pw-36,ph-36);
   x.textAlign='center';
 
-  x.fillStyle='#D7261E'; x.save(); x.translate(W/2,160); x.rotate(-0.03);
-  x.fillRect(-210,-34,420,60); x.fillStyle='#fff'; x.font='40px Anton, Impact, sans-serif';
-  x.fillText(`Sunday bulletin, week ${G.week}`, 0, 10); x.restore();
+  x.fillStyle='#2B0B4F'; x.fillRect(W/2-230,128,460,58);
+  x.fillStyle='#FFD95A'; x.font='38px Anton, Impact, sans-serif'; x.fillText('MY MINISTRY JOURNEY', W/2, 172);
 
-  x.fillStyle='#2B0B4F'; x.font='66px Anton, Impact, sans-serif';
-  const n = wrap(x, G.ministry.toUpperCase(), W/2, 285, pw-120, 72, 2);
-  let y = 285 + (n-1)*72 + 56;
+  x.fillStyle='#2B0B4F'; x.font='64px Anton, Impact, sans-serif';
+  const n = wrap(x, G.ministry.toUpperCase(), W/2, 280, pw-120, 70, 2);
+  let y = 280 + (n-1)*70 + 54;
   x.fillStyle='#6B5A80'; x.font='600 32px Archivo, sans-serif';
-  x.fillText(`${STAGES[G.stage].title} ${G.name}`, W/2, y);
+  x.fillText(`${titleOf(G.stage)} ${G.name} · ${CALLING[G.path]}`, W/2, y);
 
-  y += 90;
-  x.fillStyle = won ? '#F2B705' : '#1A0B2E'; x.fillRect(px+60, y-62, pw-120, 92);
-  x.fillStyle = won ? '#1A0B2E' : '#FFD95A'; x.font='54px Anton, Impact, sans-serif';
-  x.fillText(title, W/2, y);
-  y += 80;
-  x.fillStyle='#1A0B2E'; x.font='600 30px Archivo, sans-serif';
-  y += (wrap(x, desc, W/2, y, pw-140, 42, 3)-1)*42 + 80;
+  y += 88;
+  x.fillStyle = won ? '#F2B705' : '#2B0B4F'; x.fillRect(px+60, y-60, pw-120, 88);
+  x.fillStyle = won ? '#1A0B2E' : '#FFD95A'; x.font='50px Anton, Impact, sans-serif'; x.fillText(title, W/2, y);
+  y += 76;
+  x.fillStyle='#1A0B2E'; x.font='italic 600 30px Archivo, sans-serif';
+  y += (wrap(x, `"${lesson}"`, W/2, y, pw-160, 42, 2)-1)*42 + 92;
 
-  const stats = [[fmt(G.members),'members'],[String(G.week-1),'Sundays'],[String(G.jets),G.jets===1?'jet':'jets'],[String(G.scandals),G.scandals===1?'scandal':'scandals']];
+  const L = G.legacy;
+  const stats = ({
+    p:[[fmt(G.members),'members'],[String(L.leaders),'leaders raised'],[String(L.outreach),'outreaches'],[String(L.schools),'schools']],
+    g:[[fmt(G.members),'listeners'],[String(L.songs),'songs'],[String(L.trained),'worshippers trained'],[String(L.outreach),'outreaches']],
+    e:[[fmt(G.members),'lives reached'],[String(L.leaders),'workers sent'],[String(L.outreach),'outreaches'],[String(L.schools),'schools & clinics']]
+  })[G.path];
   const cw = (pw-120)/4;
   stats.forEach((s,i)=>{
     const cx = px+60 + cw*i + cw/2;
-    x.fillStyle='#2B0B4F'; x.font='72px Anton, Impact, sans-serif'; x.fillText(s[0], cx, y+20);
-    x.fillStyle='#6B5A80'; x.font='600 26px Archivo, sans-serif'; x.fillText(s[1], cx, y+62);
+    x.fillStyle='#2B0B4F'; x.font='60px Anton, Impact, sans-serif'; x.fillText(s[0], cx, y+16);
+    x.fillStyle='#6B5A80'; x.font='600 23px Archivo, sans-serif'; wrap(x, s[1], cx, y+54, cw-12, 26, 2);
   });
 
-  y += 170;
+  y += 175;
   x.strokeStyle='#F2B705'; x.lineWidth=4; x.beginPath(); x.moveTo(px+200,y-70); x.lineTo(px+pw-200,y-70); x.stroke();
-  x.fillStyle='#6B5A80'; x.font='600 28px Archivo, sans-serif'; x.fillText('Your pastor type', W/2, y-20);
-  x.fillStyle='#D7261E'; x.font='64px Anton, Impact, sans-serif'; x.fillText(type[0], W/2, y+50);
-  x.fillStyle='#1A0B2E'; x.font='600 28px Archivo, sans-serif'; x.fillText(type[1], W/2, y+96);
+  x.fillStyle='#6B5A80'; x.font='600 28px Archivo, sans-serif'; x.fillText('Minister type', W/2, y-20);
+  x.fillStyle='#2B0B4F'; x.font='62px Anton, Impact, sans-serif'; x.fillText(type[0], W/2, y+48);
+  x.fillStyle='#1A0B2E'; x.font='600 28px Archivo, sans-serif'; x.fillText(type[1], W/2, y+92);
+  x.fillStyle='#C7362B'; x.font='800 26px Archivo, sans-serif';
+  x.fillText(`Heroes of Faith unlocked: ${G.heroes} of ${SLOTS[G.path].length}`, W/2, y+142);
 
   x.fillStyle='#2B0B4F'; x.fillRect(px+18, py+ph-128, pw-36, 110);
   x.fillStyle='#FFD95A'; x.font='40px Anton, Impact, sans-serif'; x.fillText('MINISTRY LIFE', W/2, py+ph-78);
-  x.fillStyle='#FBF3DF'; x.font='600 26px Archivo, sans-serif'; x.fillText(`Can you build a bigger ministry? ${GAME_URL}`, W/2, py+ph-38);
+  x.fillStyle='#FBF3DF'; x.font='600 26px Archivo, sans-serif'; x.fillText(`Answer the call at ${GAME_URL}`, W/2, py+ph-38);
   return cv;
 }
-
 function shareText(){
-  const b = window._bulletin;
-  return `I ran ${G.ministry} for ${G.week-1} Sundays and reached ${fmt(G.members)} members before "${b.title}". I'm ${b.type[0]}. Can you do better? https://${GAME_URL}`;
+  const c = window._card;
+  return `My Ministry Life journey: ${G.ministry} reached ${fmt(G.members)} ${cfg().unit}. I'm ${c.type[0]}. Answer the call: https://${GAME_URL}`;
 }
 $('eShare').onclick = async ()=>{
-  const b = window._bulletin; if (!b) return;
-  const blob = await new Promise(r=>b.cv.toBlob(r,'image/png'));
-  const file = new File([blob], 'ministry-life-bulletin.png', { type:'image/png' });
-  try {
-    if (navigator.canShare && navigator.canShare({ files:[file] })){ await navigator.share({ files:[file], text:shareText() }); return; }
-  } catch(e){ if (e.name === 'AbortError') return; }
+  const c = window._card; if (!c) return;
+  const blob = await new Promise(r=>c.cv.toBlob(r,'image/png'));
+  const file = new File([blob], 'ministry-life-journey.png', { type:'image/png' });
+  try { if (navigator.canShare && navigator.canShare({ files:[file] })){ await navigator.share({ files:[file], text:shareText() }); return; } }
+  catch(e){ if (e.name === 'AbortError') return; }
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
-  toast('Bulletin saved. Post it anywhere.');
+  toast('Card saved. Share your testimony.');
 };
 $('eWa').onclick = ()=>{ window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank'); };
+function showHall(){
+  const seen = hallIds();
+  const groups = [['p','Pastors and church builders'],['g','Gospel ministers'],['e','Evangelists and missionaries']];
+  const shown = new Set();
+  let html = '';
+  groups.forEach(([k,label])=>{
+    const ids = [...new Set(SLOTS[k].flat())].filter(id=>!shown.has(id));
+    ids.forEach(id=>shown.add(id));
+    html += `<div class="grp">${label}</div>`;
+    ids.forEach(id=>{
+      const h = HERO_DB[id];
+      if (seen.includes(id)) html += `<div class="h"><span class="y">${h.yr}</span><b>${h.who}</b><p>${h.text}</p><p class="ls">${h.lesson}</p><p class="sr">Source: ${h.src}</p></div>`;
+      else html += `<div class="h lock"><b>🔒 Locked</b><p>Grow your ministry as ${k==='p'?'a pastor':k==='g'?'a gospel minister':'an evangelist'} to unlock this story.</p></div>`;
+    });
+  });
+  $('hallList').innerHTML = html;
+  $('hallSub').textContent = `${seen.filter(id=>HERO_DB[id]).length} of ${ALL_HEROES.length} stories unlocked. Replays reveal new heroes.`;
+  $('hall').classList.add('on'); $('hall').scrollTop = 0; $('hallClose').focus({preventScroll:true});
+}
+$('iHall').onclick = showHall;
+$('hallClose').onclick = ()=>$('hall').classList.remove('on');
 $('eAgain').onclick = ()=>{ $('end').classList.remove('on'); G=null; showIntro(); };
 
-/* ============ INPUT ============ */
+/* ================= INPUT ================= */
 (function drag(){
   const el = $('card'); let sx=0, dx=0, down=false;
-  el.addEventListener('pointerdown', e=>{ if (busy) return; down=true; sx=e.clientX; dx=0; el.setPointerCapture(e.pointerId); el.classList.add('dragging'); });
+  el.addEventListener('pointerdown', e=>{ if (busy || !G) return; down=true; sx=e.clientX; dx=0; el.setPointerCapture(e.pointerId); el.classList.add('dragging'); });
   el.addEventListener('pointermove', e=>{
     if (!down) return; dx = e.clientX - sx;
     el.style.transform = `translateX(${dx}px) rotate(${dx/18}deg)`;
@@ -703,8 +1022,7 @@ $('eAgain').onclick = ()=>{ $('end').classList.remove('on'); G=null; showIntro()
   });
   const up = ()=>{
     if (!down) return; down=false; el.classList.remove('dragging');
-    if (Math.abs(dx) > 90) choose(dx > 0 ? 'R' : 'L');
-    else { el.style.transform=''; setLean(null); }
+    if (Math.abs(dx) > 90) choose(dx > 0 ? 'R' : 'L'); else { el.style.transform=''; setLean(null); }
   };
   el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
 })();
@@ -720,28 +1038,39 @@ document.addEventListener('keydown', e=>{
   if (e.key==='ArrowLeft') choose('L'); if (e.key==='ArrowRight') choose('R');
 });
 
-/* ============ INTRO ============ */
-function showIntro(){
-  $('iMin').value = genName();
-  const sv = load(SAVE);
-  $('iCont').style.display = sv ? 'block' : 'none';
-  const best = load(BEST);
-  $('iBest').textContent = best ? `Your record: ${fmt(best)} members.` : '';
-  $('intro').classList.add('on');
-  document.body.classList.add('menu');
+/* ================= INTRO ================= */
+function setPath(p){
+  setup.path = p;
+  ['P','G','E'].forEach(k=>$('call'+k).setAttribute('aria-pressed', p===k.toLowerCase()));
+  $('iMinLbl').textContent = p==='p' ? 'Name your church' : 'Name your ministry';
+  $('iMin').value = NAMES[p]();
 }
-$('iDice').onclick = ()=>{ $('iMin').value = genName(); };
+function setSex(s){ setup.sex = s; $('gB').setAttribute('aria-pressed', s==='Brother'); $('gS').setAttribute('aria-pressed', s==='Sister'); }
+$('callP').onclick = ()=>setPath('p'); $('callG').onclick = ()=>setPath('g'); $('callE').onclick = ()=>setPath('e');
+$('gB').onclick = ()=>setSex('Brother'); $('gS').onclick = ()=>setSex('Sister');
+$('iDice').onclick = ()=>{ $('iMin').value = NAMES[setup.path](); };
+
+function showIntro(){
+  setPath(setup.path);
+  $('iCont').style.display = load(SAVE) ? 'block' : 'none';
+  const best = load(BEST), bits = [];
+  if (best && best.p) bits.push(`${fmt(best.p)} members as a pastor`);
+  if (best && best.g) bits.push(`${fmt(best.g)} listeners as a gospel minister`);
+  if (best && best.e) bits.push(`${fmt(best.e)} lives reached as an evangelist`);
+  $('iHall').textContent = `🏛️ Hall of Faith · ${hallIds().filter(id=>HERO_DB[id]).length} of ${ALL_HEROES.length} unlocked`;
+  $('iBest').textContent = bits.length ? `Your best: ${bits.join(', ')}.` : '';
+  $('intro').classList.add('on'); document.body.classList.add('menu');
+}
+function startPlaying(){ buildMeters(); render(true); $('intro').classList.remove('on'); document.body.classList.remove('menu'); }
 $('iStart').onclick = ()=>{
   const name = $('iName').value.trim() || 'Emeka';
-  const min = $('iMin').value.trim() || genName();
-  newGame(name, min); save(); render(true);
-  $('intro').classList.remove('on'); document.body.classList.remove('menu');
-  setTimeout(()=>toast(`Welcome, Brother ${name}. Eight souls in your sitting room.`), 400);
+  const min = $('iMin').value.trim() || NAMES[setup.path]();
+  newGame(name, min, setup.path, setup.sex); save(); startPlaying();
+  setTimeout(()=>toast(({p:'Eight people in your sitting room. It begins.', g:'Fifty people heard you sing on Sunday. It begins.', e:'A bus park, a bag of tracts and a burning heart. It begins.'})[setup.path]), 400);
 };
 $('iCont').onclick = ()=>{
   const sv = load(SAVE); if (!sv) return;
-  G = sv; if (!card()) G.cardId = nextCard().id;
-  render(true); $('intro').classList.remove('on'); document.body.classList.remove('menu');
+  G = sv; if (!card()) G.cardId = nextCard().id; startPlaying();
 };
 
 buildMeters();
