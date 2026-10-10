@@ -1,0 +1,9 @@
+name = "ministrylife-votes"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ministrylife"
+# Paste your D1 database ID here if you deploy with wrangler instead of the dashboard
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"

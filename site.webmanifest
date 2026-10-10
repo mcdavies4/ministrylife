@@ -1,0 +1,13 @@
+{
+  "name": "Ministry Life",
+  "short_name": "Ministry Life",
+  "description": "Answer the call. Plant a church, lead worship or reach the nations.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#14051F",
+  "theme_color": "#2B0B4F",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
