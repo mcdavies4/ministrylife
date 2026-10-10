@@ -246,9 +246,36 @@ body.menu #app{visibility:hidden}
 .end .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .end .two .btn{font-size:17px;padding:13px}
 .end .again{background:transparent;border:2px solid var(--gold);color:var(--gold-hi);box-shadow:none;font-size:18px}
+#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;cursor:pointer;
+  background:radial-gradient(circle at 50% 42%,#5B1A9E 0%,#2B0B4F 38%,#0E0418 78%);color:var(--paper);transition:opacity .9s ease;-webkit-tap-highlight-color:transparent}
+#gate.out{opacity:0;pointer-events:none}
+#gate .glow{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;font-size:64px;
+  background:radial-gradient(circle,rgba(255,217,90,.5),rgba(242,183,5,.12) 55%,transparent 70%);animation:gpulse 2.6s ease-in-out infinite}
+#gate.live .glow{animation-duration:1.1s}
+@keyframes gpulse{0%,100%{transform:scale(.92);opacity:.85}50%{transform:scale(1.08);opacity:1}}
+#gate .gt{font-family:'Anton',Impact,sans-serif;font-size:clamp(44px,13vw,68px);line-height:.95;margin:18px 0 6px;letter-spacing:.01em}
+#gate .gt span{display:block;color:var(--gold-hi)}
+#gate .gp{font-weight:800;font-size:18px;color:var(--gold-hi);margin-top:22px;animation:gblink 1.8s ease-in-out infinite}
+@keyframes gblink{50%{opacity:.45}}
+#gate .gs{font-size:14px;color:#BFA9D9;margin-top:8px}
+#gate .gv{max-width:420px;font-style:italic;font-size:19px;line-height:1.45;margin-top:22px;opacity:0;transition:opacity 1.6s ease}
+#gate .gv cite{display:block;font-style:normal;font-weight:800;font-size:14px;color:var(--gold-hi);margin-top:8px}
+#gate.live .gv{opacity:1}
+#gate.live .gp,#gate.live .gs{display:none}
+#gate .gk{position:absolute;bottom:22px;left:0;right:0;font-size:13px;color:#9C88B8;display:none}
+#gate.live .gk{display:block}
+@media (prefers-reduced-motion:reduce){#gate .glow,#gate .gp{animation:none}}
 </style>
 </head>
 <body class="menu">
+<div id="gate" role="button" tabindex="0" aria-label="Tap to enter">
+  <div class="glow">🕊️</div>
+  <div class="gt">Ministry<span>Life</span></div>
+  <p class="gp" id="gP">Tap to enter the prayer room</p>
+  <p class="gs" id="gS">🔊 Turn your sound up</p>
+  <p class="gv">“Not by might, nor by power, but by my spirit, saith the LORD of hosts.”<cite>Zechariah 4:6 (KJV)</cite></p>
+  <p class="gk">Tap to skip</p>
+</div>
 <div class="bg" aria-hidden="true"></div>
 <div class="toast gtoast" id="gtoast" role="status"></div>
 
@@ -1330,6 +1357,106 @@ function award(id){
 const badgeCount = () => Object.keys(stats().badges).filter(k=>BADGES[k]).length;
 
 /* ================= SOUND (synthesised, no files) ================= */
+/* ================= PRAYER ROOM INTRO (synthesized) ================= */
+/* A congregation praying in tongues, heard from the doorway: formant-synth voices,
+   a Hammond-style organ swell and a closing "Amen". Works with any BaseAudioContext,
+   so it can also be rendered offline. Returns the length in seconds. */
+function prayerRoom(c, out, t0){
+  const DUR = 11;
+  const rnd = (a, b)=>a + Math.random() * (b - a), pick = a=>a[Math.floor(Math.random() * a.length)];
+  // a soft church-hall reverb
+  const rev = c.createConvolver(), L = Math.floor(c.sampleRate * 2.8), ir = c.createBuffer(2, L, c.sampleRate);
+  for (let ch = 0; ch < 2; ch++){ const d = ir.getChannelData(ch); for (let i = 0; i < L; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / L, 2.6); }
+  rev.buffer = ir;
+  const wet = c.createGain(), dry = c.createGain(), bus = c.createGain();
+  wet.gain.value = .55; dry.gain.value = .6; bus.gain.value = 9;
+  const glue = c.createDynamicsCompressor(); glue.threshold.value = -18; glue.ratio.value = 4; glue.attack.value = .01; glue.release.value = .25;
+  bus.connect(glue); glue.connect(dry); glue.connect(rev); rev.connect(wet); dry.connect(out); wet.connect(out);
+  // one shared noise buffer for breath and consonants
+  const NB = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), nd = NB.getChannelData(0);
+  for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+  const pan = (node, p)=>{ if (c.createStereoPanner){ const s = c.createStereoPanner(); s.pan.value = p; node.connect(s); return s; } return node; };
+
+  // vowel formants (F1, F2, F3) for an open, flowing "shandala-ba-ra-si-ko" sound
+  const V = { a:[750, 1250, 2600], e:[450, 2000, 2650], i:[300, 2300, 3000], o:[480, 850, 2500], u:[340, 750, 2400], ai:[650, 1700, 2600] };
+  const VK = ['a', 'a', 'a', 'e', 'i', 'o', 'u', 'ai', 'a', 'i'];
+  const CONS = ['sh', 'l', 'b', 'r', 'k', 'd', 'l', 'r', 's', 'm', 'n', 'ky', '', ''];
+
+  function voice(start, end, f0, vol, rate, p, intense){
+    const src = c.createOscillator(); src.type = 'sawtooth';
+    const vib = c.createOscillator(), vg = c.createGain(); vib.frequency.value = rnd(4.5, 6); vg.gain.value = f0 * .012; vib.connect(vg); vg.connect(src.frequency);
+    const soft = c.createBiquadFilter(); soft.type = 'lowpass'; soft.frequency.value = 3200;
+    const amp = c.createGain(); amp.gain.value = 0;
+    const F = [0, 1, 2].map(i=>{ const f = c.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = [7, 9, 10][i]; const g = c.createGain(); g.gain.value = [1, .55, .25][i]; soft.connect(f); f.connect(g); g.connect(amp); return f; });
+    src.connect(soft);
+    const breathSrc = c.createBufferSource(); breathSrc.buffer = NB; breathSrc.loop = true;
+    const bf = c.createBiquadFilter(); bf.type = 'highpass'; bf.frequency.value = 2600;
+    const bamp = c.createGain(); bamp.gain.value = 0; breathSrc.connect(bf); bf.connect(bamp);
+    const sum = c.createGain(); sum.gain.value = vol; amp.connect(sum); bamp.connect(sum);
+    pan(sum, p).connect(bus);
+    let t = start;
+    while (t < end - .4){
+      // a phrase: starts high, falls; the lead voice gets more fervent as it goes
+      const n = Math.floor(rnd(6, 15)), top = f0 * rnd(1.05, 1.3) * (1 + (intense ? .25 * (t - start) / (end - start) : 0));
+      for (let s = 0; s < n && t < end - .3; s++){
+        const syl = 1 / rate * rnd(.75, 1.3), k = CONS[Math.floor(Math.random() * CONS.length)], v = V[pick(VK)];
+        const pitch = top * (1 - .22 * s / n) * rnd(.97, 1.04);
+        src.frequency.setTargetAtTime(pitch, t, .03);
+        F.forEach((f, i)=>f.frequency.setTargetAtTime(v[i] * rnd(.95, 1.06) * (f0 > 170 ? 1.15 : 1), t + .02, .025));
+        const peak = rnd(.6, 1) * (s === 0 ? 1.15 : 1);
+        if (k === 'sh' || k === 's' || k === 'ky'){
+          bamp.gain.setValueAtTime(0, t); bamp.gain.linearRampToValueAtTime(k === 'sh' ? .35 : .22, t + .03); bamp.gain.linearRampToValueAtTime(0, t + .08);
+          amp.gain.setTargetAtTime(0, t, .01); amp.gain.setTargetAtTime(peak, t + .08, .02);
+        } else if (k === 'b' || k === 'd' || k === 'k'){
+          amp.gain.setTargetAtTime(.02, t, .008); amp.gain.setTargetAtTime(peak, t + .05, .012);
+          if (k === 'k'){ bamp.gain.setValueAtTime(.2, t + .045); bamp.gain.setTargetAtTime(0, t + .05, .01); }
+        } else if (k){
+          amp.gain.setTargetAtTime(peak * .35, t, .015); amp.gain.setTargetAtTime(peak, t + .05, .02);
+        } else amp.gain.setTargetAtTime(peak, t, .03);
+        t += syl;
+      }
+      // breath between phrases
+      amp.gain.setTargetAtTime(0, t, .05);
+      const br = rnd(.25, .7);
+      bamp.gain.setValueAtTime(0, t + .05); bamp.gain.linearRampToValueAtTime(.06, t + .05 + br * .5); bamp.gain.linearRampToValueAtTime(0, t + br);
+      t += br;
+    }
+    amp.gain.setTargetAtTime(0, end - .3, .1);
+    [src, vib, breathSrc].forEach(o=>{ o.start(start); o.stop(end + .5); });
+  }
+
+  // the congregation, near and far
+  for (let i = 0; i < 9; i++){
+    const female = i % 2 === 1;
+    voice(t0 + rnd(.1, 1.8), t0 + DUR - rnd(1.2, 2), female ? rnd(190, 255) : rnd(95, 145), rnd(.035, .07), rnd(4.8, 6.8), rnd(-.8, .8), false);
+  }
+  // a lead voice by the altar, building in fervour
+  voice(t0 + 1.4, t0 + DUR - 1.6, 128, .13, 6.2, .1, true);
+
+  // Hammond-style organ: drawbar harmonics with a Leslie shimmer, I - IV - I
+  const org = c.createGain(); org.gain.value = 0; org.connect(bus);
+  const les = c.createOscillator(), lg = c.createGain(); les.frequency.value = 6.4; lg.gain.value = .012; les.connect(lg); lg.connect(org.gain); les.start(t0); les.stop(t0 + DUR + 3);
+  org.gain.setValueAtTime(0, t0); org.gain.linearRampToValueAtTime(.05, t0 + 3); org.gain.linearRampToValueAtTime(.075, t0 + DUR - 2.5); org.gain.linearRampToValueAtTime(.09, t0 + DUR - 1); org.gain.setTargetAtTime(0, t0 + DUR + .4, .8);
+  const chords = [[0, [130.8, 164.8, 196, 261.6]], [4.2, [130.8, 174.6, 220, 261.6]], [7.4, [130.8, 164.8, 196, 261.6, 329.6]]];
+  chords.forEach(([at, notes], ci)=>{
+    const s = t0 + at, e = ci < chords.length - 1 ? t0 + chords[ci + 1][0] + .08 : t0 + DUR + 3;
+    notes.forEach(f=>[[1, .5], [2, .3], [3, .12], [4, .1], [8, .04]].forEach(([h, a])=>{
+      const o = c.createOscillator(), g = c.createGain(); o.frequency.value = f * h; g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(a * .2, s + .12); g.gain.setValueAtTime(a * .2, e - .1); g.gain.linearRampToValueAtTime(0, e);
+      o.connect(g); g.connect(org); o.start(s); o.stop(e + .05);
+    }));
+  });
+
+  // a closing "Amen!" from the room: a swell of open voices on the final chord
+  const at = t0 + DUR - 1.4;
+  [110, 130.8, 164.8, 196, 220, 261.6].forEach((f, i)=>{
+    const o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f * rnd(.995, 1.005);
+    const f1 = c.createBiquadFilter(); f1.type = 'bandpass'; f1.frequency.setValueAtTime(750, at); f1.frequency.setTargetAtTime(340, at + .5, .15); f1.Q.value = 6;
+    const g = c.createGain(); g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(.05, at + .15); g.gain.setTargetAtTime(.03, at + .4, .2); g.gain.setTargetAtTime(0, at + 1.6, .5);
+    o.connect(f1); f1.connect(g); pan(g, (i / 5 - .5) * 1.2).connect(bus); o.start(at); o.stop(at + 4);
+  });
+  return DUR;
+}
+
 const Sound = (function(){
   let ctx = null, master = null, hum = null, on = load('ministrylife_sound') !== false;
   function ensure(){
@@ -1383,8 +1510,28 @@ const Sound = (function(){
       setTimeout(()=>{ h.oscs.forEach(o=>o.stop()); h.lfo.stop(); }, 1500);
     }
   }
+  // the opening prayer room: a real recording (intro-voice.mp3 beside index.html) if one is uploaded, otherwise the synthesized one
+  function intro(onDone){
+    const c = ensure(); if (!c){ onDone && onDone(0); return ()=>{}; }
+    let stopped = false, rec = null, g = null;
+    const a = new Audio('intro-voice.mp3'); a.preload = 'auto'; a.volume = 1;
+    const synth = ()=>{
+      if (stopped || g) return;
+      g = c.createGain(); g.gain.value = 1; g.connect(master);
+      onDone && onDone(prayerRoom(c, g, c.currentTime + .05));
+    };
+    a.addEventListener('error', synth);
+    const p = a.play(); if (p && p.then) p.then(()=>{ if (stopped || g){ a.pause(); return; } rec = a; onDone && onDone(isFinite(a.duration) ? a.duration : 12); }).catch(synth);
+    setTimeout(()=>{ if (!rec) synth(); }, 1200);   // slow network: don't keep them waiting
+    return ()=>{
+      stopped = true;
+      if (rec){ const r = rec, v0 = r.volume; let k = 0; const iv = setInterval(()=>{ k++; r.volume = Math.max(0, v0 * (1 - k / 10)); if (k >= 10){ clearInterval(iv); r.pause(); } }, 60); }
+      if (g){ g.gain.setTargetAtTime(0, c.currentTime, .25); const gg = g; setTimeout(()=>gg.disconnect(), 2500); }
+      try { a.pause(); } catch(e){}
+    };
+  }
   return {
-    play, hum: humOn,
+    play, hum: humOn, intro,
     get on(){ return on; },
     toggle(){ on = !on; store('ministrylife_sound', on); if (!on && hum){ const h = hum; hum = null; try { h.g.gain.value = 0; h.oscs.forEach(o=>o.stop()); h.lfo.stop(); } catch(e){} } return on; }
   };
@@ -2627,6 +2774,27 @@ $('iCont').onclick = ()=>{
   G = sv; if (!card()) G.cardId = nextCard().id; startPlaying();
 };
 
+/* ----- opening gate: browsers only allow sound after a tap ----- */
+(function(){
+  const gate = $('gate'); if (!gate) return;
+  if (/[?&]nogate\b/.test(location.search)){ gate.remove(); return; }
+  let phase = 0, stop = null, timer = null;
+  const close = ()=>{
+    if (phase === 2) return; phase = 2; clearTimeout(timer);
+    stop && stop(); gate.classList.add('out'); setTimeout(()=>gate.remove(), 950);
+  };
+  const enter = ()=>{
+    if (phase === 1) return close();
+    if (phase) return;
+    phase = 1; gate.classList.add('live');
+    if (!Sound.on){ timer = setTimeout(close, 2600); return; }
+    stop = Sound.intro(d=>{ clearTimeout(timer); timer = setTimeout(close, Math.max(2.5, (d || 0) - .6) * 1000); });
+    timer = setTimeout(close, 14000);
+  };
+  gate.addEventListener('click', enter);
+  gate.addEventListener('keydown', e=>{ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); enter(); } });
+  gate.focus();
+})();
 buildMeters();
 showIntro();
 Track.visit(LANG);
